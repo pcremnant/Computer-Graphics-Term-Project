@@ -1,8 +1,8 @@
 .git/
 ComputerGraphics TermProject/Debug/
 ComputerGraphics TermProject/ComputerGraphics TermProjcet/Debug/
-ComputerGraphics TermProject/ComputerGraphics TermProjcet/*.vcxproj
-ComputerGraphics TermProject/ComputerGraphics TermProjcet/*.vcxproj.filters
-ComputerGraphics TermProject/ComputerGraphics TermProjcet/*.vcxproj.user
+ComputerGraphics TermProjct/**/.vcxproj
+ComputerGraphics TermProjct/**/.filters
+ComputerGraphics TermProjct/**/.user
 ComputerGraphics TermProject/**/*.obj
 ComputerGraphics TermProject/.vs/
