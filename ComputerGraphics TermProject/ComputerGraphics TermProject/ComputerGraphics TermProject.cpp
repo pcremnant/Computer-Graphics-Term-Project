@@ -2,7 +2,7 @@
 // 프로젝트 속성 - 링커 - 명령줄에 glew32.lib freeglut.lib 추가
 // 프로젝트 속성 - C/C++ - 전처리기에 _CRT_SECURE_NO_WARNINGS 추가
 
-#include"CShader.h"
+#include"CObject.h"
 
 CCamera camera;
 CObject* pObj;
