@@ -70,7 +70,7 @@ void CShader::CreateVAO(vec3Buffer* pBuf)
 	}
 }
 // VBO 생성
-GLuint CShader::CreateVec3VBO(vec3Buffer& pBuffer, GLuint* VBO = nullptr, GLuint VBONumber = 0)
+GLuint CShader::CreateVec3VBO(vec3Buffer& pBuffer, GLuint* VBO, GLuint VBONumber)
 {
 	glBindBuffer(GL_ARRAY_BUFFER, VBO[VBONumber]);
 	glBufferData(GL_ARRAY_BUFFER, pBuffer.size() * sizeof(glm::vec3), &pBuffer[0], GL_STATIC_DRAW);
@@ -126,7 +126,7 @@ CShader::CShader(GLuint layoutSize, vec3Buffer* pBuf) : nLayoutSize(layoutSize)
 		CreateVAO(pBuf);
 }
 
-void CShader::DrawObject(std::vector<GLuint>& pIndex, GLuint DrawType = GL_TRIANGLES)
+void CShader::DrawObject(std::vector<GLuint>& pIndex, GLuint DrawType)
 {
 	// 렌더링 파이프라인에 세이더 불러오기
 	glUseProgram(glShaderProgramID);
@@ -136,7 +136,7 @@ void CShader::DrawObject(std::vector<GLuint>& pIndex, GLuint DrawType = GL_TRIAN
 	glDrawElements(DrawType, pIndex.size(), GL_UNSIGNED_INT, &pIndex[0]);
 }
 
-void CShader::Update(glm::mat4 world, glm::mat4 camera, glm::mat4 mat_Projection, vec3Buffer* pBuf = nullptr)
+void CShader::Update(glm::mat4 world, glm::mat4 camera, glm::mat4 mat_Projection, vec3Buffer* pBuf)
 {
 	glUseProgram(glShaderProgramID);
 	glm::mat4 mul = mat_Projection * camera * world;

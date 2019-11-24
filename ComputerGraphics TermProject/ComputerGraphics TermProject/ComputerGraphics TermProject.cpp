@@ -3,6 +3,7 @@
 // 프로젝트 속성 - C/C++ - 전처리기에 _CRT_SECURE_NO_WARNINGS 추가
 
 #include"CObject.h"
+#include "CObject_cube.h"
 
 CCamera camera;
 CObject* pObj;
@@ -35,7 +36,7 @@ void main(int argc, char** argv) {									// 윈도우 출력하고 콜백함�
 	else
 		std::cout << "GLEW Initialized\n";
 	// ----------
-	pObj = new CObject_CCube(camera);
+	pObj = new CObject_cube(camera);
 
 
 	// ---------- OpenGL 설정 초기화 ----------
