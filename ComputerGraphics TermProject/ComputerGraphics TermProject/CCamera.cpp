@@ -37,7 +37,7 @@ void CCamera::MoveToFront()
 	vector_Camera[CAMERA_AT] += tmpDirection;
 }
 
-void CCamera::MoveToBegind()
+void CCamera::MoveToBehind()
 {
 	glm::vec3 tmpDirection;
 	tmpDirection = { vec3_Direction.x / 10,vec3_Direction.y / 10,vec3_Direction.z / 10 };
@@ -106,40 +106,32 @@ void CCamera::Move(unsigned char key)
 {
 
 	switch (key) {
-	case 'z':
-		MoveToBegind();
-		break;
-	case 'Z':
+	case 'w':
+	case 'W':
 		MoveToFront();
 		break;
-	case 'x':
+	case 's':
+	case 'S':
+		MoveToBehind();
+		break;
+	case 'a':
+	case 'A':
 		MoveToLeft();
 		break;
-	case 'X':
+	case 'd':
+	case 'D':
 		MoveToRight();
 		break;
-	case 'c':
-	{
-		float fRad = glm::sqrt(glm::pow(vector_Camera[CAMERA_EYE].x, 2) + glm::pow(vector_Camera[CAMERA_EYE].z, 2));
-		float_RotateAngle += 10;
-		vector_Camera[CAMERA_EYE] = glm::vec3{ fRad * glm::cos(glm::radians(float_RotateAngle)),vector_Camera[CAMERA_EYE].y, fRad * glm::sin(glm::radians(float_RotateAngle)) };
-		vec3_Direction = glm::vec3{ 0, 0, 0 } -vector_Camera[CAMERA_EYE];
-	}
-	break;
-	case 'C':
-	{
-		float fRad = glm::sqrt(glm::pow(vector_Camera[CAMERA_EYE].x, 2) + glm::pow(vector_Camera[CAMERA_EYE].z, 2));
-		float_RotateAngle -= 10;
-		vector_Camera[CAMERA_EYE] = glm::vec3{ fRad * glm::cos(glm::radians(float_RotateAngle)),vector_Camera[CAMERA_EYE].y, fRad * glm::sin(glm::radians(float_RotateAngle)) };
-		vec3_Direction = glm::vec3{ 0, 0, 0 } -vector_Camera[CAMERA_EYE];
-	}
-	break;
-	case 'r':
-		RotateCounterClockWise();
-		break;
-	case 'R':
+	case 'e':
+	case 'E':
 		RotateClockwise();
 		break;
+	case 'q':
+	case 'Q':
+		RotateCounterClockWise();
+		break;
+
+
 	}
 	UpdateCamera();
 }

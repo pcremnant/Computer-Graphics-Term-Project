@@ -2,11 +2,9 @@
 // 프로젝트 속성 - 링커 - 명령줄에 glew32.lib freeglut.lib 추가
 // 프로젝트 속성 - C/C++ - 전처리기에 _CRT_SECURE_NO_WARNINGS 추가
 
-#include"CObject.h"
-#include "CObject_cube.h"
+#include "CFramework.h"
 
-CCamera camera;
-CObject* pObj;
+CFramework* pFramework;
 
 using namespace std;
 
@@ -36,7 +34,7 @@ void main(int argc, char** argv) {									// 윈도우 출력하고 콜백함�
 	else
 		std::cout << "GLEW Initialized\n";
 	// ----------
-	pObj = new CObject_cube(camera);
+	pFramework = new CFramework();
 
 
 	// ---------- OpenGL 설정 초기화 ----------
@@ -59,7 +57,7 @@ void main(int argc, char** argv) {									// 윈도우 출력하고 콜백함�
 GLvoid drawScene() {
 	glClearColor(cBackground_red, cBackground_green, cBackground_blue, 1.0f);							// 바탕색 지정
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);									// 설정된 색으로 전체를 칠하기
-	pObj->DrawObject();
+	pFramework->Draw();
 	glutSwapBuffers();												// 화면에 출력하기
 }
 
@@ -69,19 +67,20 @@ GLvoid Reshape(int w, int h) {							// 콜백 함수: 다시 그리기
 
 GLvoid Keyboard(unsigned char key, int x, int y)		// 키보드 콜백함수
 {
-	camera.Move(key);
+	pFramework->GetKeaboardInput(key);
 	glutPostRedisplay();
 }
 
 GLvoid TimerFunction(int value)							// 타이머 콜백함수
 {
-	pObj->Update();
+	pFramework->Update();
 	glutPostRedisplay();
 	glutTimerFunc(20, TimerFunction, 1);
 }
 
 GLvoid Mouse(int button, int state, int x, int y)			// 마우스 콜백함수
 {
+	pFramework->GetMouseInput();
 	if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN) {
 
 

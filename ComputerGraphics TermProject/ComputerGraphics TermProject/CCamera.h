@@ -12,7 +12,7 @@ private:
 	vec3Buffer vector_Camera;
 
 	void MoveToFront();
-	void MoveToBegind();
+	void MoveToBehind();
 	void MoveToRight();
 	void MoveToLeft();
 	void MoveToUp();
