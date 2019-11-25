@@ -2,17 +2,24 @@
 #include "CModel_cube.h"
 
 CObject_cube::CObject_cube(CCamera& cam, glm::vec3 size, glm::vec3 pos) : CObject(cam, pos) {
-	pModel = new CModel_cube(size);
+	vModel.push_back(new CModel_cube(size));
+	vModelPosition.push_back(glm::vec3{ 0,0,0 });
 
-	pBuffer = new vec3Buffer[pModel->GetLayoutSize()];
-	pBuffer[BUFFER_VERTEX] = pModel->GetVertex();
-	pBuffer[BUFFER_COLOR] = pModel->GetColor();
 
-	pShader = new CShader(pModel->GetLayoutSize(), pBuffer);
+	for (int i = 0; i < vModel.size(); ++i) {
+		vBuffer.push_back(new vec3Buffer[vModel[i]->GetLayoutSize()]);
+		vBuffer[i][BUFFER_VERTEX] = vModel[i]->GetVertex();
+		vBuffer[i][BUFFER_COLOR] = vModel[i]->GetColor();
+	}
+
+	for (int i = 0; i < vModel.size(); ++i)
+		vShader.push_back(new CShader(vModel[i]->GetLayoutSize(), vBuffer[i]));
 }
 
 void CObject_cube::Update()
 {
-	glm::mat4 translate = glm::translate(vWorldPosition);
-	pShader->Update(translate, camera.GetCameraProj(), mat_Projection, pBuffer);
+	for (int i = 0; i < vModel.size(); ++i) {
+		glm::mat4 translate = glm::translate(vModelPosition[i]);
+		vShader[i]->Update(translate, camera.GetCameraProj(), mat_Projection, vBuffer[i]);
+	}
 }

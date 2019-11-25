@@ -5,21 +5,22 @@
 
 class CObject {
 protected:
-	CModel* pModel;
-	CShader* pShader;
+	std::vector<CModel*> vModel;
+	std::vector<CShader*> vShader;
 
+	std::vector<glm::vec3> vModelPosition;
 	glm::vec3 vWorldPosition;
 	glm::mat4 mat_Projection;
 	CCamera& camera;
 
-	vec3Buffer* pBuffer;
+	std::vector<vec3Buffer*> vBuffer;
 public:
 	CObject(CCamera& cam, glm::vec3 vPos);
 	~CObject();
 	void SetWorldPosition(glm::vec3 pos);
-	glm::vec3& GetWorldPosition();
+	glm::vec3 GetWorldPosition();
 	virtual void Update();
-	vec3Buffer* GetBuffer();
+	vec3Buffer* GetBuffer(int i = 0);
 	void DrawObject();
-	bool& IsDraw();
+	bool& IsDraw(int i = 0);
 };

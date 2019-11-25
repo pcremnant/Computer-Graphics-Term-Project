@@ -1,107 +1,144 @@
 #include "CCamera.h"
 
-#ifdef __define_h_
-#define __define_h_
-#endif
 CCamera::CCamera()
 {
-	fAngle = 0;
-	vDirection = { 0,0,-1 };
-	gCamera.push_back({ 0, 0, 2 });
-	gCamera.push_back({ 0, 0, 0 });
-	gCamera.push_back({ 0, 1, 0 });
+	float_RotateAngle = 270;
+	float_Angle = 0;
+	vec3_Direction = { 0,0,-1 };
+	vector_Camera.push_back({ 0, 0, 2 });
+	vector_Camera.push_back(vector_Camera[CAMERA_EYE] + vec3_Direction);
+	vector_Camera.push_back(glm::vec3{ 0,1,0 });
 	UpdateCamera();
-
 }
 
-glm::vec3& CCamera::GetEye() { return gCamera[CAMERA_EYE]; }
-glm::vec3& CCamera::GetAt() { return gCamera[CAMERA_AT]; }
-glm::vec3& CCamera::GetUp() { return gCamera[CAMERA_UP]; }
-vec3Buffer& CCamera::GetCamera() { return gCamera; }
+glm::vec3& CCamera::GetEye() { return vector_Camera[CAMERA_EYE]; }
+glm::vec3& CCamera::GetAt() { return vector_Camera[CAMERA_AT]; }
+glm::vec3& CCamera::GetUp() { return vector_Camera[CAMERA_UP]; }
+vec3Buffer& CCamera::GetCamera() { return vector_Camera; }
 glm::mat4 CCamera::GetCameraProj() {
 	glm::mat4 CameraMat = glm::lookAt(
-		gCamera[CAMERA_EYE],
-		gCamera[CAMERA_AT],
-		gCamera[CAMERA_UP]
+		vector_Camera[CAMERA_EYE],
+		vector_Camera[CAMERA_AT],
+		vector_Camera[CAMERA_UP]
 	);
 	return CameraMat;
 }
 
 void CCamera::UpdateCamera()
 {
-	vDirection.x = glm::sin(fAngle);
-	vDirection.z = -glm::cos(fAngle);
-
-	gCamera[CAMERA_AT].x = gCamera[CAMERA_EYE].x + vDirection.x / 10.f;
-	gCamera[CAMERA_AT].z = gCamera[CAMERA_EYE].z + vDirection.z / 10.f;
+	vector_Camera[CAMERA_AT] = vector_Camera[CAMERA_EYE] + vec3_Direction;
 }
 
+void CCamera::MoveToFront()
+{
+	glm::vec3 tmpDirection;
+	tmpDirection = { vec3_Direction.x / 10,vec3_Direction.y / 10,vec3_Direction.z / 10 };
+	vector_Camera[CAMERA_EYE] += tmpDirection;
+	vector_Camera[CAMERA_AT] += tmpDirection;
+}
+
+void CCamera::MoveToBegind()
+{
+	glm::vec3 tmpDirection;
+	tmpDirection = { vec3_Direction.x / 10,vec3_Direction.y / 10,vec3_Direction.z / 10 };
+	vector_Camera[CAMERA_EYE] -= tmpDirection;
+	vector_Camera[CAMERA_AT] -= tmpDirection;
+}
+
+void CCamera::MoveToRight()
+{
+	glm::vec3 tmpDirection;
+	glm::mat4 scalling{ 0.1f };
+	scalling[3][3] = 1.0;
+	tmpDirection = scalling * glm::rotate(glm::radians(-90.f), glm::vec3{ 0,1,0 }) * glm::vec4{ vec3_Direction,1.0 };
+	vector_Camera[CAMERA_EYE] += tmpDirection;
+	vector_Camera[CAMERA_AT] += tmpDirection;
+}
+
+void CCamera::MoveToLeft()
+{
+	glm::vec3 tmpDirection;
+	glm::mat4 scalling{ 0.1f };
+	scalling[3][3] = 1.0;
+	tmpDirection = scalling * glm::rotate(glm::radians(90.f), glm::vec3{ 0,1,0 }) * glm::vec4{ vec3_Direction,1.0 };
+	vector_Camera[CAMERA_EYE] += tmpDirection;
+	vector_Camera[CAMERA_AT] += tmpDirection;
+}
+
+void CCamera::MoveToUp()
+{
+	glm::vec3 tmpDirection;
+	tmpDirection = { 0,0.05,0 };
+	vector_Camera[CAMERA_EYE] += tmpDirection;
+	vector_Camera[CAMERA_AT] += tmpDirection;
+}
+
+void CCamera::MoveToDown()
+{
+	glm::vec3 tmpDirection;
+	tmpDirection = { 0,0.05,0 };
+	vector_Camera[CAMERA_EYE] -= tmpDirection;
+	vector_Camera[CAMERA_AT] -= tmpDirection;
+}
+
+void CCamera::RotateClockwise()
+{
+	float_Angle -= 0.05f;
+}
+
+void CCamera::RotateCounterClockWise()
+{
+	float_Angle += 0.05f;
+}
+
+void CCamera::InitCamera()
+{
+	float_Angle = 0;
+	float_RotateAngle = 270;
+	vec3_Direction = { 0,0,-1 };
+	vector_Camera[CAMERA_EYE] = { 0, 0, 2 };
+	vector_Camera[CAMERA_AT] = { 0, 0, 0 };
+	vector_Camera[CAMERA_UP] = { 0, 1, 0 };
+	UpdateCamera();
+}
 
 void CCamera::Move(unsigned char key)
 {
-	glm::vec3 tmpDirection;
+
 	switch (key) {
-	case 'w':
-	case 'W':
-		tmpDirection = { vDirection.x / 10,vDirection.y / 10,vDirection.z / 10 };
-		gCamera[CAMERA_EYE] += tmpDirection;
-		gCamera[CAMERA_AT] += tmpDirection;
+	case 'z':
+		MoveToBegind();
 		break;
-	case 's':
-	case 'S':
-		tmpDirection = { vDirection.x / 10,vDirection.y / 10,vDirection.z / 10 };
-		gCamera[CAMERA_EYE] -= tmpDirection;
-		gCamera[CAMERA_AT] -= tmpDirection;
+	case 'Z':
+		MoveToFront();
 		break;
-	case 'a':
-	case 'A':
+	case 'x':
+		MoveToLeft();
+		break;
+	case 'X':
+		MoveToRight();
+		break;
+	case 'c':
 	{
-		glm::mat4 scalling{ 0.1f };
-		scalling[3][3] = 1.0;
-		tmpDirection = scalling * glm::rotate(glm::radians(90.f), glm::vec3{ 0,1,0 }) * glm::vec4{ vDirection,1.0 };
-		gCamera[CAMERA_EYE] += tmpDirection;
-		gCamera[CAMERA_AT] += tmpDirection;
+		float fRad = glm::sqrt(glm::pow(vector_Camera[CAMERA_EYE].x, 2) + glm::pow(vector_Camera[CAMERA_EYE].z, 2));
+		float_RotateAngle += 10;
+		vector_Camera[CAMERA_EYE] = glm::vec3{ fRad * glm::cos(glm::radians(float_RotateAngle)),vector_Camera[CAMERA_EYE].y, fRad * glm::sin(glm::radians(float_RotateAngle)) };
+		vec3_Direction = glm::vec3{ 0, 0, 0 } -vector_Camera[CAMERA_EYE];
 	}
 	break;
-
-	case 'd':
-	case 'D': {
-		glm::mat4 scalling{ 0.1f };
-		scalling[3][3] = 1.0;
-		tmpDirection = scalling * glm::rotate(glm::radians(-90.f), glm::vec3{ 0,1,0 }) * glm::vec4{ vDirection,1.0 };
-		gCamera[CAMERA_EYE] += tmpDirection;
-		gCamera[CAMERA_AT] += tmpDirection;
+	case 'C':
+	{
+		float fRad = glm::sqrt(glm::pow(vector_Camera[CAMERA_EYE].x, 2) + glm::pow(vector_Camera[CAMERA_EYE].z, 2));
+		float_RotateAngle -= 10;
+		vector_Camera[CAMERA_EYE] = glm::vec3{ fRad * glm::cos(glm::radians(float_RotateAngle)),vector_Camera[CAMERA_EYE].y, fRad * glm::sin(glm::radians(float_RotateAngle)) };
+		vec3_Direction = glm::vec3{ 0, 0, 0 } -vector_Camera[CAMERA_EYE];
 	}
-			  break;
-	case 'q':
-	case 'Q':
-		fAngle -= 0.05f;
-		break;
-	case 'e':
-	case 'E':
-		fAngle += 0.05f;
-		break;
+	break;
 	case 'r':
+		RotateCounterClockWise();
+		break;
 	case 'R':
-		tmpDirection = { 0,0.05,0 };
-		gCamera[CAMERA_EYE] += tmpDirection;
-		gCamera[CAMERA_AT] += tmpDirection;
-		break;
-	case 'f':
-	case 'F':
-		tmpDirection = { 0,0.05,0 };
-		gCamera[CAMERA_EYE] -= tmpDirection;
-		gCamera[CAMERA_AT] -= tmpDirection;
-		break;
-	case '1':
-		fAngle = 0;
-		vDirection = { 0,0,-1 };
-		gCamera[CAMERA_EYE] = { 0, 0, 1 };
-		gCamera[CAMERA_AT] = { 0, 0, 0 };
-		gCamera[CAMERA_UP] = { 0, 1, 0 };
-
-		for (int i = 0; i < 3; ++i)
-			glm::normalize(gCamera[i]);
+		RotateClockwise();
 		break;
 	}
 	UpdateCamera();
