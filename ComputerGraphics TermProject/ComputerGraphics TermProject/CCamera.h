@@ -6,8 +6,7 @@ private:
 	enum { CAMERA_EYE, CAMERA_AT, CAMERA_UP };
 
 	glm::vec3 vec3_Direction;
-	GLfloat float_Angle;
-	GLfloat float_RotateAngle;
+	GLfloat float_AngleY;
 
 	vec3Buffer vector_Camera;
 

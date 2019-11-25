@@ -2,9 +2,8 @@
 
 CCamera::CCamera()
 {
-	float_RotateAngle = 270;
-	float_Angle = 0;
-	vec3_Direction = { 0,0,-1 };
+	float_AngleY = 270;
+	vec3_Direction = { glm::cos(glm::radians(float_AngleY)),0,glm::sin(glm::radians(float_AngleY)) };
 	vector_Camera.push_back({ 0, 0, 2 });
 	vector_Camera.push_back(vector_Camera[CAMERA_EYE] + vec3_Direction);
 	vector_Camera.push_back(glm::vec3{ 0,1,0 });
@@ -26,6 +25,7 @@ glm::mat4 CCamera::GetCameraProj() {
 
 void CCamera::UpdateCamera()
 {
+	vec3_Direction = { glm::cos(glm::radians(float_AngleY)),0,glm::sin(glm::radians(float_AngleY)) };
 	vector_Camera[CAMERA_AT] = vector_Camera[CAMERA_EYE] + vec3_Direction;
 }
 
@@ -83,18 +83,17 @@ void CCamera::MoveToDown()
 
 void CCamera::RotateClockwise()
 {
-	float_Angle -= 0.05f;
+	float_AngleY += 1;
 }
 
 void CCamera::RotateCounterClockWise()
 {
-	float_Angle += 0.05f;
+	float_AngleY -= 1;
 }
 
 void CCamera::InitCamera()
 {
-	float_Angle = 0;
-	float_RotateAngle = 270;
+	float_AngleY = 0;
 	vec3_Direction = { 0,0,-1 };
 	vector_Camera[CAMERA_EYE] = { 0, 0, 2 };
 	vector_Camera[CAMERA_AT] = { 0, 0, 0 };
