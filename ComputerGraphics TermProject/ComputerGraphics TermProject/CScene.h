@@ -2,14 +2,14 @@
 #include "CObjectManager.h"
 #include "CCamera.h"
 
-#define STAY_SCENE -1
-#define PUSH_SCENE 0
-#define CHANGE_SCENE 1
-#define POP_SCENE 2
+#define FRAMEWORK_ACTION_STAY -1
+#define FRAMEWORK_ACTION_PUSH 0
+#define FRAMEWORK_ACTION_CHANGE 1
+#define FRAMEWORK_ACTION_POP 2
 
-#define SCENE_QUIT -2
-#define SCENE_NONE -1
-#define SCENE_MAIN 0
+#define SCENE_TYPE_QUIT -2
+#define SCENE_TYPE_NONE -1
+#define SCENE_TYPE_MAIN 0
 
 
 class CScene {
@@ -19,13 +19,13 @@ protected:
 	std::pair<int, int> next;
 public:
 	CScene();
-	virtual void Enter();
-	virtual void Exit();
-	virtual void Update();
-	virtual void Draw();
+	virtual void Enter() = 0;
+	virtual void Exit() = 0;
+	virtual void Update() = 0;
+	virtual void Draw() = 0;
 	virtual void GetKeaboardInput(unsigned char key);
 	virtual void GetMouseInput();
 	virtual void GetMouseMotionInput();
-	std::pair<int, int> SetNextScene(int NextAction, int NextScene);
+	std::pair<int, int> SetNextScene(int FrameworkAction, int SceneType);
 	std::pair<int, int> NextScene();
 };

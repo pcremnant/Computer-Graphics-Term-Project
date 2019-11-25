@@ -19,24 +19,24 @@ public:
 		stack_Scene.top()->Update();
 		std::pair<int, int> next = stack_Scene.top()->NextScene();
 		switch (next.first) {
-		case STAY_SCENE:
+		case FRAMEWORK_ACTION_STAY:
 			break;
-		case PUSH_SCENE:
+		case FRAMEWORK_ACTION_PUSH:
 			stack_Scene.top()->Exit();
 			switch (next.second) {
-			case SCENE_MAIN:
+			case SCENE_TYPE_MAIN:
 				stack_Scene.push(new CScene_main());
 				break;
 			}
 			break;
 			stack_Scene.top()->Enter();
-		case POP_SCENE:
+		case FRAMEWORK_ACTION_POP:
 			stack_Scene.top()->Exit();
 			switch (next.second) {
-			case SCENE_NONE:
+			case SCENE_TYPE_NONE:
 				stack_Scene.pop();
 				break;
-			case SCENE_QUIT:
+			case SCENE_TYPE_QUIT:
 				while (stack_Scene.size() > 0)
 					stack_Scene.pop();
 				PostQuitMessage(0);
@@ -46,11 +46,11 @@ public:
 				PostQuitMessage(0);
 			stack_Scene.top()->Enter();
 			break;
-		case CHANGE_SCENE:
+		case FRAMEWORK_ACTION_CHANGE:
 			stack_Scene.top()->Exit();
 			stack_Scene.pop();
 			switch (next.second) {
-			case SCENE_MAIN:
+			case SCENE_TYPE_MAIN:
 				stack_Scene.push(new CScene_main());
 				break;
 			}

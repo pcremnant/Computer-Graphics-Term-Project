@@ -2,14 +2,9 @@
 
 CScene::CScene() {
 	pObjectManager = new CObjectManager(camera);
-	next = std::make_pair(STAY_SCENE, SCENE_NONE);
+	next = std::make_pair(FRAMEWORK_ACTION_STAY, SCENE_TYPE_NONE);
 }
-void CScene::Update() {
-	pObjectManager->Update();
-}
-void CScene::Draw() {
-	pObjectManager->Draw();
-}
+
 void CScene::GetKeaboardInput(unsigned char key) {
 	pObjectManager->GetKeyboard(key);
 }
@@ -24,13 +19,7 @@ std::pair<int, int> CScene::NextScene() {
 	return next;
 }
 
-std::pair<int, int> CScene::SetNextScene(int NextAction, int NextScene){
-	return std::make_pair(NextAction, NextScene);
+std::pair<int, int> CScene::SetNextScene(int FrameworkAction, int SceneType){
+	return std::make_pair(FrameworkAction, SceneType);
 }
 
-void CScene::Enter() {
-
-}
-void CScene::Exit() {
-
-}
