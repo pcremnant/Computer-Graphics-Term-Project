@@ -3,11 +3,23 @@
 CCamera::CCamera()
 {
 	float_AngleY = 270;
-	vec3_Direction = { glm::cos(glm::radians(float_AngleY)),0,glm::sin(glm::radians(float_AngleY)) };
+	float_AngleX = 0;
+	SetDirection();
 	vector_Camera.push_back({ 0, 0, 2 });
 	vector_Camera.push_back(vector_Camera[CAMERA_EYE] + vec3_Direction);
-	vector_Camera.push_back(glm::vec3{ 0,1,0 });
+	
+	glm::vec3 right = glm::vec3{ glm::cos(glm::radians(float_AngleY - 90)),0,glm::sin(glm::radians(float_AngleY - 90)) };
+	right = glm::vec4{ right, 1 } *glm::rotate(glm::mat4{ 1.0, }, glm::radians(float_AngleX - 90), glm::vec3{ 1,0,0 });
+
+
+	vector_Camera.push_back(glm::normalize(glm::cross(right, vec3_Direction)));
 	UpdateCamera();
+}
+
+void CCamera::SetDirection()
+{
+	vec3_Direction = glm::vec3{ glm::cos(glm::radians(float_AngleY)),0,glm::sin(glm::radians(float_AngleY)) };
+	vec3_Direction = glm::vec4{ vec3_Direction, 1 } *glm::rotate(glm::mat4{ 1.0, }, glm::radians(float_AngleX), glm::vec3{ 1,0,0 });
 }
 
 glm::vec3& CCamera::GetEye() { return vector_Camera[CAMERA_EYE]; }
@@ -25,8 +37,13 @@ glm::mat4 CCamera::GetCameraProj() {
 
 void CCamera::UpdateCamera()
 {
-	vec3_Direction = { glm::cos(glm::radians(float_AngleY)),0,glm::sin(glm::radians(float_AngleY)) };
+	SetDirection();
 	vector_Camera[CAMERA_AT] = vector_Camera[CAMERA_EYE] + vec3_Direction;
+
+	glm::vec3 right = glm::vec3{ glm::cos(glm::radians(float_AngleY - 90)),0,glm::sin(glm::radians(float_AngleY - 90)) };
+	right = glm::vec4{ right, 1 } *glm::rotate(glm::mat4{ 1.0, }, glm::radians(float_AngleX), glm::vec3{ 1,0,0 });
+
+	vector_Camera[CAMERA_UP] = glm::normalize(glm::cross(vec3_Direction, right));
 }
 
 void CCamera::MoveToFront()
@@ -129,8 +146,22 @@ void CCamera::Move(unsigned char key)
 	case 'Q':
 		RotateCounterClockWise();
 		break;
-
-
+	case 'r':
+	case 'R':
+		MoveToUp();
+		break;
+	case 'f':
+	case 'F':
+		MoveToDown();
+		break;
+	case 't':
+	case 'T':
+		float_AngleX -= 1;
+		break;
+	case 'g':
+	case 'G':
+		float_AngleX += 1;
+		break;
 	}
 	UpdateCamera();
 }

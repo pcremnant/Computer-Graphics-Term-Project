@@ -7,9 +7,11 @@ private:
 
 	glm::vec3 vec3_Direction;
 	GLfloat float_AngleY;
+	GLfloat float_AngleX;
 
 	vec3Buffer vector_Camera;
 
+	void SetDirection();
 	void MoveToFront();
 	void MoveToBehind();
 	void MoveToRight();
