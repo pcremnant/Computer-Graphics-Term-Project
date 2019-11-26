@@ -2,6 +2,7 @@
 #include "CObjectManager.h"
 #include "CCamera.h"
 
+
 #define FRAMEWORK_ACTION_STAY -1
 #define FRAMEWORK_ACTION_PUSH 0
 #define FRAMEWORK_ACTION_CHANGE 1
@@ -10,6 +11,8 @@
 #define SCENE_TYPE_QUIT -2
 #define SCENE_TYPE_NONE -1
 #define SCENE_TYPE_MAIN 0
+#define SCENE_TYPE_BATTLE 1
+
 
 
 class CScene {

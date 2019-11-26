@@ -20,6 +20,9 @@ private:
 	void MoveToDown();
 	void RotateClockwise();
 	void RotateCounterClockWise();
+	void RotateUp();
+	void RotateDown();
+
 	void InitCamera();
 
 public:

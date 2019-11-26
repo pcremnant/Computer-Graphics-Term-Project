@@ -8,7 +8,7 @@ private:
 	CCamera& camera;
 public:
 	CObjectManager(CCamera& cam) : camera(cam) {
-		//vector_Objects.push_back(new CObject_cube(camera, glm::vec3{ 3,0.01,3 }, glm::vec3{ 0,-0.15,0 }));
+
 	}
 
 	void Update() {
@@ -36,6 +36,10 @@ public:
 				vector_Objects.erase(vector_Objects.begin() + i);
 			}
 		}
+	}
+
+	void DeleteAll() {
+		vector_Objects.clear();
 	}
 
 	std::vector<CObject*> GetObjects() {
