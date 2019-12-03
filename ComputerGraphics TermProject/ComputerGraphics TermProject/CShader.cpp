@@ -7,7 +7,7 @@ void CShader::CreateShaderObject(GLuint* shader, GLuint nType, const GLchar* fil
 	*shader = glCreateShader(nType);
 	glShaderSource(*shader, 1, (const GLchar * *)& shadersource, 0);
 	glCompileShader(*shader);
-
+	free(shadersource);
 }
 // 파일에서 코드 읽어서 반환
 char* CShader::filetobuf(const char* file)
@@ -25,6 +25,7 @@ char* CShader::filetobuf(const char* file)
 	fread(buf, length, 1, fptr);		// Read the contents of the file in to the buffer
 	fclose(fptr);						// Close the file
 	buf[length] = 0;					// Null terminator
+
 	return buf;							// Return the buffer
 }
 // 쉐이더 컴파일 에러 출력
@@ -53,7 +54,7 @@ bool CShader::PrintShaderError(GLuint* shader, GLuint nType)
 	return true;
 }
 // VAO 생성
-void CShader::CreateVAO(vec3Buffer* pBuf)
+void CShader::CreateVAO(std::vector<glm::vec3>* pBuf)
 {
 	glGenVertexArrays(1, &VAO);
 	glBindVertexArray(VAO);
@@ -64,19 +65,20 @@ void CShader::CreateVAO(vec3Buffer* pBuf)
 		return;
 
 	for (int i = 0; i < nLayoutSize; ++i) {
-		CreateVec3VBO(pBuf[i], VBO, i);
+		BindVBO(pBuf[i], VBO, i);
 		glVertexAttribPointer(i, 3, GL_FLOAT, GL_FALSE, 0, 0);
 		glEnableVertexAttribArray(i);
 	}
 }
-// VBO 생성
-GLuint CShader::CreateVec3VBO(vec3Buffer& pBuffer, GLuint* VBO, GLuint VBONumber)
+// VBO 바인딩
+GLuint CShader::BindVBO(std::vector<glm::vec3>& pBuffer, GLuint* VBO, GLuint VBONumber)
 {
 	glBindBuffer(GL_ARRAY_BUFFER, VBO[VBONumber]);
-	glBufferData(GL_ARRAY_BUFFER, pBuffer.size() * sizeof(glm::vec3), &pBuffer[0], GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, pBuffer.size() * sizeof(glm::vec3), &pBuffer[0], GL_DYNAMIC_DRAW);
 
 	return VBO[VBONumber];
 }
+
 void CShader::InitShaderProgram()
 {
 	GLuint vertexshader, fragmentshader;
@@ -116,8 +118,15 @@ void CShader::InitShaderProgram()
 	glUseProgram(glShaderProgramID);
 }
 
+CShader::~CShader()
+{
+	glDeleteBuffers(nLayoutSize, VBO);
+	glDeleteVertexArrays(1, &VAO);
+	glDeleteProgram(glShaderProgramID);
+	delete VBO;
+}
 
-CShader::CShader(GLuint layoutSize, vec3Buffer* pBuf) : nLayoutSize(layoutSize)
+CShader::CShader(GLuint layoutSize, std::vector<glm::vec3>* pBuf) : nLayoutSize(layoutSize)
 {
 	InitShaderProgram();
 	VAO = 0;
@@ -136,14 +145,43 @@ void CShader::DrawObject(std::vector<GLuint>& pIndex, GLuint DrawType)
 	glDrawElements(DrawType, pIndex.size(), GL_UNSIGNED_INT, &pIndex[0]);
 }
 
-void CShader::Update(glm::mat4 world, glm::mat4 camera, glm::mat4 mat_Projection, vec3Buffer* pBuf)
+void CShader::Update(glm::mat4 world, CCamera& camera, glm::mat4 mat_Projection, std::vector<glm::vec3>* pBuf, glm::vec3* lightPos, glm::vec3* lightColor)
 {
 	glUseProgram(glShaderProgramID);
-	glm::mat4 mul = mat_Projection * camera * world;
+	glm::mat4 mul = mat_Projection * camera.GetCameraProj() * world;
+
 	int matTransformLocation = glGetUniformLocation(glShaderProgramID, "mat_Transform");
 	glUniformMatrix4fv(matTransformLocation, 1, GL_FALSE, &mul[0][0]);
-	if (pBuf != nullptr)
-		CreateVAO(pBuf);
+
+	int viewPosLocation = glGetUniformLocation(glShaderProgramID, "viewPos");
+	glUniform3fv(viewPosLocation, 1, &camera.GetEye()[0]);
+
+	int lightPosLocation = glGetUniformLocation(glShaderProgramID, "lightPos");
+	if (lightPos == nullptr) {
+		glm::vec3 lightNone = glm::vec3{ 0,0,0 };
+		glUniform3fv(lightPosLocation, 1, &lightNone[0]);
+	}
+	else {
+		glm::vec3 lightNone = *lightPos;
+		glUniform3fv(lightPosLocation, 1, &lightNone[0]);
+	}
+
+	int lightColorLocation = glGetUniformLocation(glShaderProgramID, "lightColor");
+	if (lightColor == nullptr) {
+		glm::vec3 lightNone = glm::vec3{ 1,1,1 };
+		glUniform3fv(lightColorLocation, 1, &lightNone[0]);
+	}
+	else {
+		glm::vec3 lightNone = *lightColor;
+		glUniform3fv(lightColorLocation, 1, &lightNone[0]);
+	}
+
+	glBindVertexArray(VAO);
+	for (int i = 0; i < nLayoutSize; ++i) {
+		BindVBO(pBuf[i], VBO, i);
+		glVertexAttribPointer(i, 3, GL_FLOAT, GL_FALSE, 0, 0);
+		glEnableVertexAttribArray(i);
+	}
 }
 
 void CShader::UseProgram()

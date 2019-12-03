@@ -14,7 +14,7 @@ protected:
 	GLuint nDrawType;
 	bool bIsDraw;
 public:
-	CModel(GLuint drawtype = GL_TRIANGLES, GLuint layout = 2);
+	CModel(GLuint drawtype = GL_TRIANGLES, GLuint layout = 3);
 	void SetObjectVertex(const char* ObjectFile);
 	vec3Buffer& GetVertex();
 	vec3Buffer& GetNormal();

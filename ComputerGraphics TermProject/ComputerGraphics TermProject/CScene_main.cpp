@@ -1,6 +1,7 @@
 #include "CScene_main.h"
 
 CScene_main::CScene_main() : CScene() {
+	std::cout << "main scene create!" << std::endl;
 	pObjectManager = new CObjectManager(camera);
 	pObjectManager->AddObject(new CObject_cube(camera, glm::vec3{ 3,0.01,3 }, glm::vec3{ 0,-0.15,0 }));
 }
@@ -17,7 +18,7 @@ void CScene_main::GetKeaboardInput(unsigned char key) {
 	case 't':
 		pObjectManager->AddObject(new CObject_cube(camera, glm::vec3{ 3,0.01,3 }, glm::vec3{ 0,-0.15,0 }));
 		break;
-	case 'd':
+	case 'g':
 		if (pObjectManager->GetObjects().size() != 0)
 			pObjectManager->DeleteObject(pObjectManager->GetObjects()[0]);
 		break;
