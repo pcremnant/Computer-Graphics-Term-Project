@@ -5,12 +5,15 @@ CScene_main::CScene_main() : CScene() {
 	pObjectManager = new CObjectManager(camera);
 	pObjectManager->AddObject(new CObject_cube(camera, glm::vec3{ 3,0.01,3 }, glm::vec3{ 0,-0.15,0 }));
 }
+
 void CScene_main::Update() {
 	pObjectManager->Update();
 }
+
 void CScene_main::Draw() {
 	pObjectManager->Draw();
 }
+
 void CScene_main::GetKeaboardInput(unsigned char key) {
 	// 테스트용 코드!
 	// 나중에 제대로 된 값으로 넣을 것
@@ -22,20 +25,16 @@ void CScene_main::GetKeaboardInput(unsigned char key) {
 		if (pObjectManager->GetObjects().size() != 0)
 			pObjectManager->DeleteObject(pObjectManager->GetObjects()[0]);
 		break;
-	case 'q':
-	case 'Q':
+	case '1':
 		next = SetNextScene(FRAMEWORK_ACTION_POP, SCENE_TYPE_QUIT);
 		break;
-	case 'p':
-	case 'P':
+	case '2':
 		next = SetNextScene(FRAMEWORK_ACTION_PUSH, SCENE_TYPE_MAIN);
 		break;
-	case 'o':
-	case 'O':
+	case '3':
 		next = SetNextScene(FRAMEWORK_ACTION_POP, SCENE_TYPE_NONE);
 		break;
-	case 'c':
-	case 'C':
+	case '4':
 		next = SetNextScene(FRAMEWORK_ACTION_CHANGE, SCENE_TYPE_MAIN);
 		break;
 	}

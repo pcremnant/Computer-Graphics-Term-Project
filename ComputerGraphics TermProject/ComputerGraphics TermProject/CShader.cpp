@@ -1,6 +1,10 @@
 #include "CShader.h"
 
-void CShader::CreateShaderObject(GLuint* shader, GLuint nType, const GLchar* filename)
+#define _CRT_SECURE_NO_WARNINGS 1
+#include <stdlib.h>
+#include <string>
+
+void CShader::CreateShaderObject(GLuint * shader, GLuint nType, const GLchar * filename)
 {
 	GLchar* shadersource;
 	shadersource = filetobuf(filename);
@@ -70,6 +74,80 @@ void CShader::CreateVAO(std::vector<glm::vec3>* pBuf)
 		glEnableVertexAttribArray(i);
 	}
 }
+
+GLubyte* CShader::LoadDIBitmap(const char* filename, BITMAPINFO** info) {
+	FILE* fp; GLubyte* bits; int bitsize, infosize; BITMAPFILEHEADER header; // 바이너리읽기모드로파일을연다 
+
+	fopen_s(&fp, filename, "rb");
+	if (!fp)
+		return NULL; // 비트맵파일헤더를읽는다. 
+	if (fread(&header, sizeof(BITMAPFILEHEADER), 1, fp) < 1) {
+		fclose(fp);
+		return NULL;
+	} // 파일이BMP 파일인지확인한다. 
+	if (header.bfType != 'MB') {
+		fclose(fp);
+		return NULL;
+	} // BITMAPINFOHEADER 위치로간다. 
+	infosize = header.bfOffBits - sizeof(BITMAPFILEHEADER); // 비트맵이미지데이터를넣을메모리할당을한다. 
+	if ((*info = (BITMAPINFO*)malloc(infosize)) == NULL) {
+		fclose(fp);
+		return NULL;
+	}// 비트맵인포헤더를읽는다. 
+	if (fread(*info, 1, infosize, fp) < (unsigned int)infosize) {
+		free(*info); fclose(fp);
+		return NULL;
+	} // 비트맵의크기설정 
+	if ((bitsize = (*info)->bmiHeader.biSizeImage) == 0)
+		bitsize = ((*info)->bmiHeader.biWidth * (*info)->bmiHeader.biBitCount + 7) / 8.0 * abs((*info)->bmiHeader.biHeight);
+	// 비트맵의크기만큼메모리를할당한다. 
+	if ((bits = (unsigned char*)malloc(bitsize)) == NULL) {
+		free(*info); fclose(fp);
+		return NULL;
+	} // 비트맵데이터를bit(GLubyte 타입)에저장한다. 
+	if (fread(bits, 1, bitsize, fp) < (unsigned int)bitsize) {
+		free(*info);
+		free(bits);
+		fclose(fp);
+		return NULL;
+	}
+	fclose(fp);
+	return bits;
+}
+
+void CShader::InitTexture(std::vector<const char*> files) {
+	int count = 0;
+	for (auto iter : files) {
+		texture.emplace_back(0);
+		BITMAPINFO* bmp;
+		glGenTextures(1, &texture[count]);
+		glBindTexture(GL_TEXTURE_2D, texture[count]);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+		void* data = LoadDIBitmap(iter, &bmp);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, 256, 256, 0, GL_BGR, GL_UNSIGNED_BYTE, data);
+		count++;
+
+		if (data != NULL)
+			delete bmp;
+	}
+
+
+	for (int i = 0; i < texture.size(); ++i) {
+		std::string s;
+		s.append("texture");
+		s.push_back(i + 49);
+
+
+		int tLocation = glGetUniformLocation(glShaderProgramID, s.c_str());
+		glUniform1i(tLocation, i);
+	}
+
+}
+
 // VBO 바인딩
 GLuint CShader::BindVBO(std::vector<glm::vec3>& pBuffer, GLuint* VBO, GLuint VBONumber)
 {
@@ -84,15 +162,30 @@ void CShader::InitShaderProgram()
 	GLuint vertexshader, fragmentshader;
 
 	// vertex shader 생성
-	CreateShaderObject(&vertexshader, GL_VERTEX_SHADER, "shader.glvs");
-	if (!PrintShaderError(&vertexshader, GL_VERTEX_SHADER))
-		return;
+	switch (nLayoutSize) {
+		// vertex - color - normal
+	case 3:
+		CreateShaderObject(&vertexshader, GL_VERTEX_SHADER, "shader_light.glvs");
+		if (!PrintShaderError(&vertexshader, GL_VERTEX_SHADER))
+			return;
+
+		CreateShaderObject(&fragmentshader, GL_FRAGMENT_SHADER, "shader_light.glfs");
+		if (!PrintShaderError(&fragmentshader, GL_FRAGMENT_SHADER))
+			return;
+		break;
+		// vertex - color - normal - uv
+	case 4:
+		CreateShaderObject(&vertexshader, GL_VERTEX_SHADER, "shader_texture.glvs");
+		if (!PrintShaderError(&vertexshader, GL_VERTEX_SHADER))
+			return;
+
+		CreateShaderObject(&fragmentshader, GL_FRAGMENT_SHADER, "shader_texture.glfs");
+		if (!PrintShaderError(&fragmentshader, GL_FRAGMENT_SHADER))
+			return;
+		break;
+	}
 
 	// fragment shader 생성
-	CreateShaderObject(&fragmentshader, GL_FRAGMENT_SHADER, "shader.glfs");
-	if (!PrintShaderError(&fragmentshader, GL_FRAGMENT_SHADER))
-		return;
-
 	glShaderProgramID = glCreateProgram();
 	glAttachShader(glShaderProgramID, vertexshader);
 	glAttachShader(glShaderProgramID, fragmentshader);
@@ -126,9 +219,12 @@ CShader::~CShader()
 	delete VBO;
 }
 
-CShader::CShader(GLuint layoutSize, std::vector<glm::vec3>* pBuf) : nLayoutSize(layoutSize)
+CShader::CShader(GLuint layoutSize, CCamera& cam, glm::mat4 proj, std::vector<glm::vec3>* pBuf, std::vector<const char*> textureFiles) : nLayoutSize(layoutSize), camera(cam), Projection(proj)
 {
 	InitShaderProgram();
+	if (nLayoutSize >= 4)
+		InitTexture(textureFiles);
+
 	VAO = 0;
 	VBO = new GLuint[nLayoutSize]{ 0 };
 	if (pBuf != nullptr)
@@ -141,14 +237,22 @@ void CShader::DrawObject(std::vector<GLuint>& pIndex, GLuint DrawType)
 	glUseProgram(glShaderProgramID);
 	// 사용할 VAO 불러오기
 	glBindVertexArray(VAO);
+	// 텍스쳐 불러오기
+
+	if (nLayoutSize >= 4) {
+		for (int i = 0; i < texture.size(); ++i) {
+			glActiveTexture(GL_TEXTURE0 + i);
+			glBindTexture(GL_TEXTURE_2D, texture[i]);
+		}
+	}
 	// 삼각형 그리기
 	glDrawElements(DrawType, pIndex.size(), GL_UNSIGNED_INT, &pIndex[0]);
 }
 
-void CShader::Update(glm::mat4 world, CCamera& camera, glm::mat4 mat_Projection, std::vector<glm::vec3>* pBuf, glm::vec3* lightPos, glm::vec3* lightColor)
+void CShader::Update(glm::mat4 world, std::vector<glm::vec3>* pBuf, glm::vec3 lightPos, glm::vec3 lightColor, float lightPower)
 {
 	glUseProgram(glShaderProgramID);
-	glm::mat4 mul = mat_Projection * camera.GetCameraProj() * world;
+	glm::mat4 mul = Projection * camera.GetCameraProj() * world;
 
 	int matTransformLocation = glGetUniformLocation(glShaderProgramID, "mat_Transform");
 	glUniformMatrix4fv(matTransformLocation, 1, GL_FALSE, &mul[0][0]);
@@ -157,24 +261,13 @@ void CShader::Update(glm::mat4 world, CCamera& camera, glm::mat4 mat_Projection,
 	glUniform3fv(viewPosLocation, 1, &camera.GetEye()[0]);
 
 	int lightPosLocation = glGetUniformLocation(glShaderProgramID, "lightPos");
-	if (lightPos == nullptr) {
-		glm::vec3 lightNone = glm::vec3{ 0,0,0 };
-		glUniform3fv(lightPosLocation, 1, &lightNone[0]);
-	}
-	else {
-		glm::vec3 lightNone = *lightPos;
-		glUniform3fv(lightPosLocation, 1, &lightNone[0]);
-	}
+	glUniform3fv(lightPosLocation, 1, &lightPos[0]);
 
 	int lightColorLocation = glGetUniformLocation(glShaderProgramID, "lightColor");
-	if (lightColor == nullptr) {
-		glm::vec3 lightNone = glm::vec3{ 1,1,1 };
-		glUniform3fv(lightColorLocation, 1, &lightNone[0]);
-	}
-	else {
-		glm::vec3 lightNone = *lightColor;
-		glUniform3fv(lightColorLocation, 1, &lightNone[0]);
-	}
+	glUniform3fv(lightColorLocation, 1, &lightColor[0]);
+
+	int lightPowerLocation = glGetUniformLocation(glShaderProgramID, "lightPower");
+	glUniform1f(lightPowerLocation, lightPower);
 
 	glBindVertexArray(VAO);
 	for (int i = 0; i < nLayoutSize; ++i) {

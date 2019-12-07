@@ -5,7 +5,7 @@ class CModel {
 protected:
 	vec3Buffer gVertex;
 	vec3Buffer gColor;
-	vec2Buffer gUv;
+	vec3Buffer gUv;
 	vec3Buffer gNormal;
 
 	std::vector<GLuint> gIndex;
@@ -18,7 +18,7 @@ public:
 	void SetObjectVertex(const char* ObjectFile);
 	vec3Buffer& GetVertex();
 	vec3Buffer& GetNormal();
-	vec2Buffer& GetUv();
+	vec3Buffer& GetUv();
 	vec3Buffer& GetColor();
 	std::vector<GLuint>& GetIndex();
 	GLuint& GetLayoutSize();

@@ -59,13 +59,13 @@ void CModel::SetObjectVertex(const char* ObjectFile)
 	for (auto iter : temp_normals)
 		gNormal.emplace_back(iter);
 	for (auto iter : temp_uvs)
-		gUv.emplace_back(iter);
+		gUv.emplace_back(glm::vec3{ iter, 0 });
 
 	readFile.close();
 }
 std::vector<glm::vec3>& CModel::GetVertex() { return gVertex; }
 std::vector<glm::vec3>& CModel::GetNormal() { return gNormal; }
-vec2Buffer& CModel::GetUv() { return gUv; }
+std::vector<glm::vec3>& CModel::GetUv() { return gUv; }
 std::vector<glm::vec3>& CModel::GetColor() { return gColor; }
 std::vector<GLuint>& CModel::GetIndex() { return gIndex; }
 

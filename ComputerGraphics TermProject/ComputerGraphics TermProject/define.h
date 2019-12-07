@@ -13,6 +13,7 @@
 #define BUFFER_VERTEX 0							// pBuffer의 버텍스 인덱스
 #define BUFFER_COLOR 1
 #define BUFFER_NORMAL 2
+#define BUFFER_UV 3
 
 #define WINDOW_X 100							// 윈도우 창 x 위치
 #define WINDOW_Y 100							// 윈도우 창 y 위치

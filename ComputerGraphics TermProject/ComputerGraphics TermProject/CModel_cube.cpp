@@ -1,6 +1,6 @@
 #include "CModel_cube.h"
 
-CModel_cube::CModel_cube(glm::vec3 size, glm::vec3 color) : CModel(GL_TRIANGLES, 3) {
+CModel_cube::CModel_cube(int layout, glm::vec3 size, glm::vec3 color) : CModel(GL_TRIANGLES, layout) {
 	fSize = 1;
 	glm::vec3 vertex[8] = {
 		glm::scale(glm::mat4{ 1.f, }, size) * glm::vec4{ glm::vec3{ fSize,-fSize, fSize }, 1.f },
@@ -20,25 +20,25 @@ CModel_cube::CModel_cube(glm::vec3 size, glm::vec3 color) : CModel(GL_TRIANGLES,
 	gVertex.emplace_back(vertex[3]);
 	gVertex.emplace_back(vertex[0]);
 	// right
+	gVertex.emplace_back(vertex[4]);
+	gVertex.emplace_back(vertex[5]);
+	gVertex.emplace_back(vertex[1]);
+	gVertex.emplace_back(vertex[1]);
 	gVertex.emplace_back(vertex[0]);
 	gVertex.emplace_back(vertex[4]);
-	gVertex.emplace_back(vertex[1]);
-	gVertex.emplace_back(vertex[1]);
-	gVertex.emplace_back(vertex[4]);
-	gVertex.emplace_back(vertex[5]);
 	// back
+	gVertex.emplace_back(vertex[7]);
+	gVertex.emplace_back(vertex[6]);
+	gVertex.emplace_back(vertex[5]);
 	gVertex.emplace_back(vertex[5]);
 	gVertex.emplace_back(vertex[4]);
 	gVertex.emplace_back(vertex[7]);
-	gVertex.emplace_back(vertex[7]);
-	gVertex.emplace_back(vertex[6]);
-	gVertex.emplace_back(vertex[5]);
 	// left
-	gVertex.emplace_back(vertex[6]);
-	gVertex.emplace_back(vertex[7]);
 	gVertex.emplace_back(vertex[3]);
 	gVertex.emplace_back(vertex[2]);
 	gVertex.emplace_back(vertex[6]);
+	gVertex.emplace_back(vertex[6]);
+	gVertex.emplace_back(vertex[7]);
 	gVertex.emplace_back(vertex[3]);
 	// top
 	gVertex.emplace_back(vertex[1]);
@@ -48,12 +48,12 @@ CModel_cube::CModel_cube(glm::vec3 size, glm::vec3 color) : CModel(GL_TRIANGLES,
 	gVertex.emplace_back(vertex[2]);
 	gVertex.emplace_back(vertex[1]);
 	// bottom
-	gVertex.emplace_back(vertex[0]);
 	gVertex.emplace_back(vertex[3]);
 	gVertex.emplace_back(vertex[7]);
-	gVertex.emplace_back(vertex[7]);
+	gVertex.emplace_back(vertex[4]);
 	gVertex.emplace_back(vertex[4]);
 	gVertex.emplace_back(vertex[0]);
+	gVertex.emplace_back(vertex[3]);
 
 
 	for (auto iter = gVertex.begin(); iter != gVertex.end(); ++iter) {
@@ -83,4 +83,14 @@ CModel_cube::CModel_cube(glm::vec3 size, glm::vec3 color) : CModel(GL_TRIANGLES,
 
 	for (int i = 0; i < gVertex.size(); ++i)
 		gIndex.emplace_back(i);
+
+
+	for (int i = 0; i < 6; ++i) {
+		gUv.emplace_back(glm::vec3{ 1,0,i });
+		gUv.emplace_back(glm::vec3{ 1,1,i });
+		gUv.emplace_back(glm::vec3{ 0,1,i });
+		gUv.emplace_back(glm::vec3{ 0,1,i });
+		gUv.emplace_back(glm::vec3{ 0,0,i });
+		gUv.emplace_back(glm::vec3{ 1,0,i });
+	}
 }
