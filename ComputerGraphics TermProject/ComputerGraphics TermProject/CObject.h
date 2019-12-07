@@ -19,7 +19,6 @@ protected:
 
 	bool bool_Delete;
 
-
 	void SetBuffer();
 	void CreateShader();
 	void ClearTexture();

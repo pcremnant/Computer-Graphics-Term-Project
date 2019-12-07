@@ -18,10 +18,10 @@ void CScene_main::GetKeaboardInput(unsigned char key) {
 	// 테스트용 코드!
 	// 나중에 제대로 된 값으로 넣을 것
 	switch (key) {
-	case 't':
+	case '5':
 		pObjectManager->AddObject(new CObject_cube(camera, glm::vec3{ 3,0.01,3 }, glm::vec3{ 0,-0.15,0 }));
 		break;
-	case 'g':
+	case '6':
 		if (pObjectManager->GetObjects().size() != 0)
 			pObjectManager->DeleteObject(pObjectManager->GetObjects()[0]);
 		break;
