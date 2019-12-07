@@ -1,15 +1,13 @@
 #pragma once
 #include "define.h"
-#include "CObject_cube.h"
+#include "CObject.h"
 
 class CObjectManager {
 private:
 	std::vector<CObject*> vector_Objects;
 	CCamera& camera;
 public:
-	CObjectManager(CCamera& cam) : camera(cam) {
-
-	}
+	CObjectManager(CCamera& cam) : camera(cam) { }
 
 	void Update() {
 		for (auto iter : vector_Objects)

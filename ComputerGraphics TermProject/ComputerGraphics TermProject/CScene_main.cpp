@@ -1,9 +1,11 @@
 #include "CScene_main.h"
+#include "CObject_MainBackground.h"
 
 CScene_main::CScene_main() : CScene() {
 	std::cout << "main scene create!" << std::endl;
+	sceneProjection = ORTHO;
 	pObjectManager = new CObjectManager(camera);
-	pObjectManager->AddObject(new CObject_cube(camera, glm::vec3{ 3,0.01,3 }, glm::vec3{ 0,-0.15,0 }));
+	pObjectManager->AddObject(new CObject_MainBackground(camera, glm::vec3{ WINDOW_WIDTH/2,WINDOW_HEIGHT/2,0 }, glm::vec3{ 0,0,0 }, sceneProjection));
 }
 
 void CScene_main::Update() {
@@ -19,7 +21,7 @@ void CScene_main::GetKeaboardInput(unsigned char key) {
 	// 나중에 제대로 된 값으로 넣을 것
 	switch (key) {
 	case '5':
-		pObjectManager->AddObject(new CObject_cube(camera, glm::vec3{ 3,0.01,3 }, glm::vec3{ 0,-0.15,0 }));
+		//pObjectManager->AddObject(new CObject_cube(camera, glm::vec3{ 3,0.01,3 }, glm::vec3{ 0,-0.15,0 }));
 		break;
 	case '6':
 		if (pObjectManager->GetObjects().size() != 0)

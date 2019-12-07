@@ -18,14 +18,21 @@ void CObject::SetBuffer() {
 
 void CObject::CreateShader() {
 	for (int i = 0; i < vector_Model.size(); ++i) {
-		std::vector<const char*> s;
+		std::vector<const char*> textureFiles;
+		std::vector<std::pair<int, int>> textureSz;
 		for (auto iter : textures) {
-			if (iter.first == i)
-				s = std::move(iter.second);
+			if (iter.first == i) {
+				textureFiles = std::move(iter.second);
+			}
+		}
+		for (auto iter : textureSizes) {
+			if (iter.first == i) {
+				textureSz = std::move(iter.second);
+			}
 		}
 
-		if (s.size() > 0)
-			vector_Shader.emplace_back(std::make_unique<CShader>(vector_Model[i]->GetLayoutSize(), camera, mat_Projection, vector_Buffer[i].get(), s));
+		if (textureFiles.size() > 0)
+			vector_Shader.emplace_back(std::make_unique<CShader>(vector_Model[i]->GetLayoutSize(), camera, mat_Projection, vector_Buffer[i].get(), textureFiles, textureSz));
 		else
 			vector_Shader.emplace_back(std::make_unique<CShader>(vector_Model[i]->GetLayoutSize(), camera, mat_Projection, vector_Buffer[i].get()));
 	}
@@ -35,14 +42,15 @@ void CObject::ClearTexture() {
 	textures.clear();
 }
 
-void CObject::AddTexture(int modelIndex, std::vector<const char*> textureName) {
+void CObject::AddTexture(int modelIndex, std::vector<const char*> textureName, std::vector<std::pair<int, int>> textureSize) {
 	textures.emplace_back(std::make_pair(modelIndex, textureName));
+	textureSizes.emplace_back(std::make_pair(modelIndex, textureSize));
 }
 
-CObject::CObject(CCamera& cam, glm::vec3 vPos) : camera(cam) {
+CObject::CObject(CCamera& cam, glm::vec3 vPos, glm::mat4 proj) : camera(cam) {
 	bool_Delete = false;
 	vec3_WorldPosition = vPos;
-	mat_Projection = PROJ(60.f);
+	mat_Projection = proj;
 }
 CObject::~CObject() { }
 

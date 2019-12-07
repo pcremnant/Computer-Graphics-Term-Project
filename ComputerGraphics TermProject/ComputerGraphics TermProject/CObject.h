@@ -15,6 +15,7 @@ protected:
 	CCamera& camera;
 
 	std::vector< std::pair<int, std::vector<const char*>>> textures;
+	std::vector<std::pair<int, std::vector<std::pair<int, int>>>> textureSizes;
 
 
 	bool bool_Delete;
@@ -22,10 +23,10 @@ protected:
 	void SetBuffer();
 	void CreateShader();
 	void ClearTexture();
-	void AddTexture(int modelIndex, std::vector<const char*> textureName);
+	void AddTexture(int modelIndex, std::vector<const char*> textureName, std::vector<std::pair<int,int>> textureSize);
 
 public:
-	CObject(CCamera& cam, glm::vec3 vPos);
+	CObject(CCamera& cam, glm::vec3 vPos, glm::mat4 proj = PROJ(60.f));
 	~CObject();
 	void SetWorldPosition(glm::vec3 pos);
 	glm::vec3 GetWorldPosition();

@@ -31,7 +31,7 @@ extern GLclampf cBackground_blue;
 
 // 투영 방식
 #define PROJ(fovy) glm::perspective(glm::radians(fovy), (float)800 / (float)600, 0.1f, 100.0f)
-#define ORTHO glm::ortho(-1.f, 1.f, -1.f, 1.f, 0.1f, 100.f)
+#define ORTHO glm::ortho(-WINDOW_WIDTH/2.f, WINDOW_WIDTH/2.f, -WINDOW_HEIGHT/2.f, WINDOW_HEIGHT/2.f, 0.1f, 100.f)
 
 // 색상 랜덤 설정
 void SetRandomColor(GLclampf& r, GLclampf& g, GLclampf& b);

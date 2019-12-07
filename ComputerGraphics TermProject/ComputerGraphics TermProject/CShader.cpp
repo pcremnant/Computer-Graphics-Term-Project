@@ -115,7 +115,7 @@ GLubyte* CShader::LoadDIBitmap(const char* filename, BITMAPINFO** info) {
 	return bits;
 }
 
-void CShader::InitTexture(std::vector<const char*> files) {
+void CShader::InitTexture(std::vector<const char*> files, std::vector<std::pair<int, int>> textureSize) {
 	int count = 0;
 	for (auto iter : files) {
 		texture.emplace_back(0);
@@ -128,7 +128,7 @@ void CShader::InitTexture(std::vector<const char*> files) {
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
 		void* data = LoadDIBitmap(iter, &bmp);
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, 256, 256, 0, GL_BGR, GL_UNSIGNED_BYTE, data);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, textureSize[count].first, textureSize[count].second, 0, GL_BGR, GL_UNSIGNED_BYTE, data);
 		count++;
 
 		if (data != NULL)
@@ -163,23 +163,32 @@ void CShader::InitShaderProgram()
 
 	// vertex shader »ý¼º
 	switch (nLayoutSize) {
-		// vertex - color - normal
-	case 3:
-		CreateShaderObject(&vertexshader, GL_VERTEX_SHADER, "shader_light.glvs");
+	case 2:
+		CreateShaderObject(&vertexshader, GL_VERTEX_SHADER, "shader/shader.glvs");
 		if (!PrintShaderError(&vertexshader, GL_VERTEX_SHADER))
 			return;
 
-		CreateShaderObject(&fragmentshader, GL_FRAGMENT_SHADER, "shader_light.glfs");
+		CreateShaderObject(&fragmentshader, GL_FRAGMENT_SHADER, "shader/shader.glfs");
+		if (!PrintShaderError(&fragmentshader, GL_FRAGMENT_SHADER))
+			return;
+		break;
+		// vertex - color - normal
+	case 3:
+		CreateShaderObject(&vertexshader, GL_VERTEX_SHADER, "shader/shader_light.glvs");
+		if (!PrintShaderError(&vertexshader, GL_VERTEX_SHADER))
+			return;
+
+		CreateShaderObject(&fragmentshader, GL_FRAGMENT_SHADER, "shader/shader_light.glfs");
 		if (!PrintShaderError(&fragmentshader, GL_FRAGMENT_SHADER))
 			return;
 		break;
 		// vertex - color - normal - uv
 	case 4:
-		CreateShaderObject(&vertexshader, GL_VERTEX_SHADER, "shader_texture.glvs");
+		CreateShaderObject(&vertexshader, GL_VERTEX_SHADER, "shader/shader_texture.glvs");
 		if (!PrintShaderError(&vertexshader, GL_VERTEX_SHADER))
 			return;
 
-		CreateShaderObject(&fragmentshader, GL_FRAGMENT_SHADER, "shader_texture.glfs");
+		CreateShaderObject(&fragmentshader, GL_FRAGMENT_SHADER, "shader/shader_texture.glfs");
 		if (!PrintShaderError(&fragmentshader, GL_FRAGMENT_SHADER))
 			return;
 		break;
@@ -219,11 +228,11 @@ CShader::~CShader()
 	delete VBO;
 }
 
-CShader::CShader(GLuint layoutSize, CCamera& cam, glm::mat4 proj, std::vector<glm::vec3>* pBuf, std::vector<const char*> textureFiles) : nLayoutSize(layoutSize), camera(cam), Projection(proj)
+CShader::CShader(GLuint layoutSize, CCamera& cam, glm::mat4 proj, std::vector<glm::vec3>* pBuf, std::vector<const char*> textureFiles, std::vector<std::pair<int, int>> textureSize) : nLayoutSize(layoutSize), camera(cam), Projection(proj)
 {
 	InitShaderProgram();
 	if (nLayoutSize >= 4)
-		InitTexture(textureFiles);
+		InitTexture(textureFiles, textureSize);
 
 	VAO = 0;
 	VBO = new GLuint[nLayoutSize]{ 0 };
