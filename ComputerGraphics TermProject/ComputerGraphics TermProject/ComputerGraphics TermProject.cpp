@@ -13,7 +13,10 @@ GLvoid drawScene(GLvoid);								// 콜백함수 : 그리기
 GLvoid Reshape(int w, int h);							// 콜백함수 : 다시 그리기
 GLvoid Keyboard(unsigned char key, int x, int y);		// 콜백함수 : 키보드 입력
 GLvoid TimerFunction(int value);						// 콜백함수 : 타이머
-GLvoid Mouse(int type, int state, int x, int y);		// 콜백함수 : 마우스
+GLvoid Mouse(int type, int state, int x, int y);// 콜백함수 : 마우스
+GLvoid MouseMotion(int x, int y) {};
+GLvoid MousePassiveMotion(int x, int y);
+
 //GLvoid SpecialKeyboad(int key, int x, int y);
 
 void main(int argc, char** argv) {									// 윈도우 출력하고 콜백함수 설정 --- 윈도우 생성하기
@@ -46,6 +49,8 @@ void main(int argc, char** argv) {									// 윈도우 출력하고 콜백함�
 	glPolygonMode(GL_FRONT, GL_FILL);
 	glPolygonMode(GL_BACK, GL_LINE);
 	glutMouseFunc(Mouse);
+	glutMotionFunc(MouseMotion);
+	glutPassiveMotionFunc(MousePassiveMotion);
 	glutDisplayFunc(drawScene);										// 출력 함수의 지정
 	glutReshapeFunc(Reshape);										// 다시 그리기 함수 지정
 	glutKeyboardFunc(Keyboard);										// 키보드 콜백함수 등록
@@ -80,7 +85,7 @@ GLvoid TimerFunction(int value)							// 타이머 콜백함수
 
 GLvoid Mouse(int button, int state, int x, int y)			// 마우스 콜백함수
 {
-	pFramework->GetMouseInput();
+	pFramework->GetMouseInput(button, state, x, y);
 	if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN) {
 
 
@@ -89,4 +94,9 @@ GLvoid Mouse(int button, int state, int x, int y)			// 마우스 콜백함수
 
 
 	}
+}
+
+GLvoid MousePassiveMotion(int x, int y)
+{
+	pFramework->GetMouseMotionInput(x,y);
 }

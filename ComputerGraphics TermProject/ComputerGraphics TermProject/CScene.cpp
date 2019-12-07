@@ -8,10 +8,10 @@ CScene::CScene() {
 void CScene::GetKeaboardInput(unsigned char key) {
 	pObjectManager->GetKeyboard(key);
 }
-void CScene::GetMouseInput() {
+void CScene::GetMouseInput(int button, int state, int x, int y) {
 
 }
-void CScene::GetMouseMotionInput() {
+void CScene::GetMouseMotionInput(int x, int y) {
 
 }
 

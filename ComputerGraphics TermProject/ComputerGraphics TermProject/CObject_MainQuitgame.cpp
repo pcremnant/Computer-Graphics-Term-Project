@@ -1,7 +1,7 @@
-#include "CObject_MainStartgame.h"
+#include "CObject_MainQuitgame.h"
 #include "CModel_plane.h"
 
-CObject_MainStartgame::CObject_MainStartgame(CCamera& cam, glm::vec3 size, glm::vec3 pos, glm::mat4 proj) : CObject(cam, pos, proj), size(size) {
+CObject_MainQuitgame::CObject_MainQuitgame(CCamera& cam, glm::vec3 size, glm::vec3 pos, glm::mat4 proj) : CObject(cam, pos, proj), size(size) {
 	vector_Model.emplace_back(std::make_unique<CModel_plane>(4, size));
 
 	vector_ModelPosition.emplace_back(glm::vec3{ 0,0,0 });
@@ -12,19 +12,19 @@ CObject_MainStartgame::CObject_MainStartgame(CCamera& cam, glm::vec3 size, glm::
 	std::vector<const char*> t;
 	std::vector<std::pair<int, int>> sz;
 
-	t.emplace_back("./resource/texture/main_start.bmp");
-	sz.emplace_back(512, 512);
+	t.emplace_back("./resource/texture/main_quit.bmp");
+	sz.emplace_back(256, 256);
 
 	AddTexture(0, t, sz);
 
 	CreateShader();
 
 	inBox = false;
-	type = MAIN_SCENE_START;
+	type = MAIN_SCENE_QUIT;
 	clicked = false;
 }
 
-void CObject_MainStartgame::Update(glm::vec3 lightPos, glm::vec3 lightColor, float lightPower)
+void CObject_MainQuitgame::Update(glm::vec3 lightPos, glm::vec3 lightColor, float lightPower)
 {
 	for (int i = 0; i < vector_Model.size(); ++i) {
 		glm::mat4 translate = glm::mat4{ 1, };
@@ -41,7 +41,7 @@ void CObject_MainStartgame::Update(glm::vec3 lightPos, glm::vec3 lightColor, flo
 	}
 }
 
-void CObject_MainStartgame::GetMouse(int button, int state, int x, int y) {
+void CObject_MainQuitgame::GetMouse(int button, int state, int x, int y) {
 
 	if (button == GLUT_LEFT_BUTTON) {
 		if (state == GLUT_DOWN) {
@@ -57,7 +57,7 @@ void CObject_MainStartgame::GetMouse(int button, int state, int x, int y) {
 	}
 }
 
-void CObject_MainStartgame::GetMouseMotion(int x, int y) {
+void CObject_MainQuitgame::GetMouseMotion(int x, int y) {
 	int worldX = x - WINDOW_WIDTH / 2;
 	int worldY = WINDOW_HEIGHT / 2 - y;
 

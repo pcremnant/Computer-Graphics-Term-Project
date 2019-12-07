@@ -20,6 +20,9 @@
 #define WINDOW_WIDTH 800						// 윈도우 창 너비
 #define WINDOW_HEIGHT 600						// 윈도우 창 높이
 
+#define MAIN_SCENE_START 0
+#define MAIN_SCENE_QUIT 1
+
 typedef std::vector<glm::vec4> vec4Buffer;
 typedef std::vector<glm::vec3> vec3Buffer;
 typedef std::vector<glm::vec2> vec2Buffer;

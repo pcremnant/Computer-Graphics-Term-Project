@@ -76,6 +76,17 @@ void CObject::Update(glm::vec3 lightPos, glm::vec3 lightColor, float lightPower)
 		vector_Shader[i]->Update(translate, vector_Buffer[i].get(), lightPos, lightColor, lightPower);
 	}
 }
+
+void CObject::GetMouse(int button, int state, int x, int y)
+{
+
+}
+
+void CObject::GetMouseMotion(int x, int y)
+{
+
+}
+
 std::vector<glm::vec3>* CObject::GetBuffer(int i)
 {
 	return vector_Buffer[i].get();

@@ -11,6 +11,6 @@ public:
 	virtual void Update();
 	virtual void Draw();
 	virtual void GetKeaboardInput(unsigned char key);
-	virtual void GetMouseInput();
-	virtual void GetMouseMotionInput();
+	virtual void GetMouseInput(int button, int state, int x, int y) final;
+	virtual void GetMouseMotionInput(int x, int y) final;
 };

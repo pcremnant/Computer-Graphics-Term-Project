@@ -27,8 +27,8 @@ public:
 	virtual void Update() = 0;
 	virtual void Draw() = 0;
 	virtual void GetKeaboardInput(unsigned char key);
-	virtual void GetMouseInput();
-	virtual void GetMouseMotionInput();
+	virtual void GetMouseInput(int button, int state, int x, int y);
+	virtual void GetMouseMotionInput(int x, int y);
 	std::pair<int, int> SetNextScene(int FrameworkAction, int SceneType);
 	std::pair<int, int> NextScene();
 };

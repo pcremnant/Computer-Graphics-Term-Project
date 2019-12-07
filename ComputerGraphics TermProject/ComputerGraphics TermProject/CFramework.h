@@ -66,11 +66,11 @@ public:
 	void GetKeaboardInput(unsigned char key) {
 		stack_Scene.top()->GetKeaboardInput(key);
 	}
-	void GetMouseInput() {
-
+	void GetMouseInput(int button, int state, int x, int y) {
+		stack_Scene.top()->GetMouseInput(button, state, x, y);
 	}
-	virtual void GetMouseMotionInput() {
-
+	void GetMouseMotionInput(int x, int y) {
+		stack_Scene.top()->GetMouseMotionInput(x, y);
 	}
 
 };
