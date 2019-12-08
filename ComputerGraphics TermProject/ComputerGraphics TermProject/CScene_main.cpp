@@ -17,6 +17,7 @@ void CScene_main::Update() {
 	int type = pObjectManager->GetState();
 	switch (type) {
 	case MAIN_SCENE_START:
+		next = SetNextScene(FRAMEWORK_ACTION_PUSH, SCENE_TYPE_BATTLE);
 		break;
 	case MAIN_SCENE_QUIT:
 		next = SetNextScene(FRAMEWORK_ACTION_POP, SCENE_TYPE_QUIT);

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "CScene_main.h"
+//#include "CScene_battle.h"
 #include <stack>
 
 class CFramework {
@@ -21,15 +22,20 @@ public:
 		switch (next.first) {
 		case FRAMEWORK_ACTION_STAY:
 			break;
+
 		case FRAMEWORK_ACTION_PUSH:
 			stack_Scene.top()->Exit();
 			switch (next.second) {
 			case SCENE_TYPE_MAIN:
 				stack_Scene.push(new CScene_main());
 				break;
+			case SCENE_TYPE_BATTLE:
+				// 배틀 씬 넣어주기
+				//stack_Scene.push(new CScene_battle());
 			}
 			break;
 			stack_Scene.top()->Enter();
+
 		case FRAMEWORK_ACTION_POP:
 			stack_Scene.top()->Exit();
 			switch (next.second) {
@@ -46,6 +52,7 @@ public:
 				PostQuitMessage(0);
 			stack_Scene.top()->Enter();
 			break;
+
 		case FRAMEWORK_ACTION_CHANGE:
 			stack_Scene.top()->Exit();
 			stack_Scene.pop();
