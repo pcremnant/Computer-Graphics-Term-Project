@@ -29,6 +29,8 @@
 #define MAIN_SCENE_START 0
 #define MAIN_SCENE_QUIT 1
 
+#define NONE_COLLISION_CHECK -1000
+
 typedef std::vector<glm::vec4> vec4Buffer;
 typedef std::vector<glm::vec3> vec3Buffer;
 typedef std::vector<glm::vec2> vec2Buffer;

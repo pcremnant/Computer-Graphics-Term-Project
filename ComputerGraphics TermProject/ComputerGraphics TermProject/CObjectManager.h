@@ -2,6 +2,15 @@
 #include "define.h"
 #include "CObject.h"
 
+#define MIN_X 0
+#define MAX_X 1
+
+#define MIN_Y 2
+#define MAX_Y 3
+
+#define MIN_Z 4
+#define MAX_Z 5
+
 class CObjectManager {
 private:
 	std::vector<CObject*> vector_Objects;
@@ -64,5 +73,31 @@ public:
 
 	std::vector<CObject*> GetObjects() {
 		return vector_Objects;
+	}
+
+	bool IsCollide(std::vector<float>& object, std::vector<float>& other) {
+		if (object[MAX_X] < other[MIN_X] || object[MIN_X] > other[MAX_X])
+			return false;
+
+		if (object[MAX_Y] < other[MIN_Y] || object[MIN_Y] > other[MAX_Y])
+			return false;
+
+		if (object[MAX_Z] < other[MIN_Y] || object[MIN_Z] > other[MAX_Z])
+			return false;
+
+		return true;
+	}
+
+	void CheckCollision(std::vector<CObject*> objects, std::vector<CObject*> others) {
+		for (auto iter : objects) {
+			std::vector<float> box = iter->GetBoundingBox();
+			for (auto other : others) {
+				std::vector<float> other_box = other->GetBoundingBox();
+				if (IsCollide(box, other_box)) {
+					iter->Collide(other->GetType());
+					other->Collide(iter->GetType());
+				}
+			}
+		}
 	}
 };

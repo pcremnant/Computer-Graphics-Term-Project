@@ -17,7 +17,7 @@ protected:
 	std::vector< std::pair<int, std::vector<const char*>>> textures;
 	std::vector<std::pair<int, std::vector<std::pair<int, int>>>> textureSizes;
 
-
+	int int_Type{ 0 };
 	bool bool_Delete;
 
 	void SetBuffer();
@@ -35,6 +35,11 @@ public:
 	virtual void Update(std::vector<glm::vec3> lightPos = std::vector<glm::vec3>(), std::vector<glm::vec3> lightColor = std::vector<glm::vec3>(), std::vector<float> lightPower = std::vector<float>());
 	virtual void GetMouse(int button, int state, int x, int y);
 	virtual void GetMouseMotion(int x, int y);
+
+	virtual std::vector<float> GetBoundingBox();
+
+	virtual void Collide(int type = 0);
+	int GetType() const;
 
 	std::vector<glm::vec3>* GetBuffer(int i = 0);
 	void DrawObject();

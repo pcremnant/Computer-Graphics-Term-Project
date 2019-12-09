@@ -109,3 +109,20 @@ void CObject::DrawObject()
 	}
 }
 bool& CObject::IsDelete() { return bool_Delete; }
+
+std::vector<float> CObject::GetBoundingBox()
+{
+	std::vector<float> tmp;
+	tmp.emplace_back(NONE_COLLISION_CHECK);
+	return tmp;
+}
+
+void CObject::Collide(int type)
+{
+
+}
+
+int CObject::GetType() const
+{
+	return int_Type;
+}
