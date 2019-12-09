@@ -2,7 +2,7 @@
 #include "CModel_plane.h"
 
 CObject_MainStartgame::CObject_MainStartgame(CCamera& cam, glm::vec3 size, glm::vec3 pos, glm::mat4 proj) : CObject(cam, pos, proj), size(size) {
-	vector_Model.emplace_back(std::make_unique<CModel_plane>(4, size));
+	vector_Model.emplace_back(std::make_unique<CModel_plane>(LAYOUT_UI, size));
 
 	vector_ModelPosition.emplace_back(glm::vec3{ 0,0,0 });
 

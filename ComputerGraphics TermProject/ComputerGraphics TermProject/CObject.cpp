@@ -77,6 +77,17 @@ void CObject::Update(glm::vec3 lightPos, glm::vec3 lightColor, float lightPower)
 	}
 }
 
+void CObject::Update(std::vector<glm::vec3> lightPos, std::vector<glm::vec3> lightColor, std::vector<float> lightPower)
+{
+	for (int i = 0; i < vector_Model.size(); ++i) {
+		glm::mat4 translate = glm::mat4{ 1, };
+		glm::mat4 translate_model = glm::translate(vector_ModelPosition[i]);
+		glm::mat4 translate_world = glm::translate(vec3_WorldPosition);
+		translate = translate_world * translate_model;
+		vector_Shader[i]->Update(translate, vector_Buffer[i].get(), lightPos, lightColor, lightPower);
+	}
+}
+
 void CObject::GetMouse(int button, int state, int x, int y)
 {
 

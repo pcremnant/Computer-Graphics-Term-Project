@@ -30,5 +30,6 @@ public:
 	~CShader();
 	void DrawObject(std::vector<GLuint>& pIndex, GLuint DrawType = GL_TRIANGLES);
 	void Update(glm::mat4 world, std::vector<glm::vec3>* pBuf = nullptr, glm::vec3 lightPos = glm::vec3{ 0,0,0 }, glm::vec3 lightColor = glm::vec3{ 1,1,1 }, float lightPower = 1000.f);
+	void Update(glm::mat4 world, std::vector<glm::vec3>* pBuf = nullptr, std::vector<glm::vec3> lightPos = std::vector<glm::vec3>(), std::vector<glm::vec3> lightColor = std::vector<glm::vec3>(), std::vector<float> lightPower = std::vector<float>());
 	void UseProgram();
 };

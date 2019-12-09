@@ -1,18 +1,18 @@
 #version 330
 
 in vec3 ex_Color;
-in vec3 ex_FragPos;
-in vec3 ex_Normal;
+in vec3 FragPos;
+in vec3 Normal;
 in vec2 ex_TexCoord;
 in float ex_TexIndex;
 
-out vec4 FragColor;
-
 uniform vec3 viewPos;
 
-uniform vec3 lightPos;
-uniform vec3 lightColor;
-uniform float lightPower;
+uniform vec3 lightPos[4];
+uniform vec3 lightColor[4];
+uniform float lightPower[4];
+
+out vec4 FragColor;
 
 uniform sampler2D texture1;
 uniform sampler2D texture2;
@@ -23,32 +23,107 @@ uniform sampler2D texture6;
 
 void main()
 {
-	float distance = sqrt(pow(ex_FragPos.x - lightPos.x, 2) + pow(ex_FragPos.y - lightPos.y, 2) + pow(ex_FragPos.z - lightPos.z, 2));
+	float distance[4];
+	distance[0] = sqrt(pow(FragPos.x - lightPos[0].x, 2) + pow(FragPos.y - lightPos[0].y, 2) + pow(FragPos.z - lightPos[0].z, 2));
+	distance[1] = sqrt(pow(FragPos.x - lightPos[1].x, 2) + pow(FragPos.y - lightPos[1].y, 2) + pow(FragPos.z - lightPos[1].z, 2));
+	distance[2] = sqrt(pow(FragPos.x - lightPos[2].x, 2) + pow(FragPos.y - lightPos[2].y, 2) + pow(FragPos.z - lightPos[2].z, 2));
+	distance[3] = sqrt(pow(FragPos.x - lightPos[3].x, 2) + pow(FragPos.y - lightPos[3].y, 2) + pow(FragPos.z - lightPos[3].z, 2));
 
-	vec3 ambientLight = vec3(1, 1, 1);
-	vec3 ambient = ambientLight * lightColor;
 
-	vec3 DiffuseNormal = ex_Normal;
-	vec3 DiffuseLightDir = normalize(lightPos - ex_FragPos);
-	float DiffuseLight = max(dot(DiffuseNormal, DiffuseLightDir), 0.0);
-	vec3 diffuse = DiffuseLight * lightColor;
+
+	vec3 ambientLight = vec3(0.05, 0.05, 0.05);
+	vec3 ambient[4];
+	ambient[0] = ambientLight * lightColor[0];
+	ambient[1] = ambientLight * lightColor[1];
+	ambient[2] = ambientLight * lightColor[2];
+	ambient[3] = ambientLight * lightColor[3];
+
+
+	vec3 DiffuseLightDir[4];
+	DiffuseLightDir[0] = normalize(lightPos[0] - FragPos);
+	DiffuseLightDir[1] = normalize(lightPos[1] - FragPos);
+	DiffuseLightDir[2] = normalize(lightPos[2] - FragPos);
+	DiffuseLightDir[3] = normalize(lightPos[3] - FragPos);
+
+	float DiffuseLight[4];
+	DiffuseLight[0] = max(dot(Normal, DiffuseLightDir[0]), 0.0);
+	DiffuseLight[1] = max(dot(Normal, DiffuseLightDir[1]), 0.0);
+	DiffuseLight[2] = max(dot(Normal, DiffuseLightDir[2]), 0.0);
+	DiffuseLight[3] = max(dot(Normal, DiffuseLightDir[3]), 0.0);
+
+	vec3 diffuse[4];
+	diffuse[0] = DiffuseLight[0] * lightColor[0];
+	diffuse[1] = DiffuseLight[1] * lightColor[1];
+	diffuse[2] = DiffuseLight[2] * lightColor[2];
+	diffuse[3] = DiffuseLight[3] * lightColor[3];
+
 
 	int shiniess = 32;
-	vec3 SpecularNormal = ex_Normal;
-	vec3 SpecularLightDir = normalize(lightPos - ex_FragPos);
-	vec3 viewDir = normalize(ex_FragPos - viewPos);
-	vec3 reflectDir = reflect (SpecularLightDir, SpecularNormal);
-	float specularLight = max(dot(viewDir, reflectDir), 0.0);
-	vec3 specular = specularLight * lightColor;
 
-	if (dot(SpecularLightDir, SpecularNormal)<0)
-		specular = vec3(0,0,0);
+	vec3 SpecularLightDir[4];
+	SpecularLightDir[0] = normalize(lightPos[0] - FragPos);
+	SpecularLightDir[1] = normalize(lightPos[1] - FragPos);
+	SpecularLightDir[2] = normalize(lightPos[2] - FragPos);
+	SpecularLightDir[3] = normalize(lightPos[3] - FragPos);
 
-	float phongLightPower = 0;
-	if (distance > lightPower)
-		phongLightPower = 0;
+	vec3 viewDir = normalize(FragPos - viewPos);
+
+	vec3 reflectDir[4];
+	reflectDir[0] = reflect (SpecularLightDir[0], Normal);
+	reflectDir[1] = reflect (SpecularLightDir[1], Normal);
+	reflectDir[2] = reflect (SpecularLightDir[2], Normal);
+	reflectDir[3] = reflect (SpecularLightDir[3], Normal);
+
+	float specularColor[4];
+	specularColor[0] = max(dot(viewDir, reflectDir[0]), 0.0);
+	specularColor[1] = max(dot(viewDir, reflectDir[1]), 0.0);
+	specularColor[2] = max(dot(viewDir, reflectDir[2]), 0.0);
+	specularColor[3] = max(dot(viewDir, reflectDir[3]), 0.0);
+
+
+	vec3 specular[4];
+	specular[0] = specularColor[0] * lightColor[0];
+	specular[1] = specularColor[1] * lightColor[1];
+	specular[2] = specularColor[2] * lightColor[2];
+	specular[3] = specularColor[3] * lightColor[3];
+
+	if (dot(SpecularLightDir[0], Normal)<0)
+		specular[0] = vec3(0,0,0);
+
+	if (dot(SpecularLightDir[1], Normal)<0)
+		specular[1] = vec3(0,0,0);
+
+	if (dot(SpecularLightDir[2], Normal)<0)
+		specular[2] = vec3(0,0,0);
+
+	if (dot(SpecularLightDir[3], Normal)<0)
+		specular[3] = vec3(0,0,0);
+
+	float phongLightPower[4];
+	phongLightPower[0] = 0;
+	phongLightPower[1] = 0;
+	phongLightPower[2] = 0;
+	phongLightPower[3] = 0;
+
+	if (distance[0] > lightPower[0])
+		phongLightPower[0] = 0;
 	else
-		phongLightPower = (lightPower - distance) / lightPower;
+		phongLightPower[0] = (lightPower[0] - distance[0]) / lightPower[0];
+	
+	if (distance[1] > lightPower[1])
+		phongLightPower[1] = 0;
+	else
+		phongLightPower[1] = (lightPower[1] - distance[1]) / lightPower[1];
+
+	if (distance[2] > lightPower[2])
+		phongLightPower[2] = 0;
+	else
+		phongLightPower[2] = (lightPower[2] - distance[2]) / lightPower[2];
+
+	if (distance[3] > lightPower[3])
+		phongLightPower[3] = 0;
+	else
+		phongLightPower[3] = (lightPower[3] - distance[3]) / lightPower[3];
 	
 	if (-0.5f <= ex_TexIndex && ex_TexIndex <= 0.5f)
 		FragColor = texture (texture1, ex_TexCoord);
@@ -63,7 +138,13 @@ void main()
 	else if (4.5f <= ex_TexIndex && ex_TexIndex <= 5.5f)
 		FragColor = texture (texture6, ex_TexCoord);
 
+	vec3 result[4];
+	result[0] = (ambient[0] + diffuse[0] + specular[0]) * phongLightPower[0] * ex_Color;
+	result[1] = (ambient[1] + diffuse[1] + specular[1]) * phongLightPower[1] * ex_Color;
+	result[2] = (ambient[2] + diffuse[2] + specular[2]) * phongLightPower[2] * ex_Color;
+	result[3] = (ambient[3] + diffuse[3] + specular[3]) * phongLightPower[3] * ex_Color;
 
-	vec3 result = (ambient + diffuse + specular) * phongLightPower * vec3(FragColor.xyz);
-	FragColor = vec4(result, 1.0);
+
+	vec3 light = (result[0] + result[1] + result[2] + result[3]) * vec3(FragColor.xyz);
+	FragColor = vec4(light, 1.0);
 }

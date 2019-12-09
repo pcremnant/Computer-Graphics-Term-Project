@@ -13,7 +13,7 @@ CScene_main::CScene_main() : CScene() {
 }
 
 void CScene_main::Update() {
-	pObjectManager->Update(glm::vec3{ 0,0,5 });
+	pObjectManager->Update();
 	int type = pObjectManager->GetState();
 	switch (type) {
 	case MAIN_SCENE_START:

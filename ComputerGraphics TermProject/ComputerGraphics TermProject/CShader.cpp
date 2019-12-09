@@ -63,12 +63,12 @@ void CShader::CreateVAO(std::vector<glm::vec3>* pBuf)
 	glGenVertexArrays(1, &VAO);
 	glBindVertexArray(VAO);
 
-	glGenBuffers(nLayoutSize, VBO);
+	glGenBuffers(glm::min((GLuint)LAYOUT_UV, nLayoutSize), VBO);
 
 	if (pBuf == nullptr)
 		return;
 
-	for (int i = 0; i < nLayoutSize; ++i) {
+	for (int i = 0; i < glm::min((GLuint)LAYOUT_UV, nLayoutSize); ++i) {
 		BindVBO(pBuf[i], VBO, i);
 		glVertexAttribPointer(i, 3, GL_FLOAT, GL_FALSE, 0, 0);
 		glEnableVertexAttribArray(i);
@@ -163,32 +163,32 @@ void CShader::InitShaderProgram()
 
 	// vertex shader 생성
 	switch (nLayoutSize) {
-	case 2:
-		CreateShaderObject(&vertexshader, GL_VERTEX_SHADER, "shader/shader.glvs");
-		if (!PrintShaderError(&vertexshader, GL_VERTEX_SHADER))
-			return;
-
-		CreateShaderObject(&fragmentshader, GL_FRAGMENT_SHADER, "shader/shader.glfs");
-		if (!PrintShaderError(&fragmentshader, GL_FRAGMENT_SHADER))
-			return;
-		break;
 		// vertex - color - normal
-	case 3:
-		CreateShaderObject(&vertexshader, GL_VERTEX_SHADER, "shader/shader_light.glvs");
+	case LAYOUT_NORMAL:
+		CreateShaderObject(&vertexshader, GL_VERTEX_SHADER, "./shader/shader_light.glvs");
 		if (!PrintShaderError(&vertexshader, GL_VERTEX_SHADER))
 			return;
 
-		CreateShaderObject(&fragmentshader, GL_FRAGMENT_SHADER, "shader/shader_light.glfs");
+		CreateShaderObject(&fragmentshader, GL_FRAGMENT_SHADER, "./shader/shader_light.glfs");
 		if (!PrintShaderError(&fragmentshader, GL_FRAGMENT_SHADER))
 			return;
 		break;
 		// vertex - color - normal - uv
-	case 4:
-		CreateShaderObject(&vertexshader, GL_VERTEX_SHADER, "shader/shader_texture.glvs");
+	case LAYOUT_UV:
+		CreateShaderObject(&vertexshader, GL_VERTEX_SHADER, "./shader/shader_texture.glvs");
 		if (!PrintShaderError(&vertexshader, GL_VERTEX_SHADER))
 			return;
 
-		CreateShaderObject(&fragmentshader, GL_FRAGMENT_SHADER, "shader/shader_texture.glfs");
+		CreateShaderObject(&fragmentshader, GL_FRAGMENT_SHADER, "./shader/shader_texture.glfs");
+		if (!PrintShaderError(&fragmentshader, GL_FRAGMENT_SHADER))
+			return;
+		break;
+	case LAYOUT_UI:
+		CreateShaderObject(&vertexshader, GL_VERTEX_SHADER, "./shader/shader_ui.glvs");
+		if (!PrintShaderError(&vertexshader, GL_VERTEX_SHADER))
+			return;
+
+		CreateShaderObject(&fragmentshader, GL_FRAGMENT_SHADER, "./shader/shader_ui.glfs");
 		if (!PrintShaderError(&fragmentshader, GL_FRAGMENT_SHADER))
 			return;
 		break;
@@ -222,7 +222,7 @@ void CShader::InitShaderProgram()
 
 CShader::~CShader()
 {
-	glDeleteBuffers(nLayoutSize, VBO);
+	glDeleteBuffers(glm::min((GLuint)LAYOUT_UV, nLayoutSize), VBO);
 	glDeleteVertexArrays(1, &VAO);
 	glDeleteProgram(glShaderProgramID);
 	delete VBO;
@@ -231,11 +231,11 @@ CShader::~CShader()
 CShader::CShader(GLuint layoutSize, CCamera& cam, glm::mat4 proj, std::vector<glm::vec3>* pBuf, std::vector<const char*> textureFiles, std::vector<std::pair<int, int>> textureSize) : nLayoutSize(layoutSize), camera(cam), Projection(proj)
 {
 	InitShaderProgram();
-	if (nLayoutSize >= 4)
+	if (nLayoutSize >= LAYOUT_UV)
 		InitTexture(textureFiles, textureSize);
 
 	VAO = 0;
-	VBO = new GLuint[nLayoutSize]{ 0 };
+	VBO = new GLuint[glm::min((GLuint)LAYOUT_UV, nLayoutSize)]{ 0 };
 	if (pBuf != nullptr)
 		CreateVAO(pBuf);
 }
@@ -248,7 +248,7 @@ void CShader::DrawObject(std::vector<GLuint>& pIndex, GLuint DrawType)
 	glBindVertexArray(VAO);
 	// 텍스쳐 불러오기
 
-	if (nLayoutSize >= 4) {
+	if (nLayoutSize >= LAYOUT_UV) {
 		for (int i = 0; i < texture.size(); ++i) {
 			glActiveTexture(GL_TEXTURE0 + i);
 			glBindTexture(GL_TEXTURE_2D, texture[i]);
@@ -279,7 +279,35 @@ void CShader::Update(glm::mat4 world, std::vector<glm::vec3>* pBuf, glm::vec3 li
 	glUniform1f(lightPowerLocation, lightPower);
 
 	glBindVertexArray(VAO);
-	for (int i = 0; i < nLayoutSize; ++i) {
+	for (int i = 0; i < glm::min((GLuint)LAYOUT_UV, nLayoutSize); ++i) {
+		BindVBO(pBuf[i], VBO, i);
+		glVertexAttribPointer(i, 3, GL_FLOAT, GL_FALSE, 0, 0);
+		glEnableVertexAttribArray(i);
+	}
+}
+
+void CShader::Update(glm::mat4 world, std::vector<glm::vec3>* pBuf, std::vector<glm::vec3> lightPos, std::vector<glm::vec3> lightColor, std::vector<float> lightPower)
+{
+	glUseProgram(glShaderProgramID);
+	glm::mat4 mul = Projection * camera.GetCameraProj() * world;
+
+	int matTransformLocation = glGetUniformLocation(glShaderProgramID, "mat_Transform");
+	glUniformMatrix4fv(matTransformLocation, 1, GL_FALSE, &mul[0][0]);
+
+	int viewPosLocation = glGetUniformLocation(glShaderProgramID, "viewPos");
+	glUniform3fv(viewPosLocation, 1, &camera.GetEye()[0]);
+
+	int lightPosLocation = glGetUniformLocation(glShaderProgramID, "lightPos");
+	glUniform3fv(lightPosLocation, 4, &lightPos[0][0]);
+
+	int lightColorLocation = glGetUniformLocation(glShaderProgramID, "lightColor");
+	glUniform3fv(lightColorLocation, 4, &lightColor[0][0]);
+
+	int lightPowerLocation = glGetUniformLocation(glShaderProgramID, "lightPower");
+	glUniform1fv(lightPowerLocation, 4, &lightPower[0]);
+
+	glBindVertexArray(VAO);
+	for (int i = 0; i < glm::min((GLuint)LAYOUT_UV, nLayoutSize); ++i) {
 		BindVBO(pBuf[i], VBO, i);
 		glVertexAttribPointer(i, 3, GL_FLOAT, GL_FALSE, 0, 0);
 		glEnableVertexAttribArray(i);

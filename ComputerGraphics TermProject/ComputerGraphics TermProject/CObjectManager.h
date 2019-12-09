@@ -14,6 +14,11 @@ public:
 			iter->Update(lightPos, lightColor, lightPower);
 	}
 
+	void Update(std::vector<glm::vec3> lightPos, std::vector<glm::vec3> lightColor, std::vector<float> lightPower) {
+		for (auto iter : vector_Objects)
+			iter->Update(lightPos, lightColor, lightPower);
+	}
+
 	void Draw() {
 		for (auto iter : vector_Objects)
 			iter->DrawObject();

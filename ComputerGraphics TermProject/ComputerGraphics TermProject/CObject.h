@@ -32,6 +32,7 @@ public:
 	glm::vec3 GetWorldPosition();
 	virtual void GetKeyboard(unsigned int key);
 	virtual void Update(glm::vec3 lightPos = glm::vec3{ 0,0,0 }, glm::vec3 lightColor = glm::vec3{ 1,1,1 }, float lightPower = 1000.f);
+	virtual void Update(std::vector<glm::vec3> lightPos = std::vector<glm::vec3>(), std::vector<glm::vec3> lightColor = std::vector<glm::vec3>(), std::vector<float> lightPower = std::vector<float>());
 	virtual void GetMouse(int button, int state, int x, int y);
 	virtual void GetMouseMotion(int x, int y);
 

@@ -32,8 +32,8 @@ public:
 			case SCENE_TYPE_BATTLE:
 				// 배틀 씬 넣어주기
 				//stack_Scene.push(new CScene_battle());
-			}
 			break;
+			}
 			stack_Scene.top()->Enter();
 
 		case FRAMEWORK_ACTION_POP:

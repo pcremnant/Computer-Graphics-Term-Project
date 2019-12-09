@@ -5,9 +5,7 @@ layout (location = 1) in vec3 vColor;
 layout (location = 2) in vec3 vNormal;
 layout (location = 3) in vec3 vTexCoord;
 
-out vec3 ex_Color;
 out vec3 FragPos;
-out vec3 Normal;
 out vec2 ex_TexCoord;
 out float ex_TexIndex;
 
@@ -17,8 +15,6 @@ void main()
 {
 	FragPos = vPosition;
 	gl_Position = mat_Transform * vec4(vPosition, 1.0);
-	Normal = normalize(vNormal);
-	ex_Color= vColor;
 	ex_TexCoord = vec2(vTexCoord.x, vTexCoord.y); 
 	ex_TexIndex = vTexCoord.z;
 }

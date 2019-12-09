@@ -1,0 +1,32 @@
+#version 330
+
+in vec3 ex_FragPos;
+in vec2 ex_TexCoord;
+in float ex_TexIndex;
+
+out vec4 FragColor;
+
+uniform sampler2D texture1;
+uniform sampler2D texture2;
+uniform sampler2D texture3;
+uniform sampler2D texture4;
+uniform sampler2D texture5;
+uniform sampler2D texture6;
+
+void main()
+{
+	if (-0.5f <= ex_TexIndex && ex_TexIndex <= 0.5f)
+		FragColor = texture (texture1, ex_TexCoord);
+	else if (0.5f <= ex_TexIndex && ex_TexIndex <= 1.5f)
+		FragColor = texture (texture2, ex_TexCoord);
+	else if (1.5f <= ex_TexIndex && ex_TexIndex <= 2.5f)
+		FragColor = texture (texture3, ex_TexCoord);
+	else if (2.5f <= ex_TexIndex && ex_TexIndex <= 3.5f)
+		FragColor = texture (texture4, ex_TexCoord);
+	else if (3.5f <= ex_TexIndex && ex_TexIndex <= 4.5f)
+		FragColor = texture (texture5, ex_TexCoord);
+	else if (4.5f <= ex_TexIndex && ex_TexIndex <= 5.5f)
+		FragColor = texture (texture6, ex_TexCoord);
+
+	FragColor = vec4(FragColor.xyz, 1.0);
+}
