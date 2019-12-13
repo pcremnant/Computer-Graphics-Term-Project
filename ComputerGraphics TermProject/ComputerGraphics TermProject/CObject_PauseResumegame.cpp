@@ -1,7 +1,7 @@
-#include "CObject_MainQuitgame.h"
+#include "CObject_PauseResumegame.h"
 #include "CModel_plane.h"
 
-CObject_MainQuitgame::CObject_MainQuitgame(CCamera& cam, glm::vec3 size, glm::vec3 pos, glm::mat4 proj) : CObject(cam, pos, proj), size(size) {
+CObject_PauseResumegame::CObject_PauseResumegame(CCamera& cam, glm::vec3 size, glm::vec3 pos, glm::mat4 proj) : CObject(cam, pos, proj), size(size) {
 	vector_Model.emplace_back(std::make_unique<CModel_plane>(LAYOUT_UI, size));
 
 	vector_ModelPosition.emplace_back(glm::vec3{ 0,0,0 });
@@ -24,7 +24,7 @@ CObject_MainQuitgame::CObject_MainQuitgame(CCamera& cam, glm::vec3 size, glm::ve
 	clicked = false;
 }
 
-void CObject_MainQuitgame::Update(glm::vec3 lightPos, glm::vec3 lightColor, float lightPower)
+void CObject_PauseResumegame::Update(glm::vec3 lightPos, glm::vec3 lightColor, float lightPower)
 {
 	for (int i = 0; i < vector_Model.size(); ++i) {
 		glm::mat4 translate = glm::mat4{ 1, };
@@ -37,11 +37,11 @@ void CObject_MainQuitgame::Update(glm::vec3 lightPos, glm::vec3 lightColor, floa
 			translate_world = glm::translate(translate_world, glm::vec3{ 60,0,0 });
 		}
 		translate = translate_world * translate_model * scale;
-		vector_Shader[i]->Update(glm::vec3{ 1,1,1 }, translate, vector_Buffer[i].get());
+		vector_Shader[i]->Update(translate, vector_Buffer[i].get(), lightPos, lightColor, lightPower);
 	}
 }
 
-void CObject_MainQuitgame::GetMouse(int button, int state, int x, int y) {
+void CObject_PauseResumegame::GetMouse(int button, int state, int x, int y) {
 
 	if (button == GLUT_LEFT_BUTTON) {
 		if (state == GLUT_DOWN) {
@@ -57,7 +57,7 @@ void CObject_MainQuitgame::GetMouse(int button, int state, int x, int y) {
 	}
 }
 
-void CObject_MainQuitgame::GetMouseMotion(int x, int y) {
+void CObject_PauseResumegame::GetMouseMotion(int x, int y) {
 	int worldX = x - WINDOW_WIDTH / 2;
 	int worldY = WINDOW_HEIGHT / 2 - y;
 

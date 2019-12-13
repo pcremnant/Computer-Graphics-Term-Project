@@ -13,8 +13,11 @@ protected:
 	GLuint nLayoutSize;
 	GLuint nDrawType;
 	bool bIsDraw;
+
+	int nVerticalRepeat;
+	int nHoriziontalRepeat;
 public:
-	CModel(GLuint drawtype = GL_TRIANGLES, GLuint layout = 3);
+	CModel(GLuint drawtype = GL_TRIANGLES, GLuint layout = 3, int horizontalRepeat = 1, int verticalRepeat = 1);
 	void SetObjectVertex(const char* ObjectFile);
 	vec3Buffer& GetVertex();
 	vec3Buffer& GetNormal();

@@ -1,6 +1,6 @@
 #include "CModel_plane.h"
 
-CModel_plane::CModel_plane(int layout, glm::vec3 size, glm::vec3 color) : CModel(GL_TRIANGLES, layout) {
+CModel_plane::CModel_plane(int layout, glm::vec3 size, glm::vec3 color, int horizontalRepeat, int verticalRepeat) : CModel(GL_TRIANGLES, layout, horizontalRepeat, verticalRepeat) {
 	fSize = 1;
 	glm::vec3 vertex[8] = {
 		glm::scale(glm::mat4{ 1.f, }, size) * glm::vec4{ glm::vec3{ fSize,-fSize, 0 }, 1.f },
@@ -34,10 +34,10 @@ CModel_plane::CModel_plane(int layout, glm::vec3 size, glm::vec3 color) : CModel
 		gIndex.emplace_back(i);
 
 
-	gUv.emplace_back(glm::vec3{ 1,0,0 });
-	gUv.emplace_back(glm::vec3{ 1,1,0 });
-	gUv.emplace_back(glm::vec3{ 0,1,0 });
-	gUv.emplace_back(glm::vec3{ 0,1,0 });
+	gUv.emplace_back(glm::vec3{ nVerticalRepeat,0,0 });
+	gUv.emplace_back(glm::vec3{ nVerticalRepeat,nHoriziontalRepeat,0 });
+	gUv.emplace_back(glm::vec3{ 0,nHoriziontalRepeat,0 });
+	gUv.emplace_back(glm::vec3{ 0,nHoriziontalRepeat,0 });
 	gUv.emplace_back(glm::vec3{ 0,0,0 });
-	gUv.emplace_back(glm::vec3{ 1,0,0 });
+	gUv.emplace_back(glm::vec3{ nVerticalRepeat,0,0 });
 }

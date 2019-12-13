@@ -13,6 +13,8 @@ uniform sampler2D texture4;
 uniform sampler2D texture5;
 uniform sampler2D texture6;
 
+uniform vec3 bgColor = vec3(1.0, 1.0, 1.0);
+
 void main()
 {
 	if (-0.5f <= ex_TexIndex && ex_TexIndex <= 0.5f)
@@ -27,6 +29,9 @@ void main()
 		FragColor = texture (texture5, ex_TexCoord);
 	else if (4.5f <= ex_TexIndex && ex_TexIndex <= 5.5f)
 		FragColor = texture (texture6, ex_TexCoord);
+
+	if (bgColor.r - 0.05 <= FragColor.r && FragColor.r <= bgColor.r + 0.05 && bgColor.g - 0.05 <= FragColor.g && FragColor.g <= bgColor.g + 0.05 && bgColor.b - 0.05 <= FragColor.b && FragColor.b <= bgColor.b + 0.05)
+		discard;
 
 	FragColor = vec4(FragColor.xyz, 1.0);
 }

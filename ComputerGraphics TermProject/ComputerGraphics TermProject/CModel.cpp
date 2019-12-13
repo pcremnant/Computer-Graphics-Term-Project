@@ -1,6 +1,6 @@
 #include "CModel.h"
 
-CModel::CModel(GLuint drawtype, GLuint layout) : nLayoutSize(layout), nDrawType(drawtype) { }
+CModel::CModel(GLuint drawtype, GLuint layout, int horizontalRepeat, int verticalRepeat) : nLayoutSize(layout), nDrawType(drawtype), nHoriziontalRepeat(horizontalRepeat), nVerticalRepeat(verticalRepeat) { }
 void CModel::SetObjectVertex(const char* ObjectFile)
 {
 	std::vector<unsigned int> vertexIndices, uvIndices, normalIndices;

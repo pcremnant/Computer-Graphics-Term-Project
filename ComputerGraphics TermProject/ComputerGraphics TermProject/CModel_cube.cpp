@@ -1,6 +1,6 @@
 #include "CModel_cube.h"
 
-CModel_cube::CModel_cube(int layout, glm::vec3 size, glm::vec3 color) : CModel(GL_TRIANGLES, layout) {
+CModel_cube::CModel_cube(int layout, glm::vec3 size, glm::vec3 color, int horizontalRepeat, int verticalRepeat) : CModel(GL_TRIANGLES, layout, horizontalRepeat, verticalRepeat) {
 	fSize = 1;
 	glm::vec3 vertex[8] = {
 		glm::scale(glm::mat4{ 1.f, }, size) * glm::vec4{ glm::vec3{ fSize,-fSize, fSize }, 1.f },
@@ -86,11 +86,11 @@ CModel_cube::CModel_cube(int layout, glm::vec3 size, glm::vec3 color) : CModel(G
 
 
 	for (int i = 0; i < 6; ++i) {
-		gUv.emplace_back(glm::vec3{ 1,0,i });
-		gUv.emplace_back(glm::vec3{ 1,1,i });
-		gUv.emplace_back(glm::vec3{ 0,1,i });
-		gUv.emplace_back(glm::vec3{ 0,1,i });
+		gUv.emplace_back(glm::vec3{ nVerticalRepeat,0,i });
+		gUv.emplace_back(glm::vec3{ nVerticalRepeat,nHoriziontalRepeat,i });
+		gUv.emplace_back(glm::vec3{ 0,nHoriziontalRepeat,i });
+		gUv.emplace_back(glm::vec3{ 0,nHoriziontalRepeat,i });
 		gUv.emplace_back(glm::vec3{ 0,0,i });
-		gUv.emplace_back(glm::vec3{ 1,0,i });
+		gUv.emplace_back(glm::vec3{ nVerticalRepeat,0,i });
 	}
 }
