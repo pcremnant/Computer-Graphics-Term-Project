@@ -72,7 +72,7 @@ GLvoid Reshape(int w, int h) {							// 콜백 함수: 다시 그리기
 
 GLvoid Keyboard(unsigned char key, int x, int y)		// 키보드 콜백함수
 {
-	pFramework->GetKeaboardInput(key);
+	pFramework->GetKeyboardInput(key);
 	glutPostRedisplay();
 }
 

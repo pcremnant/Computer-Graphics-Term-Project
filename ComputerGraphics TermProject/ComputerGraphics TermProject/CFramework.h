@@ -1,8 +1,10 @@
 #pragma once
 
-#include "CScene_main.h"
-//#include "CScene_battle.h"
 #include <stack>
+#include "CScene_main.h"
+#include "CScene_puase.h"
+
+//#include "CScene_battle.h"
 
 class CFramework {
 private:
@@ -27,12 +29,19 @@ public:
 			stack_Scene.top()->Exit();
 			switch (next.second) {
 			case SCENE_TYPE_MAIN:
+				while (!stack_Scene.empty())
+					stack_Scene.pop();
 				stack_Scene.push(new CScene_main());
 				break;
 			case SCENE_TYPE_BATTLE:
+				//while (!stack_Scene.empty())
+				//	stack_Scene.pop();
 				// 배틀 씬 넣어주기
 				//stack_Scene.push(new CScene_battle());
-			break;
+				break;
+			case SCENE_TYPE_PAUSE:
+				stack_Scene.push(new CScene_pause());
+				break;
 			}
 			stack_Scene.top()->Enter();
 
@@ -47,6 +56,8 @@ public:
 					stack_Scene.pop();
 				PostQuitMessage(0);
 				break;
+			default:
+				break;
 			}
 			if (stack_Scene.size() <= 0)
 				PostQuitMessage(0);
@@ -60,6 +71,12 @@ public:
 			case SCENE_TYPE_MAIN:
 				stack_Scene.push(new CScene_main());
 				break;
+			case SCENE_TYPE_BATTLE:
+				// 배틀 씬 추가
+				break;
+			case SCENE_TYPE_PAUSE:
+				stack_Scene.push(new CScene_pause());
+				break;
 			}
 			stack_Scene.top()->Enter();
 			break;
@@ -70,8 +87,8 @@ public:
 	void Draw() {
 		stack_Scene.top()->Draw();
 	}
-	void GetKeaboardInput(unsigned char key) {
-		stack_Scene.top()->GetKeaboardInput(key);
+	void GetKeyboardInput(unsigned char key) {
+		stack_Scene.top()->GetKeyboardInput(key);
 	}
 	void GetMouseInput(int button, int state, int x, int y) {
 		stack_Scene.top()->GetMouseInput(button, state, x, y);

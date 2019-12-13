@@ -29,27 +29,12 @@ void CScene_main::Draw() {
 	pObjectManager->Draw();
 }
 
-void CScene_main::GetKeaboardInput(unsigned char key) {
+void CScene_main::GetKeyboardInput(unsigned char key) {
 	// 테스트용 코드!
 	// 나중에 제대로 된 값으로 넣을 것
 	switch (key) {
-	case '5':
-		break;
-	case '6':
-		if (pObjectManager->GetObjects().size() != 0)
-			pObjectManager->DeleteObject(pObjectManager->GetObjects()[0]);
-		break;
 	case '1':
-		next = SetNextScene(FRAMEWORK_ACTION_POP, SCENE_TYPE_QUIT);
-		break;
-	case '2':
-		next = SetNextScene(FRAMEWORK_ACTION_PUSH, SCENE_TYPE_MAIN);
-		break;
-	case '3':
-		next = SetNextScene(FRAMEWORK_ACTION_POP, SCENE_TYPE_NONE);
-		break;
-	case '4':
-		next = SetNextScene(FRAMEWORK_ACTION_CHANGE, SCENE_TYPE_MAIN);
+		next = SetNextScene(FRAMEWORK_ACTION_PUSH, SCENE_TYPE_PAUSE);
 		break;
 	}
 	pObjectManager->GetKeyboard(key);

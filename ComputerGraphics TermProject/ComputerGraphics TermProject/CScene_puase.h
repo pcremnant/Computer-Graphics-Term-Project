@@ -1,11 +1,11 @@
 #pragma once
 #include "CScene.h"
 
-class CScene_main : public CScene {
+class CScene_pause : public CScene {
 protected:
 	glm::mat4 sceneProjection;
 public:
-	CScene_main();
+	CScene_pause();
 	virtual void Enter();
 	virtual void Exit();
 	virtual void Update();

@@ -12,6 +12,8 @@
 #define SCENE_TYPE_NONE -1
 #define SCENE_TYPE_MAIN 0
 #define SCENE_TYPE_BATTLE 1
+#define SCENE_TYPE_PAUSE 2
+#define SCENE_TYPE_HELP 3
 
 
 
@@ -26,7 +28,7 @@ public:
 	virtual void Exit() = 0;
 	virtual void Update() = 0;
 	virtual void Draw() = 0;
-	virtual void GetKeaboardInput(unsigned char key);
+	virtual void GetKeyboardInput(unsigned char key);
 	virtual void GetMouseInput(int button, int state, int x, int y);
 	virtual void GetMouseMotionInput(int x, int y);
 	std::pair<int, int> SetNextScene(int FrameworkAction, int SceneType);

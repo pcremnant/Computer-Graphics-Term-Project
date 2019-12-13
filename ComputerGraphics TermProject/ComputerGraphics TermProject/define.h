@@ -29,6 +29,11 @@
 #define MAIN_SCENE_START 0
 #define MAIN_SCENE_QUIT 1
 
+#define PAUSE_SCENE_NONE 0
+#define PAUSE_SCENE_RESUME 1
+#define PAUSE_SCENE_QUIT 2
+
+
 #define NONE_COLLISION_CHECK -1000
 
 typedef std::vector<glm::vec4> vec4Buffer;

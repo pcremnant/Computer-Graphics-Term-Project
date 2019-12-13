@@ -1,7 +1,7 @@
 #include "CObject_light.h"
 #include "CModel_cube.h"
 
-CObject_light::CObject_light(CCamera& cam, glm::vec3 size, glm::vec3 pos, glm::vec3 color, glm::mat4 proj) : CObject(cam, pos, proj) {
+CObject_light::CObject_light(CCamera& cam, glm::vec3 size, glm::vec3 pos, glm::vec3 color, float power, glm::mat4 proj) : CObject(cam, pos, proj), fLightPower(power) {
 	vector_Model.emplace_back(std::make_unique <CModel_cube>(3, size, color));
 	vector_ModelPosition.emplace_back(glm::vec3{ 0,0,0 });
 
@@ -43,4 +43,8 @@ void CObject_light::GetKeyboard(unsigned int key)
 		bLightOn = !bLightOn;
 		break;
 	}
+}
+
+float CObject_light::GetLightPower() const {
+	return fLightPower;
 }

@@ -12,7 +12,7 @@ CObject_PauseResumegame::CObject_PauseResumegame(CCamera& cam, glm::vec3 size, g
 	std::vector<const char*> t;
 	std::vector<std::pair<int, int>> sz;
 
-	t.emplace_back("./resource/texture/main_quit.bmp");
+	t.emplace_back("./resource/texture/pause_resume.bmp");
 	sz.emplace_back(256, 256);
 
 	AddTexture(0, t, sz);
@@ -20,7 +20,7 @@ CObject_PauseResumegame::CObject_PauseResumegame(CCamera& cam, glm::vec3 size, g
 	CreateShader();
 
 	inBox = false;
-	type = MAIN_SCENE_QUIT;
+	type = PAUSE_SCENE_RESUME;
 	clicked = false;
 }
 
@@ -34,7 +34,6 @@ void CObject_PauseResumegame::Update(glm::vec3 lightPos, glm::vec3 lightColor, f
 
 		if (inBox) {
 			scale = glm::scale(glm::vec3{ 1.5,1.1,1 });
-			translate_world = glm::translate(translate_world, glm::vec3{ 60,0,0 });
 		}
 		translate = translate_world * translate_model * scale;
 		vector_Shader[i]->Update(translate, vector_Buffer[i].get(), lightPos, lightColor, lightPower);

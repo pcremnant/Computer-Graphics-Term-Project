@@ -5,7 +5,7 @@ CScene::CScene() {
 	next = std::make_pair(FRAMEWORK_ACTION_STAY, SCENE_TYPE_NONE);
 }
 
-void CScene::GetKeaboardInput(unsigned char key) {
+void CScene::GetKeyboardInput(unsigned char key) {
 	pObjectManager->GetKeyboard(key);
 }
 void CScene::GetMouseInput(int button, int state, int x, int y) {
