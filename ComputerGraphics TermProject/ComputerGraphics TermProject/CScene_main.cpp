@@ -12,7 +12,7 @@ CScene_main::CScene_main() : CScene() {
 	pObjectManager->AddObject(new CObject_MainBackground(camera, glm::vec3{ WINDOW_WIDTH/2,WINDOW_HEIGHT/2,0 }, glm::vec3{ 0,0,0 }, sceneProjection));
 	pObjectManager->AddObject(new CObject_MainStartgame(camera, glm::vec3{ 100,40,0 }, glm::vec3{ -300,-100,1 }, sceneProjection));
 	pObjectManager->AddObject(new CObject_MainQuitgame(camera, glm::vec3{ 100,40,0 }, glm::vec3{ -300,-200,1 }, sceneProjection));
-	pObjectManager->AddObject(new CObject_Particle(camera, glm::vec3{ 40,40,0 }, glm::vec3{ 0,0,1 }, sceneProjection));
+	//pObjectManager->AddObject(new CObject_Particle(camera, glm::vec3{ 40,40,0 }, glm::vec3{ 0,0,1 }, sceneProjection));
 }
 
 void CScene_main::Update() {
@@ -45,6 +45,14 @@ void CScene_main::GetKeyboardInput(unsigned char key) {
 }
 
 void CScene_main::GetMouseInput(int button, int state, int x, int y) {
+	if (button == GLUT_LEFT_BUTTON) {
+		if (state == GLUT_DOWN) {
+			int worldX = x - WINDOW_WIDTH / 2;
+			int worldY = WINDOW_HEIGHT / 2 - y;
+			pObjectManager->AddObject(UI_Particle::CreateParticle(PARTICLE_EXPLOSION_1, camera, glm::vec3{ 40,40,0 }, glm::vec3{ worldX,worldY,1 }, sceneProjection));
+		}
+	}
+	
 	pObjectManager->GetMouse(button, state, x, y);
 }
 void CScene_main::GetMouseMotionInput(int x, int y) {

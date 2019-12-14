@@ -1,5 +1,6 @@
 #pragma once
 #include "CScene.h"
+#include "UI_Particle.h"
 
 class CScene_main : public CScene {
 protected:
