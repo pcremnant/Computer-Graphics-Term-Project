@@ -31,6 +31,8 @@ public:
 	glm::vec3& GetAt();
 	glm::vec3& GetUp();
 	vec3Buffer& GetCamera();
+	float GetAngleY() const;
+	float GetAngleZ() const;
 	glm::mat4 GetCameraProj();
 	void UpdateCamera();
 	void Move(unsigned char key);

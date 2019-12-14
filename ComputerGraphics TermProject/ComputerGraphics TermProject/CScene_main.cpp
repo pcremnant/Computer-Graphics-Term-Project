@@ -3,13 +3,17 @@
 #include "CObject_MainStartgame.h"
 #include "CObject_MainQuitgame.h"
 
+#include "CObject_particle.h"
+
 CScene_main::CScene_main() : CScene() {
 	std::cout << "main scene create!" << std::endl;
-	sceneProjection = ORTHO;
+	//sceneProjection = ORTHO;
+	sceneProjection =ORTHO;
 	pObjectManager = new CObjectManager(camera);
 	pObjectManager->AddObject(new CObject_MainBackground(camera, glm::vec3{ WINDOW_WIDTH/2,WINDOW_HEIGHT/2,0 }, glm::vec3{ 0,0,0 }, sceneProjection));
 	pObjectManager->AddObject(new CObject_MainStartgame(camera, glm::vec3{ 100,40,0 }, glm::vec3{ -300,-100,1 }, sceneProjection));
 	pObjectManager->AddObject(new CObject_MainQuitgame(camera, glm::vec3{ 100,40,0 }, glm::vec3{ -300,-200,1 }, sceneProjection));
+	pObjectManager->AddObject(new CObject_Particle(camera, glm::vec3{ 40,40,0 }, glm::vec3{ 0,0,1 }, sceneProjection));
 }
 
 void CScene_main::Update() {
@@ -32,6 +36,7 @@ void CScene_main::Draw() {
 void CScene_main::GetKeyboardInput(unsigned char key) {
 	// 테스트용 코드!
 	// 나중에 제대로 된 값으로 넣을 것
+	camera.Move(key);
 	switch (key) {
 	case '1':
 		next = SetNextScene(FRAMEWORK_ACTION_PUSH, SCENE_TYPE_PAUSE);

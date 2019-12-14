@@ -258,7 +258,7 @@ void CShader::DrawObject(std::vector<GLuint>& pIndex, GLuint DrawType)
 	glDrawElements(DrawType, pIndex.size(), GL_UNSIGNED_INT, &pIndex[0]);
 }
 
-void CShader::Update(glm::mat4 world, std::vector<glm::vec3>* pBuf, glm::vec3 lightPos, glm::vec3 lightColor, float lightPower)
+void CShader::Update(glm::mat4 world, std::vector<glm::vec3>* pBuf, glm::vec3 lightPos, glm::vec3 lightColor, float lightPower, glm::vec3 bgColor)
 {
 	glUseProgram(glShaderProgramID);
 	glm::mat4 mul = Projection * camera.GetCameraProj() * world;
@@ -278,6 +278,9 @@ void CShader::Update(glm::mat4 world, std::vector<glm::vec3>* pBuf, glm::vec3 li
 	int lightPowerLocation = glGetUniformLocation(glShaderProgramID, "lightPower");
 	glUniform1f(lightPowerLocation, lightPower);
 
+	int bgColorLocation = glGetUniformLocation(glShaderProgramID, "bgColor");
+	glUniform3f(bgColorLocation, bgColor.r, bgColor.g, bgColor.b);
+
 	glBindVertexArray(VAO);
 	for (int i = 0; i < glm::min((GLuint)LAYOUT_UV, nLayoutSize); ++i) {
 		BindVBO(pBuf[i], VBO, i);
@@ -286,7 +289,7 @@ void CShader::Update(glm::mat4 world, std::vector<glm::vec3>* pBuf, glm::vec3 li
 	}
 }
 
-void CShader::Update(glm::mat4 world, std::vector<glm::vec3>* pBuf, std::vector<glm::vec3> lightPos, std::vector<glm::vec3> lightColor, std::vector<float> lightPower)
+void CShader::Update(glm::mat4 world, std::vector<glm::vec3>* pBuf, std::vector<glm::vec3> lightPos, std::vector<glm::vec3> lightColor, std::vector<float> lightPower, glm::vec3 bgColor)
 {
 	glUseProgram(glShaderProgramID);
 	glm::mat4 mul = Projection * camera.GetCameraProj() * world;
@@ -305,6 +308,9 @@ void CShader::Update(glm::mat4 world, std::vector<glm::vec3>* pBuf, std::vector<
 
 	int lightPowerLocation = glGetUniformLocation(glShaderProgramID, "lightPower");
 	glUniform1fv(lightPowerLocation, 4, &lightPower[0]);
+
+	int bgColorLocation = glGetUniformLocation(glShaderProgramID, "bgColor");
+	glUniform3f(bgColorLocation, bgColor.r, bgColor.g, bgColor.b);
 
 	glBindVertexArray(VAO);
 	for (int i = 0; i < glm::min((GLuint)LAYOUT_UV, nLayoutSize); ++i) {

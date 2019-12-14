@@ -88,7 +88,7 @@ public:
 		return true;
 	}
 
-	void CheckCollision(std::vector<CObject*> objects, std::vector<CObject*> others) {
+	void CheckCollision(std::vector<CObject*>& objects, std::vector<CObject*>& others) {
 		for (auto iter : objects) {
 			std::vector<float> box = iter->GetBoundingBox();
 			for (auto other : others) {
