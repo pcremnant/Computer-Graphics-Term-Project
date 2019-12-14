@@ -24,6 +24,7 @@ glm::vec3& CCamera::GetEye() { return vector_Camera[CAMERA_EYE]; }
 glm::vec3& CCamera::GetAt() { return vector_Camera[CAMERA_AT]; }
 glm::vec3& CCamera::GetUp() { return vector_Camera[CAMERA_UP]; }
 vec3Buffer& CCamera::GetCamera() { return vector_Camera; }
+glm::vec3 CCamera::GetDirection() { return (vector_Camera[CAMERA_AT] - vector_Camera[CAMERA_EYE]); }
 float CCamera::GetAngleY() const { return float_AngleY; }
 float CCamera::GetAngleZ() const { return float_AngleX; }
 glm::mat4 CCamera::GetCameraProj() {

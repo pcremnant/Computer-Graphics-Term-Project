@@ -35,8 +35,10 @@ public:
 	virtual void Update(std::vector<glm::vec3> lightPos = std::vector<glm::vec3>(), std::vector<glm::vec3> lightColor = std::vector<glm::vec3>(), std::vector<float> lightPower = std::vector<float>());
 	virtual void GetMouse(int button, int state, int x, int y);
 	virtual void GetMouseMotion(int x, int y);
+	virtual void GetSpecialKeyboard(int key);
 
 	virtual std::vector<float> GetBoundingBox();
+	virtual void ChangeFov(glm::mat4 proj = PROJ(60.f));
 
 	virtual void Collide(int type = 0);
 	int GetType() const;

@@ -36,4 +36,5 @@ public:
 	// UI 로딩시 부르는 업데이트
 	void Update(glm::vec3 bgColor = glm::vec3{ 1,1,1 }, glm::mat4 world = glm::mat4{ 1.0, }, std::vector<glm::vec3>* pBuf = nullptr);
 	void UseProgram();
+	void ChangeFov(glm::mat4 proj);
 };

@@ -126,3 +126,15 @@ int CObject::GetType() const
 {
 	return int_Type;
 }
+
+void CObject::ChangeFov(glm::mat4 proj) {
+	mat_Projection = proj;
+	for (int i = 0; i < vector_Model.size(); ++i) {
+		vector_Shader[i]->ChangeFov(proj);
+	}
+}
+
+void CObject::GetSpecialKeyboard(int key)
+{
+
+}

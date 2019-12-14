@@ -346,3 +346,7 @@ void CShader::UseProgram()
 {
 	glUseProgram(glShaderProgramID);
 }
+
+void CShader::ChangeFov(glm::mat4 proj) {
+	Projection = proj;
+}

@@ -95,6 +95,11 @@ public:
 		return true;
 	}
 
+	void ChangeFov(glm::mat4 proj) {
+		for (auto iter : vector_Objects)
+			iter->ChangeFov(proj);
+	}
+
 	void CheckCollision(std::vector<CObject*>& objects, std::vector<CObject*>& others) {
 		for (auto iter : objects) {
 			std::vector<float> box = iter->GetBoundingBox();

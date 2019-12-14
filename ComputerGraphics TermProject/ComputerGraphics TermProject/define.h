@@ -51,3 +51,14 @@ extern GLclampf cBackground_blue;
 
 // »ö»ó ·£´ý ¼³Á¤
 void SetRandomColor(GLclampf& r, GLclampf& g, GLclampf& b);
+
+//¹èÆ²¾À 
+#define ZOOM_IN 40.f
+#define ZOOM_OUT 70.f
+#define ZOOM_SPEED 1.f
+
+#define COLLISION_BULLET 1
+#define COLLISION_ENEMY 2
+#define COLLISION_FLOOR 3
+
+#define MAPSIZE 10

@@ -1,5 +1,9 @@
 #include "CFramework.h"
 
+#include "CScene_main.h"
+#include "CScene_puase.h"
+#include "CScene_battle.h"
+
 CFramework::CFramework() {
 	stack_Scene.push(new CScene_main());
 	stack_Scene.top()->Enter();
@@ -26,10 +30,9 @@ void CFramework::Update() {
 			stack_Scene.push(new CScene_main());
 			break;
 		case SCENE_TYPE_BATTLE:
-			//while (!stack_Scene.empty())
-			//	stack_Scene.pop();
-			// 배틀 씬 넣어주기
-			//stack_Scene.push(new CScene_battle());
+			while (!stack_Scene.empty())
+				stack_Scene.pop();
+			stack_Scene.push(new CScene_battle());
 			break;
 		case SCENE_TYPE_PAUSE:
 			stack_Scene.push(new CScene_pause());

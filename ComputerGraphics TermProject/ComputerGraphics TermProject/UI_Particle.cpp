@@ -7,8 +7,6 @@
 class UI_Particle {
 private:
 public:
-	UI_Particle() {
-		// 파티클 1
-	}
-	// uv값이 512/5 * frame이 되어야 함
+	UI_Particle() {}
+
 };

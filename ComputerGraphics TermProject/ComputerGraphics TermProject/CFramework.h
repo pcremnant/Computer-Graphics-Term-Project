@@ -1,10 +1,7 @@
 #pragma once
 
 #include <stack>
-
-#include "CScene_main.h"
-#include "CScene_puase.h"
-//#include "CScene_battle.h"
+#include "CScene.h"
 
 class CFramework {
 private:
