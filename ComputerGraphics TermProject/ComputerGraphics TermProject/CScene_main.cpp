@@ -7,7 +7,6 @@
 
 CScene_main::CScene_main() : CScene() {
 	std::cout << "main scene create!" << std::endl;
-	//sceneProjection = ORTHO;
 	sceneProjection =ORTHO;
 	pObjectManager = new CObjectManager(camera);
 	pObjectManager->AddObject(new CObject_MainBackground(camera, glm::vec3{ WINDOW_WIDTH/2,WINDOW_HEIGHT/2,0 }, glm::vec3{ 0,0,0 }, sceneProjection));

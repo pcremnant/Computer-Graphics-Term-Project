@@ -19,8 +19,15 @@ public:
 	CObjectManager(CCamera& cam) : camera(cam) { }
 
 	void Update(glm::vec3 lightPos = glm::vec3{ 0,0,0 }, glm::vec3 lightColor = glm::vec3{ 1,1,1 }, float lightPower = 1000.f) {
+
 		for (auto iter : vector_Objects)
 			iter->Update(lightPos, lightColor, lightPower);
+
+		for (int i = 0; i < vector_Objects.size();++i) {
+			if (vector_Objects[i]->IsDelete()) {
+				DeleteObject(vector_Objects[i]);
+			}
+		}
 	}
 
 	void Update(std::vector<glm::vec3> lightPos, std::vector<glm::vec3> lightColor, std::vector<float> lightPower) {

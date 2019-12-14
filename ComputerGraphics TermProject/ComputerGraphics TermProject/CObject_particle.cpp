@@ -5,6 +5,7 @@ CObject_Particle::CObject_Particle(CCamera& cam, glm::vec3 size, glm::vec3 pos, 
 	bool_Delete = false;
 	frameNumber = std::make_pair(5, 5);
 	int_Frame = 0;
+	int_Timer = frameNumber.first * frameNumber.second - 1;
 
 	vector_Model.emplace_back(std::make_unique<CModel_plane>(LAYOUT_UI, size));
 
@@ -29,9 +30,10 @@ CObject_Particle::CObject_Particle(CCamera& cam, glm::vec3 size, glm::vec3 pos, 
 void CObject_Particle::Update(glm::vec3 lightPos, glm::vec3 lightColor, float lightPower)
 {
 	int_Frame++;
-	if (int_Frame >= frameNumber.first * frameNumber.second - 1)
+	if (int_Frame >= int_Timer) {
 		int_Frame = 0;
-
+		bool_Delete = true;
+	}
 	vector_Model[0]->SetFrame(int_Frame, frameNumber);
 
 	vector_Buffer.clear();
