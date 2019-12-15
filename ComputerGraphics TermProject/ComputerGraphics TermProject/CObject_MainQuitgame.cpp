@@ -34,7 +34,7 @@ void CObject_MainQuitgame::Update(glm::vec3 lightPos, glm::vec3 lightColor, floa
 
 		if (inBox) {
 			scale = glm::scale(glm::vec3{ 1.5,1.1,1 });
-			translate_world = glm::translate(translate_world, glm::vec3{ 60,0,0 });
+			//translate_world = glm::translate(translate_world, glm::vec3{ 60,0,0 });
 		}
 		translate = translate_world * translate_model * scale;
 		vector_Shader[i]->Update(glm::vec3{ 1,1,1 }, translate, vector_Buffer[i].get());
@@ -66,5 +66,4 @@ void CObject_MainQuitgame::GetMouseMotion(int x, int y) {
 	}
 	else
 		inBox = false;
-
 }
