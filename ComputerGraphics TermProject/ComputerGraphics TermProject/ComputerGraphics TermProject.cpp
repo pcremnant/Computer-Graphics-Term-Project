@@ -80,7 +80,7 @@ GLvoid TimerFunction(int value)							// 타이머 콜백함수
 {
 	pFramework->Update();
 	glutPostRedisplay();
-	glutTimerFunc(20, TimerFunction, 1);
+	glutTimerFunc(40, TimerFunction, 1);
 }
 
 GLvoid Mouse(int button, int state, int x, int y)			// 마우스 콜백함수

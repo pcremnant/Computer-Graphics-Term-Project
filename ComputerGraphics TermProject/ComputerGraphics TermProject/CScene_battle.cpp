@@ -54,7 +54,7 @@ void CScene_battle::Update() {
 	}
 	pLightObjectManager->Update();
 
-	dynamic_cast<CObject_light*>(pLightObjectManager->GetObjects()[0])->SetLightPower(LIGHT_POWER_NIGHT + (float)int_Timer / (float)LIGHT_TIMER * LIGHT_POWER_DAY);
+	
 
 	if (bool_Night) {
 		if (int_Timer <= 0) {
@@ -62,6 +62,7 @@ void CScene_battle::Update() {
 			if (int_StopTimer >= LIGHT_STOP_TIMER) {
 				bool_Night = false;
 				int_StopTimer = 0;
+				dynamic_cast<CObject_light*>(pLightObjectManager->GetObjects()[0])->SetLightPower(LIGHT_POWER_NIGHT + (float)int_Timer / (float)LIGHT_TIMER * LIGHT_POWER_DAY);
 			}
 		}
 		else
@@ -73,6 +74,7 @@ void CScene_battle::Update() {
 			if (int_StopTimer >= LIGHT_STOP_TIMER) {
 				bool_Night = true;
 				int_StopTimer = 0;
+				dynamic_cast<CObject_light*>(pLightObjectManager->GetObjects()[0])->SetLightPower(LIGHT_POWER_NIGHT + (float)int_Timer / (float)LIGHT_TIMER * LIGHT_POWER_DAY);
 			}
 		}
 		else
@@ -228,13 +230,9 @@ void CScene_battle::CheckCollision() {
 	for (auto iter : tmpPosition)
 		vector_ParticlePosition.emplace_back(iter);
 
-	tmpPosition = pObjectManager->CheckCollision(object_Enemy, object_Barrigate);
-	for (auto iter : tmpPosition)
-		vector_ParticlePosition.emplace_back(iter);
+	pObjectManager->CheckCollision(object_Enemy, object_Barrigate);
+	pObjectManager->CheckCollision(object_Enemy, object_Obstacle);
 
-	tmpPosition = pObjectManager->CheckCollision(object_Enemy, object_Obstacle);
-	for (auto iter : tmpPosition)
-		vector_ParticlePosition.emplace_back(iter);
 }
 
 void CScene_battle::CheckDelete() {
@@ -281,7 +279,7 @@ void CScene_battle::MakeBarrigate() {
 	CObject_cube* second_Barrigate = new CObject_cube(camera, glm::vec3{ 10,5,0.5 }, glm::vec3{ 0,0,4 }, sceneProjection);
 	object_Barrigate.push_back(second_Barrigate);
 	pObjectManager->AddObject(second_Barrigate);
-	CObject_Obstacle* obstacle = new CObject_Obstacle(camera, glm::vec3{ 2,6,0.5 }, glm::vec3{ 0,0,-15 }, sceneProjection);
+	CObject_Obstacle* obstacle = new CObject_Obstacle(camera, glm::vec3{ 1,3,1 }, glm::vec3{ 0,3,-13 }, sceneProjection);
 	object_Obstacle.push_back(obstacle);
 	pObjectManager->AddObject(obstacle);
 }

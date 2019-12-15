@@ -20,12 +20,12 @@ CObject_cube::CObject_cube(CCamera& cam, glm::vec3 size, glm::vec3 pos, glm::mat
 	s.emplace_back("resource/texture/wall.bmp");
 	s.emplace_back("resource/texture/wall.bmp");
 	s.emplace_back("resource/texture/wall.bmp");
-	z.emplace_back(1024,1024);
-	z.emplace_back(1024,1024);
-	z.emplace_back(1024,1024);
-	z.emplace_back(1024,1024);
-	z.emplace_back(1024,1024);
-	z.emplace_back(1024,1024);
+	z.emplace_back(512,512);
+	z.emplace_back(512,512);
+	z.emplace_back(512,512);
+	z.emplace_back(512,512);
+	z.emplace_back(512,512);
+	z.emplace_back(512,512);
 	AddTexture(0, s, z);
 
 	CreateShader();
@@ -130,25 +130,25 @@ CObject_Obstacle::CObject_Obstacle(CCamera& cam, glm::vec3 size, glm::vec3 pos, 
 
 	std::vector<const char*> s;
 	std::vector<std::pair<int, int>> z;
-	s.emplace_back("resource/texture/wall.bmp");
-	s.emplace_back("resource/texture/wall.bmp");
-	s.emplace_back("resource/texture/wall.bmp");
-	s.emplace_back("resource/texture/wall.bmp");
-	s.emplace_back("resource/texture/wall.bmp");
-	s.emplace_back("resource/texture/wall.bmp");
-	z.emplace_back(1024, 1024);
-	z.emplace_back(1024, 1024);
-	z.emplace_back(1024, 1024);
-	z.emplace_back(1024, 1024);
-	z.emplace_back(1024, 1024);
-	z.emplace_back(1024, 1024);
+	s.emplace_back("./resource/texture/wall.bmp");
+	z.emplace_back(512, 512);
 	AddTexture(0, s, z);
 
 	CreateShader();
-
 }
 
 void CObject_Obstacle::Update(glm::vec3 lightPos, glm::vec3 lightColor, float lightPower)
+{
+	for (int i = 0; i < vector_Model.size(); ++i) {
+		glm::mat4 translate = glm::mat4{ 1, };
+		glm::mat4 translate_model = glm::translate(vector_ModelPosition[i]);
+		glm::mat4 translate_world = glm::translate(vec3_WorldPosition);
+		translate = translate_world * translate_model;
+		vector_Shader[i]->Update(translate, vector_Buffer[i].get(), lightPos, lightColor, lightPower);
+	}
+}
+
+void CObject_Obstacle::Update(std::vector<glm::vec3> lightPos, std::vector<glm::vec3> lightColor, std::vector<float> lightPower)
 {
 	for (int i = 0; i < vector_Model.size(); ++i) {
 		glm::mat4 translate = glm::mat4{ 1, };
@@ -213,7 +213,7 @@ std::vector<float> CObject_Obstacle::GetBoundingBox() {
 	}
 
 	// 벡터에 값 넣고 리턴w
-	std::vector<float> collisionbox;
+ 	std::vector<float> collisionbox;
 	collisionbox.emplace_back(minX);
 	collisionbox.emplace_back(maxX);
 	collisionbox.emplace_back(minY);

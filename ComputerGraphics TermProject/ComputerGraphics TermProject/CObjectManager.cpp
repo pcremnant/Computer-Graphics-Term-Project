@@ -98,7 +98,7 @@ std::vector<glm::vec3> CObjectManager::CheckCollision(std::vector<CObject*>& obj
 		for (auto other : others) {
 			std::vector<float> other_box = other->GetBoundingBox();
 			if (IsCollide(box, other_box)) {
-				collidePosition.emplace_back(iter->GetWorldPosition());
+				collidePosition.emplace_back(iter->GetWorldPosition() + glm::vec3{ 0,0,0.1 });
 				iter->Collide(other->GetType());
 				other->Collide(iter->GetType());
 			}

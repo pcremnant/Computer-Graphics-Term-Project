@@ -86,11 +86,11 @@ CModel_cube::CModel_cube(int layout, glm::vec3 size, glm::vec3 color, int horizo
 
 
 	for (int i = 0; i < 6; ++i) {
-		gUv.emplace_back(glm::vec3{ nVerticalRepeat,0,i });
-		gUv.emplace_back(glm::vec3{ nVerticalRepeat,nHoriziontalRepeat,i });
-		gUv.emplace_back(glm::vec3{ 0,nHoriziontalRepeat,i });
-		gUv.emplace_back(glm::vec3{ 0,nHoriziontalRepeat,i });
-		gUv.emplace_back(glm::vec3{ 0,0,i });
-		gUv.emplace_back(glm::vec3{ nVerticalRepeat,0,i });
+		gUv.emplace_back(glm::vec3{ nVerticalRepeat,0,0 });
+		gUv.emplace_back(glm::vec3{ nVerticalRepeat,nHoriziontalRepeat,0 });
+		gUv.emplace_back(glm::vec3{ 0,nHoriziontalRepeat,0 });
+		gUv.emplace_back(glm::vec3{ 0,nHoriziontalRepeat,0 });
+		gUv.emplace_back(glm::vec3{ 0,0,0 });
+		gUv.emplace_back(glm::vec3{ nVerticalRepeat,0,0 });
 	}
 }
