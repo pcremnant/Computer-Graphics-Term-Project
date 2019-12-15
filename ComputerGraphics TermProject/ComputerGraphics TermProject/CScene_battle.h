@@ -8,6 +8,7 @@
 #include "CObject_aim.h"
 #include "CObject_cube.h"
 //#include <memory>
+#define BULLET_NUM_MAX 4
 
 class DrawNumObject
 {
@@ -36,6 +37,7 @@ private:
 class CScene_battle : public CScene {
 protected:
 	glm::mat4 sceneProjection;
+	short bullet_num;
 	int int_Count;
 	bool isZoom;
 	float float_ZoomSize;

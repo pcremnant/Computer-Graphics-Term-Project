@@ -4,6 +4,7 @@
 
 CScene_battle::CScene_battle() : CScene() {
 	std::cout << "battle scene create!" << std::endl;
+	bullet_num = BULLET_NUM_MAX;
 	int_Count = 0;
 	isZoom = false;
 	float_ZoomSize = 70.f;
@@ -34,7 +35,7 @@ void CScene_battle::Update() {
 	CheckCollision();
 	CheckDelete();
 
-	if (int_Count % 100 == 0) //利 胶迄 后档
+	if (int_Count % 200 == 0) //利 胶迄 后档
 		Spawn();
 
 	int type = pObjectManager->GetState();
@@ -68,6 +69,7 @@ void CScene_battle::Draw() {
 		ptrDrawNum->drawInt(0, 0.7, 0.9, 0.1, 0, 1, 0);
 		ptrDrawNum->drawInt(0, 0.7, 0.75, 0.1, 0, 1, 0);
 	}
+	ptrDrawNum->drawInt(bullet_num, 0.7, -0.9, 0.1, 0, 1, 1);
 	ptrDrawNum->drawEnd();
 
 }
@@ -77,6 +79,9 @@ void CScene_battle::GetKeyboardInput(unsigned char key) {
 	case 27:
 		next = SetNextScene(FRAMEWORK_ACTION_PUSH, SCENE_TYPE_PAUSE);
 		break;
+	case 'r':
+	case 'R':
+		bullet_num = BULLET_NUM_MAX;
 	}
 	camera.Move(key);
 	pObjectManager->GetKeyboard(key);
@@ -94,9 +99,12 @@ void CScene_battle::GetMouseInput(int button, int state, int x, int y) {
 	}
 	if (button == GLUT_LEFT_BUTTON) {
 		if (state == GLUT_DOWN) {
-			CObject_bullet* new_Bullet = new CObject_bullet(camera, glm::vec3{ 0.1,0.1,0.1 }, camera.GetEye(), sceneProjection);
-			object_Bullet.push_back(new_Bullet);
-			pObjectManager->AddObject(new_Bullet);
+			if (bullet_num > 0) {
+				CObject_bullet* new_Bullet = new CObject_bullet(camera, glm::vec3{ 0.1,0.1,0.1 }, camera.GetEye(), sceneProjection);
+				object_Bullet.push_back(new_Bullet);
+				pObjectManager->AddObject(new_Bullet);
+				bullet_num--;
+			}
 		}
 	}
 	pObjectManager->GetMouse(button, state, x, y);
@@ -116,9 +124,9 @@ void CScene_battle::Exit() {
 void CScene_battle::Spawn() {
 	std::random_device rnd;
 	std::mt19937 rn(rnd());
-	std::uniform_int<> distribution(0, 10);
-	int xpos = distribution(rn) - 5;
-	CObject_enemy* new_Enemy = new CObject_enemy(camera, glm::vec3{ 0.1,0.1,0.1 }, glm::vec3{ xpos,0, -MAPSIZE - 5 }, sceneProjection);
+	std::uniform_int<> distribution(0, 16);
+	int xpos = distribution(rn) - 8;
+	CObject_enemy* new_Enemy = new CObject_enemy(camera, glm::vec3{ 0.2,0.2,0.2 }, glm::vec3{ xpos,0, -MAPSIZE*2 - 5 }, sceneProjection);
 	object_Enemy.push_back(new_Enemy);
 	pObjectManager->AddObject(new_Enemy);
 }
@@ -148,22 +156,22 @@ void CScene_battle::DeleteObject(std::vector<CObject*> &objects) {
 }
 
 void CScene_battle::MakeFloor() {
-	CObject_DownFloor* dn_Floor = new CObject_DownFloor(camera, glm::vec3{ MAPSIZE,0,MAPSIZE }, glm::vec3{ 0,0,-5 }, sceneProjection);
+	CObject_DownFloor* dn_Floor = new CObject_DownFloor(camera, glm::vec3{ MAPSIZE,0,2 * MAPSIZE }, glm::vec3{ 0,0,-5 }, sceneProjection);
 	object_Floor.push_back(dn_Floor);
 	pObjectManager->AddObject(dn_Floor);
-	CObject_UpFloor* up_Floor = new CObject_UpFloor(camera, glm::vec3{ MAPSIZE,0,MAPSIZE }, glm::vec3{ 0,MAPSIZE * 2,-5 }, sceneProjection);
+	CObject_UpFloor* up_Floor = new CObject_UpFloor(camera, glm::vec3{ MAPSIZE,0,2 * MAPSIZE }, glm::vec3{ 0,MAPSIZE * 2,-5 }, sceneProjection);
 	object_Floor.push_back(up_Floor);
 	pObjectManager->AddObject(up_Floor);
-	CObject_LeftFloor* lf_Floor = new CObject_LeftFloor(camera, glm::vec3{ 0,MAPSIZE,MAPSIZE }, glm::vec3{ -MAPSIZE,MAPSIZE,-5 }, sceneProjection);
+	CObject_LeftFloor* lf_Floor = new CObject_LeftFloor(camera, glm::vec3{ 0,MAPSIZE,2 * MAPSIZE }, glm::vec3{ -MAPSIZE,MAPSIZE,-5 }, sceneProjection);
 	object_Floor.push_back(lf_Floor);
 	pObjectManager->AddObject(lf_Floor);
-	CObject_RightFloor* rt_Floor = new CObject_RightFloor(camera, glm::vec3{ 0,MAPSIZE,MAPSIZE }, glm::vec3{ MAPSIZE,MAPSIZE,-5 }, sceneProjection);
+	CObject_RightFloor* rt_Floor = new CObject_RightFloor(camera, glm::vec3{ 0,MAPSIZE,2 * MAPSIZE }, glm::vec3{ MAPSIZE,MAPSIZE,-5 }, sceneProjection);
 	object_Floor.push_back(rt_Floor);
 	pObjectManager->AddObject(rt_Floor);
 	CObject_FrontFloor* ft_Floor = new CObject_FrontFloor(camera, glm::vec3{ MAPSIZE,MAPSIZE,0 }, glm::vec3{ 0,MAPSIZE,MAPSIZE - 5 }, sceneProjection);
 	object_Floor.push_back(ft_Floor);
 	pObjectManager->AddObject(ft_Floor);
-	CObject_BackFloor* bk_Floor = new CObject_BackFloor(camera, glm::vec3{ MAPSIZE,MAPSIZE,0 }, glm::vec3{ 0,MAPSIZE,-MAPSIZE - 5 }, sceneProjection);
+	CObject_BackFloor* bk_Floor = new CObject_BackFloor(camera, glm::vec3{ MAPSIZE,MAPSIZE,0 }, glm::vec3{ 0,MAPSIZE,-MAPSIZE * 2 - 5 }, sceneProjection);
 	object_Floor.push_back(bk_Floor);
 	pObjectManager->AddObject(bk_Floor);
 }

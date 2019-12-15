@@ -47,14 +47,14 @@ std::vector<float> CObject_enemy::GetBoundingBox() {
 	// xz 평면 기준 좌표 (y값은 0) - 앞뒤 / 좌우 회전이 생긴다면 수정 요청할 것
 	// front_right - back_right - back_left - front_left
 	glm::vec3 vertex[8];
-	vertex[0] = glm::vec3{ 0.42, 0.0 ,0.2};
-	vertex[1] = glm::vec3{ 0.42, 0.0 ,-0.5 };
-	vertex[2] = glm::vec3{ -0.42, 0.0 ,-0.5 };
-	vertex[3] = glm::vec3{ -0.42, 0.0 ,0.2 };
-	vertex[4] = glm::vec3{ 0.42, 1.2 ,0.2 };
-	vertex[5] = glm::vec3{ 0.42, 1.2 ,-0.5 };
-	vertex[6] = glm::vec3{ -0.42, 1.2 ,-0.5 };
-	vertex[7] = glm::vec3{ -0.42, 1.2 ,0.2 };
+	vertex[0] = glm::vec3{ 0.85, 0.0 ,0.4};
+	vertex[1] = glm::vec3{ 0.85, 0.0 ,-1.0 };
+	vertex[2] = glm::vec3{ -0.85, 0.0 ,-1.0 };
+	vertex[3] = glm::vec3{ -0.85, 0.0 ,0.4 };
+	vertex[4] = glm::vec3{ 0.85, 2.4 ,0.4 };
+	vertex[5] = glm::vec3{ 0.85, 2.4 ,-1.0 };
+	vertex[6] = glm::vec3{ -0.85, 2.4 ,-1.0 };
+	vertex[7] = glm::vec3{ -0.85, 2.4 ,0.4 };
 
 	// 바운딩 박스를 객체의 좌표로 이동
 	glm::mat4 transform = glm::mat4{ 1.0, };

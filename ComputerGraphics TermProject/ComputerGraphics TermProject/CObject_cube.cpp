@@ -5,7 +5,7 @@ CObject_cube::CObject_cube(CCamera& cam, glm::vec3 size, glm::vec3 pos, glm::mat
 	vec3_Size = size;
 	short_Hp = 200;
 	int_Type = COLLISION_BARRIGATE;
-	vector_Model.emplace_back(std::make_unique<CModel_cube>(5, size));
+	vector_Model.emplace_back(std::make_unique<CModel_cube>(LAYOUT_UV, size));
 
 	vector_ModelPosition.emplace_back(glm::vec3{ 0,0,0 });
 
@@ -47,14 +47,14 @@ std::vector<float> CObject_cube::GetBoundingBox() {
 	// xz 평면 기준 좌표 (y값은 0) - 앞뒤 / 좌우 회전이 생긴다면 수정 요청할 것
 	// front_right - back_right - back_left - front_left
 	glm::vec3 vertex[8];
-	vertex[0] = glm::vec3{ vec3_Size.x / 2, vec3_Size.y / 2 ,vec3_Size.z / 2 };
-	vertex[1] = glm::vec3{ vec3_Size.x / 2, vec3_Size.y / 2 ,-vec3_Size.z / 2 };
-	vertex[2] = glm::vec3{ vec3_Size.x / 2, -vec3_Size.y / 2 ,vec3_Size.z / 2 };
-	vertex[3] = glm::vec3{ vec3_Size.x / 2, -vec3_Size.y / 2 ,-vec3_Size.z / 2 };
-	vertex[4] = glm::vec3{ -vec3_Size.x / 2, vec3_Size.y / 2 ,vec3_Size.z / 2 };
-	vertex[5] = glm::vec3{ -vec3_Size.x / 2, vec3_Size.y / 2 ,-vec3_Size.z / 2 };
-	vertex[6] = glm::vec3{ -vec3_Size.x / 2, -vec3_Size.y / 2 ,vec3_Size.z / 2 };
-	vertex[7] = glm::vec3{ -vec3_Size.x / 2, -vec3_Size.y / 2 ,-vec3_Size.z / 2 };
+	vertex[0] = glm::vec3{ vec3_Size.x , vec3_Size.y ,vec3_Size.z };
+	vertex[1] = glm::vec3{ vec3_Size.x , vec3_Size.y ,-vec3_Size.z  };
+	vertex[2] = glm::vec3{ vec3_Size.x , -vec3_Size.y ,vec3_Size.z  };
+	vertex[3] = glm::vec3{ vec3_Size.x , -vec3_Size.y ,-vec3_Size.z };
+	vertex[4] = glm::vec3{ -vec3_Size.x, vec3_Size.y ,vec3_Size.z };
+	vertex[5] = glm::vec3{ -vec3_Size.x, vec3_Size.y ,-vec3_Size.z  };
+	vertex[6] = glm::vec3{ -vec3_Size.x, -vec3_Size.y ,vec3_Size.z  };
+	vertex[7] = glm::vec3{ -vec3_Size.x, -vec3_Size.y ,-vec3_Size.z };
 
 	// 바운딩 박스를 객체의 좌표로 이동
 	glm::mat4 transform = glm::mat4{ 1.0, };

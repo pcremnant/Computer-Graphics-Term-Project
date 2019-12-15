@@ -7,12 +7,15 @@ CObject_aim::CObject_aim(CCamera& cam, glm::vec3 size, glm::vec3 pos, glm::mat4 
 
 	vector_ModelPosition.emplace_back(glm::vec3{ 0,0,0 });
 
-
-	mat4_WorldRotate = glm::mat4{ 1.0f, };
-	RotateAngleX = 0;
-	RotateAngleY = 0;
-
 	SetBuffer();
+	std::vector<const char*> t;
+	std::vector<std::pair<int, int>> sz;
+
+	t.emplace_back("./resource/texture/aim.bmp");
+	sz.emplace_back(290, 284);
+
+	AddTexture(0, t, sz);
+
 	CreateShader();
 
 }
@@ -27,23 +30,3 @@ void CObject_aim::Update(glm::vec3 lightPos, glm::vec3 lightColor, float lightPo
 	}
 }
 
-void CObject_aim::GetKeyboard(unsigned int key) {
-	switch (key) {
-	case 'a':
-	case 'A':
-		RotateAngleY -= 2;
-		break;
-	case 'd':
-	case 'D':
-		RotateAngleY += 2;
-		break;
-	case 'w':
-	case 'W':
-		RotateAngleX += 2;
-		break;
-	case 's':
-	case 'S':
-		RotateAngleX -= 2;
-		break;
-	}
-}

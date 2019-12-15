@@ -6,16 +6,18 @@ uniform int uiCharid;
 out vec2 outUv;
 
 void main() { 
-	const vec4 vertex[4] = vec4[4]( vec4(1.0, -1.0, 0.5, 1.0),
-									vec4(0.0, -1.0, 0.5, 1.0),
+	const vec4 vertex[4] = vec4[4](
+									vec4(1.0, 0.0, 0.5, 1.0),
 									vec4(0.0, 0.0, 0.5, 1.0),
-									vec4(1.0, 0.0, 0.5, 1.0));
+									vec4(0.0, -1.0, 0.5, 1.0),
+									vec4(1.0, -1.0, 0.5, 1.0)
+									);
 
 	const vec2 vertexUv[4] = vec2[4](
-									vec2(1,1),
-				 					vec2(0,1),
+									vec2(1,0),
 									vec2(0,0),
-									vec2(1,0)
+				 					vec2(0,1),
+									vec2(1,1)
 									 );
 	int X=4;
 	int Y=4;

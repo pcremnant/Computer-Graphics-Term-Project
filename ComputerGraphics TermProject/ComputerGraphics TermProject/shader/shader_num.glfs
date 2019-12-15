@@ -8,5 +8,6 @@ in vec2 outUv;
 
 void main() 
 {
+//FragColor=vec4(1,0,0,1);
 	FragColor = texture(texture1,outUv)*vec4(color,1.0);
 }
