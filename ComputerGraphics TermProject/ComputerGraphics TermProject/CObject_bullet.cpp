@@ -2,13 +2,13 @@
 #include "CObject_bullet.h"
 
 CObject_bullet::CObject_bullet(CCamera& cam, glm::vec3 size, glm::vec3 pos, glm::mat4 proj) : CObject(cam, pos, proj) {
-	float_Speed = 1;
+	float_Speed = 0.7;
 	int_Type = COLLISION_BULLET;
-	vector_Model.emplace_back(std::make_unique<CModel_bullet>(3, size, glm::vec3(1, 0, 0)));
+	vector_Model.emplace_back(std::make_unique<CModel_bullet>(3, size, glm::vec3(0, 0, 0)));
 
 	vector_ModelPosition.emplace_back(glm::vec3{ 0,0,0 });
-	vec3_Direction = glm::vec3{ camera.GetDirection() };
-
+	vec3_Direction = glm::vec3{ camera.GetVector() };
+	PlaySound(TEXT("resource/sound/bomb.wav"), NULL, SND_ASYNC | SND_ALIAS);
 	SetBuffer();
 
 	CreateShader();
@@ -106,6 +106,10 @@ void CObject_bullet::Collide(int type) {
 
 	case COLLISION_FLOOR:
 		std::cout << "벽 충돌" << std::endl;
+		this->bool_Delete = true;
+		break;
+	case COLLISION_BARRIGATE:
+		std::cout << "장애물 충돌" << std::endl;
 		this->bool_Delete = true;
 		break;
 	}

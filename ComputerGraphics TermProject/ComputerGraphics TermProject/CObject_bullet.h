@@ -1,8 +1,11 @@
 #pragma once
 #include "CObject.h"
+#pragma comment(lib, "winmm")
+#include <mmsystem.h>
 
 class CObject_bullet : public CObject {
 protected:
+	//Fmod_snd sound;
 	glm::vec3 vec3_Direction;
 	float float_Speed;
 public:
