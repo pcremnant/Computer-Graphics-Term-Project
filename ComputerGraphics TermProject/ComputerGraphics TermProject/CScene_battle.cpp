@@ -2,6 +2,7 @@
 #define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"//https://github.com/nothings/stb/blob/master/stb_image.h
 #include "UI_Particle.h"
+#include "CObject_light.h"
 
 CScene_battle::CScene_battle() : CScene() {
 	std::cout << "battle scene create!" << std::endl;
@@ -10,12 +11,14 @@ CScene_battle::CScene_battle() : CScene() {
 	isZoom = false;
 	float_ZoomSize = 70.f;
 	sceneProjection = PROJ(70.f);
-	//pObjectManager = new CObjectManager(camera);
 	oObjectManager = new CObjectManager(camera);
 	pParticleObjectManager = new CObjectManager(camera);
+	pLightObjectManager = new CObjectManager(camera);
 	MakeFloor();
 	MakeBarrigate();
+	pLightObjectManager->AddObject(new CObject_light(camera, glm::vec3{ 0.001,0.001,0.001 }, glm::vec3{ 3,4,-10 }, glm::vec3{ 1,1,1 }, 20, sceneProjection));
 	oObjectManager->AddObject(new CObject_aim(camera, glm::vec3{ 1,1,1 }, glm::vec3{ 0,6,0 }, ORTHO));
+
 
 	ptrDrawNum = std::make_unique<DrawNumObject>(camera, "resource/texture/numsest.png");
 }
@@ -31,9 +34,32 @@ void CScene_battle::Update() {
 			float_ZoomSize += ZOOM_SPEED;
 		pObjectManager->ChangeFov(PROJ(float_ZoomSize));
 	}
-	pObjectManager->Update(glm::vec3{ 0,0,5 });
+	pLightObjectManager->Update();
+
+	std::vector<CObject*> light = pLightObjectManager->GetObjects();
+	std::vector<CObject*> bomb = pParticleObjectManager->GetObjects();
+
+	std::vector<glm::vec3> lightPos;
+	std::vector<glm::vec3> lightColor;
+	std::vector<float> lightPower;
+	for (auto iter : light) {
+		lightPos.emplace_back(iter->GetWorldPosition());
+		lightColor.emplace_back(glm::vec3{ 1,1,1 });
+		lightPower.emplace_back(dynamic_cast<CObject_light*>(iter)->GetLightPower());
+	}
+
+	for (auto iter : bomb) {
+		lightPos.emplace_back(iter->GetWorldPosition());
+		lightColor.emplace_back(glm::vec3{ 1,1,1 });
+		lightPower.emplace_back(dynamic_cast<CObject_Particle*>(iter)->GetLightPower());
+	}
+	//lightPos.emplace_back(glm::vec3{ 0,5,-10 });
+	//lightColor.emplace_back(glm::vec3{ 1,1,1 });
+	//lightPower.emplace_back(1000.f);
+
+	pObjectManager->Update(lightPos, lightColor, lightPower);
 	oObjectManager->Update(glm::vec3{ 0,0,5 });
-	pParticleObjectManager->Update();
+	pParticleObjectManager->Update(lightPos, lightColor, lightPower);
 
 	CheckCollision();
 	for (auto iter : vector_ParticlePosition) {
@@ -56,6 +82,7 @@ void CScene_battle::Update() {
 }
 
 void CScene_battle::Draw() {
+	pLightObjectManager->Draw();
 	pObjectManager->Draw();
 	oObjectManager->Draw();
 	pParticleObjectManager->Draw();
@@ -141,15 +168,19 @@ void CScene_battle::Spawn() {
 void CScene_battle::CheckCollision() {
 	vector_ParticlePosition.clear();
 	std::vector<glm::vec3> tmpPosition;
+
 	tmpPosition = pObjectManager->CheckCollision(object_Bullet, object_Enemy);
 	for (auto iter : tmpPosition)
 		vector_ParticlePosition.emplace_back(iter);
+
 	tmpPosition = pObjectManager->CheckCollision(object_Bullet, object_Floor);
 	for (auto iter : tmpPosition)
 		vector_ParticlePosition.emplace_back(iter);
+
 	tmpPosition = pObjectManager->CheckCollision(object_Bullet, object_Barrigate);
 	for (auto iter : tmpPosition)
 		vector_ParticlePosition.emplace_back(iter);
+
 	tmpPosition = pObjectManager->CheckCollision(object_Enemy, object_Barrigate);
 	for (auto iter : tmpPosition)
 		vector_ParticlePosition.emplace_back(iter);
@@ -165,7 +196,6 @@ void CScene_battle::DeleteObject(std::vector<CObject*> &objects) {
 	for (auto &iter : objects) {
 		if (iter->IsDelete()) {
 			pObjectManager->DeleteObject(iter);
-			//delete iter;
 			iter = nullptr;
 		}
 	}

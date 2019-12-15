@@ -45,8 +45,12 @@ protected:
 	std::vector<CObject*> object_Enemy;
 	std::vector<CObject*> object_Floor;
 	std::vector<CObject*> object_Barrigate;
+	std::vector<CObject*> object_Light;
+
 	CObjectManager* oObjectManager;
 	CObjectManager* pParticleObjectManager;
+	CObjectManager* pLightObjectManager;
+
 
 
 	std::unique_ptr< DrawNumObject > ptrDrawNum;

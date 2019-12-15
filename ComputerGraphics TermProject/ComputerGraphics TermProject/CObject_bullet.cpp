@@ -27,6 +27,19 @@ void CObject_bullet::Update(glm::vec3 lightPos, glm::vec3 lightColor, float ligh
 	}
 }
 
+void CObject_bullet::Update(std::vector<glm::vec3> lightPos, std::vector<glm::vec3> lightColor, std::vector<float> lightPower)
+{
+
+	vec3_WorldPosition += vec3_Direction * glm::vec3{ float_Speed,float_Speed ,float_Speed };
+	for (int i = 0; i < vector_Model.size(); ++i) {
+		glm::mat4 translate = glm::mat4{ 1, };
+		glm::mat4 translate_model = glm::translate(vector_ModelPosition[i]);
+		glm::mat4 translate_world = glm::translate(vec3_WorldPosition);
+		translate = translate_world * translate_model;
+		vector_Shader[i]->Update(translate, vector_Buffer[i].get(), lightPos, lightColor, lightPower);
+	}
+}
+
 std::vector<float> CObject_bullet::GetBoundingBox() {
 	// xz 평면 기준 좌표 (y값은 0) - 앞뒤 / 좌우 회전이 생긴다면 수정 요청할 것
 	// front_right - back_right - back_left - front_left
