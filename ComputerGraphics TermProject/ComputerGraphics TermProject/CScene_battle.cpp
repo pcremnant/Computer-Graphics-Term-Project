@@ -9,6 +9,7 @@ CScene_battle::CScene_battle() : CScene() {
 	isZoom = false;
 	float_ZoomSize = 70.f;
 	sceneProjection = PROJ(70.f);
+	//pObjectManager = new CObjectManager(camera);
 	oObjectManager = new CObjectManager(camera);
 	MakeFloor();
 	MakeBarrigate();
