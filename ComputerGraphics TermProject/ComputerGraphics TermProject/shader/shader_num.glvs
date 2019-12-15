@@ -1,0 +1,36 @@
+#version 330 core 
+
+uniform vec2 pos;
+uniform vec3 offset; //Å©±â¿Í
+uniform int uiCharid;
+out vec2 outUv;
+
+void main() { 
+	const vec4 vertex[4] = vec4[4]( vec4(1.0, -1.0, 0.5, 1.0),
+									vec4(0.0, -1.0, 0.5, 1.0),
+									vec4(0.0, 0.0, 0.5, 1.0),
+									vec4(1.0, 0.0, 0.5, 1.0));
+
+	const vec2 vertexUv[4] = vec2[4](
+									vec2(1,1),
+				 					vec2(0,1),
+									vec2(0,0),
+									vec2(1,0)
+									 );
+	int X=4;
+	int Y=4;
+
+	vec2 lenXY=vec2(1.0/X,1.0/Y);
+
+	vec2 uvPos=vec2(mod(uiCharid,X),uiCharid/X);
+	vec2 tempoutUv=vertexUv[gl_VertexID];
+	tempoutUv = lenXY*uvPos+tempoutUv*lenXY;
+
+	outUv=tempoutUv;
+
+	vec4 tempos= vertex[gl_VertexID];
+	tempos=tempos*vec4(offset.y*offset.z,offset.y,1,1);
+	tempos.x+=offset.y*offset.x*offset.z;
+	tempos.xy+=pos;
+	gl_Position=tempos;
+}
