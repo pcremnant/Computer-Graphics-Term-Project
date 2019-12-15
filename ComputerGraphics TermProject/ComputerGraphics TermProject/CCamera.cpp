@@ -5,7 +5,7 @@ CCamera::CCamera()
 	float_AngleY = 270;
 	float_AngleX = 0;
 	SetDirection();
-	vector_Camera.push_back({ 0, 0, 2 });
+	vector_Camera.push_back({ 0, 6, 4 });
 	vector_Camera.push_back(vector_Camera[CAMERA_EYE] + vec3_Direction);
 
 	glm::vec3 right = glm::vec3{ glm::cos(glm::radians(float_AngleY - 90)),0,glm::sin(glm::radians(float_AngleY - 90)) };
@@ -23,10 +23,16 @@ void CCamera::SetDirection()
 glm::vec3& CCamera::GetEye() { return vector_Camera[CAMERA_EYE]; }
 glm::vec3& CCamera::GetAt() { return vector_Camera[CAMERA_AT]; }
 glm::vec3& CCamera::GetUp() { return vector_Camera[CAMERA_UP]; }
-vec3Buffer& CCamera::GetCamera() { return vector_Camera; }
-glm::vec3 CCamera::GetDirection() { return (vector_Camera[CAMERA_AT] - vector_Camera[CAMERA_EYE]); }
 float CCamera::GetAngleY() const { return float_AngleY; }
 float CCamera::GetAngleZ() const { return float_AngleX; }
+glm::vec3& CCamera::GetVector() { 
+	glm::vec3 vec3_Camera;
+	vec3_Camera.x = vector_Camera[CAMERA_AT].x - vector_Camera[CAMERA_EYE].x;
+	vec3_Camera.y = vector_Camera[CAMERA_AT].y - vector_Camera[CAMERA_EYE].y;
+	vec3_Camera.z = vector_Camera[CAMERA_AT].z - vector_Camera[CAMERA_EYE].z;
+	return vec3_Camera;
+}
+vec3Buffer& CCamera::GetCamera() { return vector_Camera; }
 glm::mat4 CCamera::GetCameraProj() {
 	glm::mat4 CameraMat = glm::lookAt(
 		vector_Camera[CAMERA_EYE],
@@ -98,21 +104,21 @@ void CCamera::MoveToDown()
 
 void CCamera::RotateClockwise()
 {
-	float_AngleY += 1;
+	float_AngleY += 2;
 }
 
 void CCamera::RotateCounterClockWise()
 {
-	float_AngleY -= 1;
+	float_AngleY -= 2;
 }
 
 void CCamera::RotateUp()
 {
-	float_AngleX += 1;
+	float_AngleX += 2;
 }
 void CCamera::RotateDown()
 {
-	float_AngleX -= 1;
+	float_AngleX -= 2;
 }
 
 void CCamera::InitCamera()
@@ -129,44 +135,61 @@ void CCamera::Move(unsigned char key)
 {
 
 	switch (key) {
-	case 'w':
-	case 'W':
-		MoveToFront();
-		break;
-	case 's':
-	case 'S':
-		MoveToBehind();
-		break;
+		/*case 'w':
+		case 'W':
+			MoveToFront();
+			break;
+		case 's':
+		case 'S':
+			MoveToBehind();
+			break;
+		case 'a':
+		case 'A':
+			MoveToLeft();
+			break;
+		case 'd':
+		case 'D':
+			MoveToRight();
+			break;
+		case 'e':
+		case 'E':
+			RotateClockwise();
+			break;
+		case 'q':
+		case 'Q':
+			RotateCounterClockWise();
+			break;
+		case 'r':
+		case 'R':
+			MoveToUp();
+			break;
+		case 'f':
+		case 'F':
+			MoveToDown();
+			break;
+		case 't':
+		case 'T':
+			RotateUp();
+			break;
+		case 'g':
+		case 'G':
+			RotateDown();
+			break;
+		}*/
 	case 'a':
 	case 'A':
-		MoveToLeft();
+		RotateCounterClockWise();
 		break;
 	case 'd':
 	case 'D':
-		MoveToRight();
-		break;
-	case 'e':
-	case 'E':
 		RotateClockwise();
 		break;
-	case 'q':
-	case 'Q':
-		RotateCounterClockWise();
-		break;
-	case 'r':
-	case 'R':
-		MoveToUp();
-		break;
-	case 'f':
-	case 'F':
-		MoveToDown();
-		break;
-	case 't':
-	case 'T':
+	case 'w':
+	case 'W':
 		RotateUp();
 		break;
-	case 'g':
-	case 'G':
+	case 's':
+	case 'S':
 		RotateDown();
 		break;
 	}
