@@ -140,3 +140,7 @@ void CObject::GetSpecialKeyboard(int key)
 {
 
 }
+
+short CObject::GetHp() {
+	return 1;
+}

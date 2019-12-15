@@ -42,7 +42,7 @@ public:
 
 	virtual void Collide(int type = 0);
 	int GetType() const;
-
+	virtual short GetHp();
 	std::vector<glm::vec3>* GetBuffer(int i = 0);
 	void DrawObject();
 	bool& IsDelete();
