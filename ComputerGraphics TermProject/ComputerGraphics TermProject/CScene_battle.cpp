@@ -20,9 +20,12 @@ CScene_battle::CScene_battle() : CScene() {
 	MakeBarrigate();
 	pLightObjectManager->AddObject(new CObject_light(camera, glm::vec3{ 1,1,1 }, glm::vec3{ 0,10,-5 }, glm::vec3{ 1,1,1 }, 1000, sceneProjection));
 	oObjectManager->AddObject(new CObject_aim(camera, glm::vec3{ 1,1,1 }, glm::vec3{ 0,6,0 }, ORTHO));
+<<<<<<< HEAD
 	oObjectManager->AddObject(new CObject_HP_UI(camera, glm::vec3{ 1,1,1 }, glm::vec3{ 0,0,0 }, ORTHO));
 	oObjectManager->AddObject(new CObject_Bullet_UI(camera, glm::vec3{ 1,1,1 }, glm::vec3{ 0,0,0 }, ORTHO));	
 	oObjectManager->AddObject(new CObject_Score_UI(camera, glm::vec3{ 1,1,1 }, glm::vec3{ 0,0,0 }, ORTHO));
+=======
+>>>>>>> 681ac27e61739d0a5b13014430cbde996a8e823c
 
 	ptrDrawNum = std::make_unique<DrawNumObject>(camera, "resource/texture/numsest.png");
 }
