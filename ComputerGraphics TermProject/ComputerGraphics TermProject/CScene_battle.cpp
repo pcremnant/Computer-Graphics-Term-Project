@@ -6,6 +6,8 @@
 
 CScene_battle::CScene_battle() : CScene() {
 	std::cout << "battle scene create!" << std::endl;
+	bool_Night = false;
+	int_Timer = 0;
 	bullet_num = BULLET_NUM_MAX;
 	int_Count = 0;
 	isZoom = false;
@@ -16,9 +18,8 @@ CScene_battle::CScene_battle() : CScene() {
 	pLightObjectManager = new CObjectManager(camera);
 	MakeFloor();
 	MakeBarrigate();
-	pLightObjectManager->AddObject(new CObject_light(camera, glm::vec3{ 0.001,0.001,0.001 }, glm::vec3{ 3,4,-10 }, glm::vec3{ 1,1,1 }, 20, sceneProjection));
+	pLightObjectManager->AddObject(new CObject_light(camera, glm::vec3{ 1,1,1 }, glm::vec3{ 0,10,-5 }, glm::vec3{ 1,1,1 }, 1000, sceneProjection));
 	oObjectManager->AddObject(new CObject_aim(camera, glm::vec3{ 1,1,1 }, glm::vec3{ 0,6,0 }, ORTHO));
-
 
 	ptrDrawNum = std::make_unique<DrawNumObject>(camera, "resource/texture/numsest.png");
 }
@@ -36,6 +37,8 @@ void CScene_battle::Update() {
 	}
 	pLightObjectManager->Update();
 
+
+
 	std::vector<CObject*> light = pLightObjectManager->GetObjects();
 	std::vector<CObject*> bomb = pParticleObjectManager->GetObjects();
 
@@ -50,12 +53,9 @@ void CScene_battle::Update() {
 
 	for (auto iter : bomb) {
 		lightPos.emplace_back(iter->GetWorldPosition());
-		lightColor.emplace_back(glm::vec3{ 1,1,1 });
+		lightColor.emplace_back(glm::vec3{ 1,0.6,0 });
 		lightPower.emplace_back(dynamic_cast<CObject_Particle*>(iter)->GetLightPower());
 	}
-	//lightPos.emplace_back(glm::vec3{ 0,5,-10 });
-	//lightColor.emplace_back(glm::vec3{ 1,1,1 });
-	//lightPower.emplace_back(1000.f);
 
 	pObjectManager->Update(lightPos, lightColor, lightPower);
 	oObjectManager->Update(glm::vec3{ 0,0,5 });

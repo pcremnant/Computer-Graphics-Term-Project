@@ -158,10 +158,10 @@ void CObject_DownFloor::Update(std::vector<glm::vec3> lightPos, std::vector<glm:
 
 std::vector<float> CObject_DownFloor::GetBoundingBox() {
 	glm::vec3 vertex[4];
-	vertex[0] = glm::vec3{ 10, 0 ,10 };
-	vertex[1] = glm::vec3{ 10, 0 ,-10 };
-	vertex[2] = glm::vec3{ -10, 1 ,10 };
-	vertex[3] = glm::vec3{ -10, 1 ,-10 };
+	vertex[0] = glm::vec3{ 1000, -1000 ,1000 };
+	vertex[1] = glm::vec3{ 1000, -1000,-1000 };
+	vertex[2] = glm::vec3{ -1000, 1 ,1000 };
+	vertex[3] = glm::vec3{ -1000, 1 ,-1000 };
 
 
 	glm::mat4 transform = glm::mat4{ 1.0, };
