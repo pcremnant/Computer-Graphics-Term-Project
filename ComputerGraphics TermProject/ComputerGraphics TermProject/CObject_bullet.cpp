@@ -3,6 +3,7 @@
 
 CObject_bullet::CObject_bullet(CCamera& cam, glm::vec3 size, glm::vec3 pos, glm::mat4 proj) : CObject(cam, pos, proj) {
 	float_Speed = 0.7;
+	gravity_Speed = 0;
 	int_Type = COLLISION_BULLET;
 	vector_Model.emplace_back(std::make_unique<CModel_bullet>(LAYOUT_NORMAL, size, glm::vec3(0, 0, 0)));
 
@@ -16,8 +17,10 @@ CObject_bullet::CObject_bullet(CCamera& cam, glm::vec3 size, glm::vec3 pos, glm:
 
 void CObject_bullet::Update(glm::vec3 lightPos, glm::vec3 lightColor, float lightPower)
 {
-
+	float gravity = 9.8;
+	gravity_Speed += 0.00015 * gravity;
 	vec3_WorldPosition += vec3_Direction * glm::vec3{ float_Speed,float_Speed ,float_Speed };
+	vec3_WorldPosition -= glm::vec3{ 0,gravity_Speed, 0 };
 	for (int i = 0; i < vector_Model.size(); ++i) {
 		glm::mat4 translate = glm::mat4{ 1, };
 		glm::mat4 translate_model = glm::translate(vector_ModelPosition[i]);
@@ -29,8 +32,10 @@ void CObject_bullet::Update(glm::vec3 lightPos, glm::vec3 lightColor, float ligh
 
 void CObject_bullet::Update(std::vector<glm::vec3> lightPos, std::vector<glm::vec3> lightColor, std::vector<float> lightPower)
 {
-
+	float gravity = 9.8;
+	gravity_Speed += 0.00015 * gravity;
 	vec3_WorldPosition += vec3_Direction * glm::vec3{ float_Speed,float_Speed ,float_Speed };
+	vec3_WorldPosition -= glm::vec3{ 0,gravity_Speed, 0 };
 	for (int i = 0; i < vector_Model.size(); ++i) {
 		glm::mat4 translate = glm::mat4{ 1, };
 		glm::mat4 translate_model = glm::translate(vector_ModelPosition[i]);

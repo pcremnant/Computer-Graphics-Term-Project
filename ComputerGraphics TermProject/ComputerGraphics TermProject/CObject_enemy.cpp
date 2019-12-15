@@ -143,8 +143,10 @@ void CObject_enemy::Collide(int type) {
 	case COLLISION_BULLET:
 		vec3_WorldPosition -= glm::vec3{ 0,0,2 };
 		short_Hp -= 50;
-		if (short_Hp == 0)
+		if (short_Hp == 0) {
 			bool_Delete = true;
+			int_Score += 100;
+		}
 		break;
 	case COLLISION_BARRIGATE:
 		bool_Delete = true;

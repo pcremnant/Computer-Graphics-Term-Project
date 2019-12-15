@@ -7,6 +7,9 @@
 #include "CObject_bullet.h"
 #include "CObject_aim.h"
 #include "CObject_cube.h"
+#include "CObject_HP_UI.h"
+#include "CObject_Bullet_UI.h"
+#include "CObject_Score_UI.h"
 //#include <memory>
 #define BULLET_NUM_MAX 4
 
@@ -51,7 +54,8 @@ protected:
 	CObjectManager* pParticleObjectManager;
 	CObjectManager* pLightObjectManager;
 
-
+	int int_Timer;
+	bool bool_Night;
 
 	std::unique_ptr< DrawNumObject > ptrDrawNum;
 	std::vector<glm::vec3> vector_ParticlePosition;

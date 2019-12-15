@@ -7,6 +7,10 @@ CObject_light::CObject_light(CCamera& cam, glm::vec3 size, glm::vec3 pos, glm::v
 
 	bLightOn = true;
 
+	fAngleZ = 90;
+	fRadius = 10;
+	vec3_WorldPosition = glm::vec3{ fRadius * glm::cos(glm::radians(fAngleZ)),fRadius * glm::sin(glm::radians(fAngleZ)),-5 };
+
 	SetBuffer();
 
 	CreateShader();
@@ -14,8 +18,8 @@ CObject_light::CObject_light(CCamera& cam, glm::vec3 size, glm::vec3 pos, glm::v
 
 void CObject_light::Update(glm::vec3 lightPos, glm::vec3 lightColor, float lightPower)
 {
-
-	//vec3_WorldPosition = glm::vec3{ glm::cos(glm::radians(fAngleZ)) * fRadius, glm::sin(glm::radians(fAngleZ)) * fRadius,0 };
+	/*fAngleZ += 0.1;*/
+	vec3_WorldPosition = glm::vec3{ fRadius * glm::cos(glm::radians(fAngleZ)),fRadius * glm::sin(glm::radians(fAngleZ)),-5 };
 
 	for (int i = 0; i < vector_Model.size(); ++i) {
 		glm::mat4 translate = glm::mat4{ 1, };

@@ -6,7 +6,7 @@ CObject_Particle::CObject_Particle(CCamera& cam, glm::vec3 size, glm::vec3 pos, 
 	frameNumber = std::make_pair(5, 5);
 	int_Frame = 0;
 	int_Timer = frameNumber.first * frameNumber.second - 1;
-	float_Power = 25;
+	float_Power = 5;
 
 	vector_Model.emplace_back(std::make_unique<CModel_plane>(LAYOUT_UI, size));
 

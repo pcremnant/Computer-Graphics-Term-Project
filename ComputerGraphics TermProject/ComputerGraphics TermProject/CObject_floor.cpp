@@ -12,7 +12,7 @@ CObject_UpFloor::CObject_UpFloor(CCamera& cam, glm::vec3 size, glm::vec3 pos, gl
 	std::vector<const char*> t;
 	std::vector<std::pair<int, int>> sz;
 
-	t.emplace_back("./resource/texture/rip_up.bmp");
+	t.emplace_back("./resource/texture/flatrock_up.bmp");
 
 	sz.emplace_back(512, 512);
 
@@ -123,7 +123,7 @@ CObject_DownFloor::CObject_DownFloor(CCamera& cam, glm::vec3 size, glm::vec3 pos
 	std::vector<const char*> t;
 	std::vector<std::pair<int, int>> sz;
 
-	t.emplace_back("./resource/texture/rip_dn.bmp");
+	t.emplace_back("./resource/texture/flatrock_dn.bmp");
 
 	sz.emplace_back(512, 512);
 
@@ -158,10 +158,10 @@ void CObject_DownFloor::Update(std::vector<glm::vec3> lightPos, std::vector<glm:
 
 std::vector<float> CObject_DownFloor::GetBoundingBox() {
 	glm::vec3 vertex[4];
-	vertex[0] = glm::vec3{ 10, 0 ,10 };
-	vertex[1] = glm::vec3{ 10, 0 ,-10 };
-	vertex[2] = glm::vec3{ -10, 1 ,10 };
-	vertex[3] = glm::vec3{ -10, 1 ,-10 };
+	vertex[0] = glm::vec3{ 1000, -1000 ,1000 };
+	vertex[1] = glm::vec3{ 1000, -1000,-1000 };
+	vertex[2] = glm::vec3{ -1000, 1 ,1000 };
+	vertex[3] = glm::vec3{ -1000, 1 ,-1000 };
 
 
 	glm::mat4 transform = glm::mat4{ 1.0, };
@@ -235,7 +235,7 @@ CObject_LeftFloor::CObject_LeftFloor(CCamera& cam, glm::vec3 size, glm::vec3 pos
 	std::vector<std::pair<int, int>> sz;
 
 
-	t.emplace_back("./resource/texture/rip_lf.bmp");
+	t.emplace_back("./resource/texture/flatrock_lf.bmp");
 
 	sz.emplace_back(512, 512);
 
@@ -338,7 +338,7 @@ CObject_RightFloor::CObject_RightFloor(CCamera& cam, glm::vec3 size, glm::vec3 p
 	std::vector<std::pair<int, int>> sz;
 
 
-	t.emplace_back("./resource/texture/rip_rt.bmp");
+	t.emplace_back("./resource/texture/flatrock_rt.bmp");
 
 	sz.emplace_back(512, 512);
 
@@ -442,7 +442,7 @@ CObject_BackFloor::CObject_BackFloor(CCamera& cam, glm::vec3 size, glm::vec3 pos
 	std::vector<std::pair<int, int>> sz;
 
 
-	t.emplace_back("./resource/texture/rip_bk.bmp");
+	t.emplace_back("./resource/texture/flatrock_bk.bmp");
 
 	sz.emplace_back(512, 512);
 
@@ -552,7 +552,7 @@ CObject_FrontFloor::CObject_FrontFloor(CCamera& cam, glm::vec3 size, glm::vec3 p
 	std::vector<const char*> t;
 	std::vector<std::pair<int, int>> sz;
 
-	t.emplace_back("./resource/texture/rip_ft.bmp");
+	t.emplace_back("./resource/texture/flatrock_ft.bmp");
 
 	sz.emplace_back(512, 512);
 
