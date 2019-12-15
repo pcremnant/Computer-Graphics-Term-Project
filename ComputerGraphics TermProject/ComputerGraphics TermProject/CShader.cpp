@@ -191,6 +191,17 @@ void CShader::InitShaderProgram()
 		CreateShaderObject(&fragmentshader, GL_FRAGMENT_SHADER, "./shader/shader_ui.glfs");
 		if (!PrintShaderError(&fragmentshader, GL_FRAGMENT_SHADER))
 			return;
+
+		break;
+	case LAYOUT_NUM:
+		CreateShaderObject(&vertexshader, GL_VERTEX_SHADER, "./shader/shader_num.glvs");
+		if (!PrintShaderError(&vertexshader, GL_VERTEX_SHADER))
+			return;
+
+		CreateShaderObject(&fragmentshader, GL_FRAGMENT_SHADER, "./shader/shader_num.glfs");
+		if (!PrintShaderError(&fragmentshader, GL_FRAGMENT_SHADER))
+			return;
+
 		break;
 	}
 
@@ -228,7 +239,14 @@ CShader::~CShader()
 	delete VBO;
 }
 
-CShader::CShader(GLuint layoutSize, CCamera& cam, glm::mat4 proj, std::vector<glm::vec3>* pBuf, std::vector<const char*> textureFiles, std::vector<std::pair<int, int>> textureSize) : nLayoutSize(layoutSize), camera(cam), Projection(proj)
+CShader::CShader(GLuint layoutSize, CCamera & cam, int)
+	: nLayoutSize(layoutSize), camera(cam)
+{
+	InitShaderProgram();
+}
+
+CShader::CShader(GLuint layoutSize, CCamera& cam, glm::mat4 proj, std::vector<glm::vec3>* pBuf, std::vector<const char*> textureFiles, std::vector<std::pair<int, int>> textureSize)
+	: nLayoutSize(layoutSize), camera(cam), Projection(proj)
 {
 	InitShaderProgram();
 	if (nLayoutSize >= LAYOUT_UV)
@@ -257,6 +275,7 @@ void CShader::DrawObject(std::vector<GLuint>& pIndex, GLuint DrawType)
 	// 삼각형 그리기
 	glDrawElements(DrawType, pIndex.size(), GL_UNSIGNED_INT, &pIndex[0]);
 }
+
 
 void CShader::Update(glm::mat4 world, std::vector<glm::vec3>* pBuf, glm::vec3 lightPos, glm::vec3 lightColor, float lightPower, glm::vec3 bgColor)
 {
@@ -350,3 +369,4 @@ void CShader::UseProgram()
 void CShader::ChangeFov(glm::mat4 proj) {
 	Projection = proj;
 }
+

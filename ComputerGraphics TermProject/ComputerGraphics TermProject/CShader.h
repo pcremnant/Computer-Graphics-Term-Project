@@ -26,7 +26,8 @@ private:
 	void InitShaderProgram();
 
 public:
-	CShader(GLuint layoutSize, CCamera& cam, glm::mat4 proj = glm::mat4{ 1.0f }, std::vector<glm::vec3>* pBuf = nullptr, std::vector<const char*> textureFiles = std::vector<const char*>(), std::vector<std::pair<int, int>> textureSize = std::vector<std::pair<int,int>>());
+	CShader(GLuint layoutSize, CCamera& cam, int);
+	CShader(GLuint layoutSize, CCamera& cam, glm::mat4 proj = glm::mat4{ 1.0f }, std::vector<glm::vec3>* pBuf = nullptr, std::vector<const char*> textureFiles = std::vector<const char*>(), std::vector<std::pair<int, int>> textureSize = std::vector<std::pair<int, int>>());
 	~CShader();
 	void DrawObject(std::vector<GLuint>& pIndex, GLuint DrawType = GL_TRIANGLES);
 	// 조명 1개일 때 부르는 업데이트
@@ -37,4 +38,5 @@ public:
 	void Update(glm::vec3 bgColor = glm::vec3{ 1,1,1 }, glm::mat4 world = glm::mat4{ 1.0, }, std::vector<glm::vec3>* pBuf = nullptr);
 	void UseProgram();
 	void ChangeFov(glm::mat4 proj);
+	inline const GLuint get_glShaderProgramID()const { return glShaderProgramID; }
 };

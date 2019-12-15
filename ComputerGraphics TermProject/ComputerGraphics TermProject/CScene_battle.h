@@ -1,13 +1,40 @@
 #pragma once
+#include<fstream>
+#include<iterator>
 #include "CScene.h"
 #include "CObject_enemy.h"
 #include "CObject_floor.h"
 #include "CObject_bullet.h"
 #include "CObject_aim.h"
+#include "CObject_cube.h"
+//#include <memory>
+
+class DrawNumObject
+{
+	std::unique_ptr<CShader> uiNumShader;
+
+	GLuint texID;
+
+	GLint charID;
+	GLint infoID;
+	GLint posID;
+	GLint colorID;
+
+public:
+	DrawNumObject(CCamera&, const char *imgStr);
+
+	void initTexture(const char *imgStr, GLuint& textureID);
+
+	void drawStart();
+	void drawInt(int num, float posx, float posy, float scale, float colorx = 1, float colory = 1, float colorz = 1);
+	void drawEnd();
+private:
+	int drawIntpice(int num, int offset, float scale);
+};
+
 
 class CScene_battle : public CScene {
 protected:
-	CObjectManager* oObjectManager;
 	glm::mat4 sceneProjection;
 	int int_Count;
 	bool isZoom;
@@ -15,6 +42,10 @@ protected:
 	std::vector<CObject*> object_Bullet;
 	std::vector<CObject*> object_Enemy;
 	std::vector<CObject*> object_Floor;
+	std::vector<CObject*> object_Barrigate;
+
+	std::unique_ptr< DrawNumObject > ptrDrawNum;
+
 public:
 	CScene_battle();
 	virtual void Enter();
@@ -24,8 +55,11 @@ public:
 	virtual void GetKeyboardInput(unsigned char key);
 	virtual void GetMouseInput(int button, int state, int x, int y) final;
 	virtual void GetMouseMotionInput(int x, int y) final;
+	virtual void GetSpecialKeyboardInput(int key);
 	void Spawn();
 	void CheckCollision();
 	void CheckDelete();
 	void MakeFloor();
+	void MakeBarrigate();
+	void DeleteObject(std::vector<CObject*> &objects);
 };
