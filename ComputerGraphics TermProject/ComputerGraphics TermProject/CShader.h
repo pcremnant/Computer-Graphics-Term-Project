@@ -36,6 +36,8 @@ public:
 	void Update(glm::mat4 world, std::vector<glm::vec3>* pBuf = nullptr, std::vector<glm::vec3> lightPos = std::vector<glm::vec3>(), std::vector<glm::vec3> lightColor = std::vector<glm::vec3>(), std::vector<float> lightPower = std::vector<float>(), glm::vec3 bgColor = glm::vec3{ 1,1,1 });
 	// UI 로딩시 부르는 업데이트
 	void Update(glm::vec3 bgColor = glm::vec3{ 1,1,1 }, glm::mat4 world = glm::mat4{ 1.0, }, std::vector<glm::vec3>* pBuf = nullptr);
+	// 인게임 UI 로딩시 부르는 업데이트
+	void Update(glm::vec3 bgColor = glm::vec3{ 1,1,1 }, glm::vec3 pos = glm::vec3{ 0,0,0 }, std::vector<glm::vec3>* pBuf = nullptr);
 	void UseProgram();
 	void ChangeFov(glm::mat4 proj);
 	inline const GLuint get_glShaderProgramID()const { return glShaderProgramID; }

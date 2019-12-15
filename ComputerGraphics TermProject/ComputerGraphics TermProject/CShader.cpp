@@ -361,6 +361,28 @@ void CShader::Update(glm::vec3 bgColor, glm::mat4 world, std::vector<glm::vec3>*
 	}
 }
 
+void CShader::Update(glm::vec3 bgColor, glm::vec3 pos, std::vector<glm::vec3>* pBuf)
+{
+	glUseProgram(glShaderProgramID);
+	glm::mat4 mul = glm::translate(pos);
+
+	int matTransformLocation = glGetUniformLocation(glShaderProgramID, "mat_Transform");
+	glUniformMatrix4fv(matTransformLocation, 1, GL_FALSE, &mul[0][0]);
+
+	int viewPosLocation = glGetUniformLocation(glShaderProgramID, "viewPos");
+	glUniform3fv(viewPosLocation, 1, &camera.GetEye()[0]);
+
+	int bgColorLocation = glGetUniformLocation(glShaderProgramID, "bgColor");
+	glUniform3f(bgColorLocation, bgColor.r, bgColor.g, bgColor.b);
+
+	glBindVertexArray(VAO);
+	for (int i = 0; i < glm::min((GLuint)LAYOUT_UV, nLayoutSize); ++i) {
+		BindVBO(pBuf[i], VBO, i);
+		glVertexAttribPointer(i, 3, GL_FLOAT, GL_FALSE, 0, 0);
+		glEnableVertexAttribArray(i);
+	}
+}
+
 void CShader::UseProgram()
 {
 	glUseProgram(glShaderProgramID);
