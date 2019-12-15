@@ -6,17 +6,12 @@ CObject_enemy::CObject_enemy(CCamera& cam, glm::vec3 size, glm::vec3 pos, glm::m
 	changeDirecton = 0;
 	short_Hp = 100;
 	int_Type = COLLISION_ENEMY;
-	vector_Model.emplace_back(std::make_unique<CModel_enemy>(LAYOUT_UI, size,glm::vec3(0,0,1)));
+	vector_Model.emplace_back(std::make_unique<CModel_enemy>(LAYOUT_NORMAL, size,glm::vec3(0,0,1)));
 
 	vector_ModelPosition.emplace_back(glm::vec3{ 0,0,0 });
 
 	SetBuffer();
 
-	std::vector<const char*> s;
-	std::vector<std::pair<int, int>> z;
-	s.emplace_back("resource/texture/texture_6.bmp");
-	z.emplace_back(256, 256);
-	AddTexture(0, s, z);
 	
 	CreateShader();
 }
@@ -24,10 +19,15 @@ CObject_enemy::CObject_enemy(CCamera& cam, glm::vec3 size, glm::vec3 pos, glm::m
 
 void CObject_enemy::Update(glm::vec3 lightPos, glm::vec3 lightColor, float lightPower)
 {
-	if (changeDirecton < 30)
-		vec3_Direction = glm::vec3{ 1,0,1 };
-	else if (changeDirecton < 60) 
-		vec3_Direction = glm::vec3{ -1,0,1 };
+
+	if (changeDirecton < 15)
+		vec3_Direction = glm::vec3{ 1,0.5,1 };
+	else if (changeDirecton < 30) 
+		vec3_Direction = glm::vec3{ 1,-0.5,1 };
+	else if (changeDirecton < 45)
+		vec3_Direction = glm::vec3{ -1,0.5,1 };
+	else if (changeDirecton < 60)
+		vec3_Direction = glm::vec3{ -1,-0.5,1 };
 	else
 		changeDirecton = 0;
 
@@ -48,12 +48,12 @@ std::vector<float> CObject_enemy::GetBoundingBox() {
 	// front_right - back_right - back_left - front_left
 	glm::vec3 vertex[8];
 	vertex[0] = glm::vec3{ 0.42, 0.0 ,0.2};
-	vertex[1] = glm::vec3{ 0.42, 0.0 ,-0.2 };
-	vertex[2] = glm::vec3{ -0.42, 0.0 ,-0.2 };
+	vertex[1] = glm::vec3{ 0.42, 0.0 ,-0.5 };
+	vertex[2] = glm::vec3{ -0.42, 0.0 ,-0.5 };
 	vertex[3] = glm::vec3{ -0.42, 0.0 ,0.2 };
 	vertex[4] = glm::vec3{ 0.42, 1.2 ,0.2 };
-	vertex[5] = glm::vec3{ 0.42, 1.2 ,-0.2 };
-	vertex[6] = glm::vec3{ -0.42, 1.2 ,-0.2 };
+	vertex[5] = glm::vec3{ 0.42, 1.2 ,-0.5 };
+	vertex[6] = glm::vec3{ -0.42, 1.2 ,-0.5 };
 	vertex[7] = glm::vec3{ -0.42, 1.2 ,0.2 };
 
 	// 바운딩 박스를 객체의 좌표로 이동
@@ -115,11 +115,13 @@ void CObject_enemy::Collide(int type) {
 	std::cout << "collide" << std::endl;
 	switch (type) {
 	case COLLISION_BULLET:
-		vec3_WorldPosition -= glm::vec3{ 0,0,1 };
-		short_Hp -= 20;
+		vec3_WorldPosition -= glm::vec3{ 0,0,2 };
+		short_Hp -= 50;
 		if (short_Hp == 0)
 			bool_Delete = true;
 		break;
-
+	case COLLISION_BARRIGATE:
+		bool_Delete = true;
+		break;
 	}
 }
