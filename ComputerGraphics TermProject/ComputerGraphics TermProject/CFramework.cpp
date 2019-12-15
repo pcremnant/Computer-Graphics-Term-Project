@@ -67,7 +67,8 @@ void CFramework::Update() {
 			stack_Scene.push(new CScene_main());
 			break;
 		case SCENE_TYPE_BATTLE:
-			// ¹èÆ² ¾À Ãß°¡
+			stack_Scene.push(new CScene_battle());
+			break;
 			break;
 		case SCENE_TYPE_PAUSE:
 			stack_Scene.push(new CScene_pause());
@@ -94,4 +95,7 @@ void CFramework::GetMouseInput(int button, int state, int x, int y) {
 
 void CFramework::GetMouseMotionInput(int x, int y) {
 	stack_Scene.top()->GetMouseMotionInput(x, y);
+}
+void CFramework::GetSpecialKeyboardInput(int key) {
+	stack_Scene.top()->GetSpecialKeyboardInput(key);
 }
