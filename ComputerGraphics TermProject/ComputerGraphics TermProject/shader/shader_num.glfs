@@ -1,0 +1,12 @@
+#version 330 core 
+
+out vec4 FragColor;			//---최종객체의색저장
+uniform sampler2D texture1; //---텍스처인덱스: 0번부터설정
+uniform vec3 color;			//---텍스처인덱스: 0번부터설정
+
+in vec2 outUv;
+
+void main() 
+{
+	FragColor = texture(texture1,outUv)*vec4(color,1.0);
+}
