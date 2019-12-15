@@ -13,7 +13,7 @@
 #define SCENE_TYPE_MAIN 0
 #define SCENE_TYPE_BATTLE 1
 #define SCENE_TYPE_PAUSE 2
-#define SCENE_TYPE_HELP 3
+#define SCENE_TYPE_END 3
 
 
 

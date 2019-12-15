@@ -1,7 +1,7 @@
-#include "CObject_MainBackground.h"
+#include "CObject_EndBackground.h"
 #include "CModel_plane.h"
 
-CObject_MainBackground::CObject_MainBackground(CCamera& cam, glm::vec3 size, glm::vec3 pos, glm::mat4 proj) : CObject(cam, pos, proj) {
+CObject_EndBackground::CObject_EndBackground(CCamera& cam, glm::vec3 size, glm::vec3 pos, glm::mat4 proj) : CObject(cam, pos, proj) {
 	vector_Model.emplace_back(std::make_unique<CModel_plane>(LAYOUT_UI, size));
 
 	vector_ModelPosition.emplace_back(glm::vec3{ 0,0,0 });
@@ -12,7 +12,7 @@ CObject_MainBackground::CObject_MainBackground(CCamera& cam, glm::vec3 size, glm
 	std::vector<const char*> t;
 	std::vector<std::pair<int, int>> sz;
 
-	t.emplace_back("./resource/texture/main_menu.bmp");
+	t.emplace_back("./resource/texture/end_background.bmp");
 	sz.emplace_back(512, 512);
 
 	AddTexture(0, t, sz);
@@ -21,7 +21,7 @@ CObject_MainBackground::CObject_MainBackground(CCamera& cam, glm::vec3 size, glm
 
 }
 
-void CObject_MainBackground::Update(glm::vec3 lightPos, glm::vec3 lightColor, float lightPower)
+void CObject_EndBackground::Update(glm::vec3 lightPos, glm::vec3 lightColor, float lightPower)
 {
 	for (int i = 0; i < vector_Model.size(); ++i) {
 		glm::mat4 translate = glm::mat4{ 1, };
