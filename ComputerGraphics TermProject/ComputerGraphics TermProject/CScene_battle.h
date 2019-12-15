@@ -11,6 +11,7 @@
 
 class DrawNumObject
 {
+	CObjectManager* oObjectManager;
 	std::unique_ptr<CShader> uiNumShader;
 
 	GLuint texID;
