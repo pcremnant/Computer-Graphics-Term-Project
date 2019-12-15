@@ -1,7 +1,7 @@
 #pragma once
 #include "CObject.h"
-#pragma comment(lib, "winmm")
-#include <mmsystem.h>
+//#pragma comment(lib, "winmm")
+//#include <mmsystem.h>
 
 class CObject_bullet : public CObject {
 protected:

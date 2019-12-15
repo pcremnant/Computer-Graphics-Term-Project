@@ -7,8 +7,8 @@ CObject_bullet::CObject_bullet(CCamera& cam, glm::vec3 size, glm::vec3 pos, glm:
 	vector_Model.emplace_back(std::make_unique<CModel_bullet>(3, size, glm::vec3(0, 0, 0)));
 
 	vector_ModelPosition.emplace_back(glm::vec3{ 0,0,0 });
-	vec3_Direction = glm::vec3{ camera.GetVector() };
-	PlaySound(TEXT("resource/sound/bomb.wav"), NULL, SND_ASYNC | SND_ALIAS);
+	vec3_Direction = glm::vec3{ camera.GetDirection() };
+	//PlaySound(TEXT("resource/sound/bomb.wav"), NULL, SND_ASYNC | SND_ALIAS);
 	SetBuffer();
 
 	CreateShader();
@@ -82,7 +82,7 @@ std::vector<float> CObject_bullet::GetBoundingBox() {
 
 	// 벡터에 값 넣고 리턴w
 	std::vector<float> collisionbox;
-	collisionbox.emplace_back(minX);
+ 	collisionbox.emplace_back(minX);
 	collisionbox.emplace_back(maxX);
 	collisionbox.emplace_back(minY);
 	collisionbox.emplace_back(maxY);

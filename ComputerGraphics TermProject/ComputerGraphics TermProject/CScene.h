@@ -28,6 +28,7 @@ public:
 	virtual void Exit() = 0;
 	virtual void Update() = 0;
 	virtual void Draw() = 0;
+	virtual void GetSpecialKeyboardInput(int key) {};
 	virtual void GetKeyboardInput(unsigned char key);
 	virtual void GetMouseInput(int button, int state, int x, int y);
 	virtual void GetMouseMotionInput(int x, int y);

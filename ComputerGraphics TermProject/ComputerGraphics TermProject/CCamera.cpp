@@ -25,13 +25,15 @@ glm::vec3& CCamera::GetAt() { return vector_Camera[CAMERA_AT]; }
 glm::vec3& CCamera::GetUp() { return vector_Camera[CAMERA_UP]; }
 float CCamera::GetAngleY() const { return float_AngleY; }
 float CCamera::GetAngleZ() const { return float_AngleX; }
-glm::vec3& CCamera::GetVector() { 
+
+glm::vec3 CCamera::GetDirection() {
 	glm::vec3 vec3_Camera;
 	vec3_Camera.x = vector_Camera[CAMERA_AT].x - vector_Camera[CAMERA_EYE].x;
 	vec3_Camera.y = vector_Camera[CAMERA_AT].y - vector_Camera[CAMERA_EYE].y;
 	vec3_Camera.z = vector_Camera[CAMERA_AT].z - vector_Camera[CAMERA_EYE].z;
 	return vec3_Camera;
 }
+
 vec3Buffer& CCamera::GetCamera() { return vector_Camera; }
 glm::mat4 CCamera::GetCameraProj() {
 	glm::mat4 CameraMat = glm::lookAt(

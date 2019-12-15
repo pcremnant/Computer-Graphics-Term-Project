@@ -61,5 +61,6 @@ void SetRandomColor(GLclampf& r, GLclampf& g, GLclampf& b);
 #define COLLISION_BULLET 1
 #define COLLISION_ENEMY 2
 #define COLLISION_FLOOR 3
+#define COLLISION_BARRIGATE 4
 
 #define MAPSIZE 10

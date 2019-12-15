@@ -8,7 +8,8 @@ CScene_battle::CScene_battle() : CScene() {
 	isZoom = false;
 	float_ZoomSize = 70.f;
 	sceneProjection = PROJ(70.f);
-	pObjectManager = new CObjectManager(camera);
+	//pObjectManager = new CObjectManager(camera);
+	oObjectManager = new CObjectManager(camera);
 	MakeFloor();
 	MakeBarrigate();
 	oObjectManager->AddObject(new CObject_aim(camera, glm::vec3{ 1,1,1 }, glm::vec3{ 0,6,0 }, ORTHO));
@@ -139,7 +140,7 @@ void CScene_battle::DeleteObject(std::vector<CObject*> &objects) {
 	for (auto &iter : objects) {
 		if (iter->IsDelete()) {
 			pObjectManager->DeleteObject(iter);
-			delete iter;
+			//delete iter;
 			iter = nullptr;
 		}
 	}

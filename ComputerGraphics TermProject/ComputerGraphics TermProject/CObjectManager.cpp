@@ -80,7 +80,7 @@ bool CObjectManager::IsCollide(std::vector<float>& object, std::vector<float>& o
 	if (object[MAX_Y] < other[MIN_Y] || object[MIN_Y] > other[MAX_Y])
 		return false;
 
-	if (object[MAX_Z] < other[MIN_Y] || object[MIN_Z] > other[MAX_Z])
+	if (object[MAX_Z] < other[MIN_Z] || object[MIN_Z] > other[MAX_Z])
 		return false;
 
 	return true;

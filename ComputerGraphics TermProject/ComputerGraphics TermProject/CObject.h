@@ -23,7 +23,7 @@ protected:
 	void SetBuffer();
 	void CreateShader();
 	void ClearTexture();
-	void AddTexture(int modelIndex, std::vector<const char*> textureName, std::vector<std::pair<int,int>> textureSize);
+	void AddTexture(int modelIndex, std::vector<const char*> textureName, std::vector<std::pair<int, int>> textureSize);
 
 public:
 	CObject(CCamera& cam, glm::vec3 vPos, glm::mat4 proj = PROJ(60.f));
