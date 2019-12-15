@@ -158,6 +158,9 @@ void CScene_battle::GetKeyboardInput(unsigned char key) {
 	case 27:
 		next = SetNextScene(FRAMEWORK_ACTION_PUSH, SCENE_TYPE_PAUSE);
 		break;
+	case '1':
+		next = SetNextScene(FRAMEWORK_ACTION_CHANGE, SCENE_TYPE_END);
+		break;
 	case 'r':
 	case 'R':
 		bullet_num = BULLET_NUM_MAX;
