@@ -12,7 +12,7 @@ CObject_UpFloor::CObject_UpFloor(CCamera& cam, glm::vec3 size, glm::vec3 pos, gl
 	std::vector<const char*> t;
 	std::vector<std::pair<int, int>> sz;
 
-	t.emplace_back("./resource/texture/up.bmp");
+	t.emplace_back("./resource/texture/rip_up.bmp");
 
 	sz.emplace_back(512, 512);
 
@@ -112,7 +112,7 @@ CObject_DownFloor::CObject_DownFloor(CCamera& cam, glm::vec3 size, glm::vec3 pos
 	std::vector<const char*> t;
 	std::vector<std::pair<int, int>> sz;
 
-	t.emplace_back("./resource/texture/dn.bmp");
+	t.emplace_back("./resource/texture/rip_dn.bmp");
 
 	sz.emplace_back(512, 512);
 
@@ -213,7 +213,7 @@ CObject_LeftFloor::CObject_LeftFloor(CCamera& cam, glm::vec3 size, glm::vec3 pos
 	std::vector<std::pair<int, int>> sz;
 
 
-	t.emplace_back("./resource/texture/lf.bmp");
+	t.emplace_back("./resource/texture/rip_lf.bmp");
 
 	sz.emplace_back(512, 512);
 
@@ -305,7 +305,7 @@ CObject_RightFloor::CObject_RightFloor(CCamera& cam, glm::vec3 size, glm::vec3 p
 	std::vector<std::pair<int, int>> sz;
 
 
-	t.emplace_back("./resource/texture/rt.bmp");
+	t.emplace_back("./resource/texture/rip_rt.bmp");
 
 	sz.emplace_back(512, 512);
 
@@ -404,7 +404,7 @@ CObject_BackFloor::CObject_BackFloor(CCamera& cam, glm::vec3 size, glm::vec3 pos
 	std::vector<std::pair<int, int>> sz;
 
 
-	t.emplace_back("./resource/texture/bk.bmp");
+	t.emplace_back("./resource/texture/rip_bk.bmp");
 
 	sz.emplace_back(512, 512);
 
@@ -503,7 +503,7 @@ CObject_FrontFloor::CObject_FrontFloor(CCamera& cam, glm::vec3 size, glm::vec3 p
 	std::vector<const char*> t;
 	std::vector<std::pair<int, int>> sz;
 
-	t.emplace_back("./resource/texture/ft.bmp");
+	t.emplace_back("./resource/texture/rip_ft.bmp");
 
 	sz.emplace_back(512, 512);
 
