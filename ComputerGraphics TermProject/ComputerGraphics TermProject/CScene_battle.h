@@ -46,8 +46,11 @@ protected:
 	std::vector<CObject*> object_Floor;
 	std::vector<CObject*> object_Barrigate;
 	CObjectManager* oObjectManager;
-	std::unique_ptr< DrawNumObject > ptrDrawNum;
+	CObjectManager* pParticleObjectManager;
 
+
+	std::unique_ptr< DrawNumObject > ptrDrawNum;
+	std::vector<glm::vec3> vector_ParticlePosition;
 public:
 	CScene_battle();
 	virtual void Enter();

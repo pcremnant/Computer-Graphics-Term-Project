@@ -1,6 +1,7 @@
 #include "CScene_battle.h"
 #define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"//https://github.com/nothings/stb/blob/master/stb_image.h
+#include "UI_Particle.h"
 
 CScene_battle::CScene_battle() : CScene() {
 	std::cout << "battle scene create!" << std::endl;
@@ -11,6 +12,7 @@ CScene_battle::CScene_battle() : CScene() {
 	sceneProjection = PROJ(70.f);
 	//pObjectManager = new CObjectManager(camera);
 	oObjectManager = new CObjectManager(camera);
+	pParticleObjectManager = new CObjectManager(camera);
 	MakeFloor();
 	MakeBarrigate();
 	oObjectManager->AddObject(new CObject_aim(camera, glm::vec3{ 1,1,1 }, glm::vec3{ 0,6,0 }, ORTHO));
@@ -31,8 +33,12 @@ void CScene_battle::Update() {
 	}
 	pObjectManager->Update(glm::vec3{ 0,0,5 });
 	oObjectManager->Update(glm::vec3{ 0,0,5 });
+	pParticleObjectManager->Update();
 
 	CheckCollision();
+	for (auto iter : vector_ParticlePosition) {
+		pParticleObjectManager->AddObject(UI_Particle::CreateParticle(PARTICLE_EXPLOSION_1, camera, glm::vec3{ 1,1,0 }, iter, sceneProjection));
+	}
 	CheckDelete();
 
 	if (int_Count % 200 == 0) //적 스폰 빈도
@@ -52,6 +58,7 @@ void CScene_battle::Update() {
 void CScene_battle::Draw() {
 	pObjectManager->Draw();
 	oObjectManager->Draw();
+	pParticleObjectManager->Draw();
 
 	//---숫자 그리기
 	glClearColor(0, 0, 0, 1.0f);
@@ -132,10 +139,20 @@ void CScene_battle::Spawn() {
 }
 
 void CScene_battle::CheckCollision() {
-	pObjectManager->CheckCollision(object_Bullet, object_Enemy);
-	pObjectManager->CheckCollision(object_Bullet, object_Floor);
-	pObjectManager->CheckCollision(object_Bullet, object_Barrigate);
-	pObjectManager->CheckCollision(object_Enemy, object_Barrigate);
+	vector_ParticlePosition.clear();
+	std::vector<glm::vec3> tmpPosition;
+	tmpPosition = pObjectManager->CheckCollision(object_Bullet, object_Enemy);
+	for (auto iter : tmpPosition)
+		vector_ParticlePosition.emplace_back(iter);
+	tmpPosition = pObjectManager->CheckCollision(object_Bullet, object_Floor);
+	for (auto iter : tmpPosition)
+		vector_ParticlePosition.emplace_back(iter);
+	tmpPosition = pObjectManager->CheckCollision(object_Bullet, object_Barrigate);
+	for (auto iter : tmpPosition)
+		vector_ParticlePosition.emplace_back(iter);
+	tmpPosition = pObjectManager->CheckCollision(object_Enemy, object_Barrigate);
+	for (auto iter : tmpPosition)
+		vector_ParticlePosition.emplace_back(iter);
 }
 
 void CScene_battle::CheckDelete() {
