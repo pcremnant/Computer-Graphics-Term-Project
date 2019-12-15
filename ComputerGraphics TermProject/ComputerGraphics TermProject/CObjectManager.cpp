@@ -91,15 +91,18 @@ void CObjectManager::ChangeFov(glm::mat4 proj) {
 		iter->ChangeFov(proj);
 }
 
-void CObjectManager::CheckCollision(std::vector<CObject*>& objects, std::vector<CObject*>& others) {
+std::vector<glm::vec3> CObjectManager::CheckCollision(std::vector<CObject*>& objects, std::vector<CObject*>& others) {
+	std::vector<glm::vec3> collidePosition;
 	for (auto iter : objects) {
 		std::vector<float> box = iter->GetBoundingBox();
 		for (auto other : others) {
 			std::vector<float> other_box = other->GetBoundingBox();
 			if (IsCollide(box, other_box)) {
+				collidePosition.emplace_back(iter->GetWorldPosition());
 				iter->Collide(other->GetType());
 				other->Collide(iter->GetType());
 			}
 		}
 	}
+	return collidePosition;
 }

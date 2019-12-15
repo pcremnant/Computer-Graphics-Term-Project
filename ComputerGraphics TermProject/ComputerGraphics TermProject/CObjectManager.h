@@ -44,5 +44,5 @@ public:
 
 	void ChangeFov(glm::mat4 proj);
 
-	void CheckCollision(std::vector<CObject*>& objects, std::vector<CObject*>& others);
+	std::vector<glm::vec3> CheckCollision(std::vector<CObject*>& objects, std::vector<CObject*>& others);
 };
