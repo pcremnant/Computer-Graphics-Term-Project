@@ -20,6 +20,7 @@
 #define LAYOUT_NORMAL 3
 #define LAYOUT_UV 4
 #define LAYOUT_UI 5
+#define LAYOUT_NUM 6
 
 #define WINDOW_X 100							// 윈도우 창 x 위치
 #define WINDOW_Y 100							// 윈도우 창 y 위치

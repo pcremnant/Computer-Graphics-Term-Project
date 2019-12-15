@@ -11,7 +11,6 @@
 
 class DrawNumObject
 {
-	CObjectManager* oObjectManager;
 	std::unique_ptr<CShader> uiNumShader;
 
 	GLuint texID;
@@ -44,7 +43,7 @@ protected:
 	std::vector<CObject*> object_Enemy;
 	std::vector<CObject*> object_Floor;
 	std::vector<CObject*> object_Barrigate;
-
+	CObjectManager* oObjectManager;
 	std::unique_ptr< DrawNumObject > ptrDrawNum;
 
 public:
