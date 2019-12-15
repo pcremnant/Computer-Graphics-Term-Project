@@ -38,7 +38,6 @@ CScene_battle::CScene_battle() : CScene() {
 	oObjectManager->AddObject(new CObject_Bullet_UI(camera, glm::vec3{ 1,1,1 }, glm::vec3{ 0,0,0 }, ORTHO));	
 	oObjectManager->AddObject(new CObject_Score_UI(camera, glm::vec3{ 1,1,1 }, glm::vec3{ 0,0,0 }, ORTHO));
 
-
 	ptrDrawNum = std::make_unique<DrawNumObject>(camera, "resource/texture/numsest.png");
 }
 
@@ -108,9 +107,10 @@ void CScene_battle::Update() {
 	}
 	CheckDelete();
 
-	if (int_Count % 200 == 0) //利 胶迄 后档
+	if (int_Count % 100 == 0) //利 胶迄 后档
 		Spawn();
 
+		
 	int type = pObjectManager->GetState();
 	switch (type) {
 	case MAIN_SCENE_START:
@@ -141,6 +141,7 @@ void CScene_battle::Draw() {
 		ptrDrawNum->drawInt(object_Barrigate[0]->GetHp(), 0.7, 0.72, 0.1, 0, 0, 0);
 	}
 	else {
+		next = SetNextScene(FRAMEWORK_ACTION_PUSH, SCENE_TYPE_END);
 		ptrDrawNum->drawInt(0, 0.7, 0.92, 0.1, 0, 0, 0);
 		ptrDrawNum->drawInt(0, 0.7, 0.72, 0.1, 0, 0, 0);
 	}
@@ -223,7 +224,15 @@ void CScene_battle::CheckCollision() {
 	for (auto iter : tmpPosition)
 		vector_ParticlePosition.emplace_back(iter);
 
+	tmpPosition = pObjectManager->CheckCollision(object_Bullet, object_Obstacle);
+	for (auto iter : tmpPosition)
+		vector_ParticlePosition.emplace_back(iter);
+
 	tmpPosition = pObjectManager->CheckCollision(object_Enemy, object_Barrigate);
+	for (auto iter : tmpPosition)
+		vector_ParticlePosition.emplace_back(iter);
+
+	tmpPosition = pObjectManager->CheckCollision(object_Enemy, object_Obstacle);
 	for (auto iter : tmpPosition)
 		vector_ParticlePosition.emplace_back(iter);
 }
@@ -272,6 +281,9 @@ void CScene_battle::MakeBarrigate() {
 	CObject_cube* second_Barrigate = new CObject_cube(camera, glm::vec3{ 10,5,0.5 }, glm::vec3{ 0,0,4 }, sceneProjection);
 	object_Barrigate.push_back(second_Barrigate);
 	pObjectManager->AddObject(second_Barrigate);
+	CObject_Obstacle* obstacle = new CObject_Obstacle(camera, glm::vec3{ 2,6,0.5 }, glm::vec3{ 0,0,-15 }, sceneProjection);
+	object_Obstacle.push_back(obstacle);
+	pObjectManager->AddObject(obstacle);
 }
 
 DrawNumObject::DrawNumObject(CCamera &camera, const char *imgStr)

@@ -6,6 +6,7 @@ CObject_enemy::CObject_enemy(CCamera& cam, glm::vec3 size, glm::vec3 pos, glm::m
 	changeDirecton = 0;
 	short_Hp = 100;
 	int_Type = COLLISION_ENEMY;
+	isColObstacle = false;
 	vector_Model.emplace_back(std::make_unique<CModel_enemy>(LAYOUT_NORMAL, size,glm::vec3(0,0,1)));
 
 	vector_ModelPosition.emplace_back(glm::vec3{ 0,0,0 });
@@ -45,17 +46,27 @@ void CObject_enemy::Update(glm::vec3 lightPos, glm::vec3 lightColor, float light
 
 void CObject_enemy::Update(std::vector<glm::vec3> lightPos, std::vector<glm::vec3> lightColor, std::vector<float> lightPower)
 {
+	if (isColObstacle == true) {
+		vec3_Direction = glm::vec3(1, 0, 0);
+		if (short_count % 20 == 0) {
+			short_count = 0;
+			isColObstacle = false;
+		}	
+		short_count++;
+	}
+	else {
+		if (changeDirecton < 15)
+			vec3_Direction = glm::vec3{ 1,0.5,1 };
+		else if (changeDirecton < 30)
+			vec3_Direction = glm::vec3{ 1,-0.5,1 };
+		else if (changeDirecton < 45)
+			vec3_Direction = glm::vec3{ -1,0.5,1 };
+		else if (changeDirecton < 60)
+			vec3_Direction = glm::vec3{ -1,-0.5,1 };
+		else
+			changeDirecton = 0;
+	}
 
-	if (changeDirecton < 15)
-		vec3_Direction = glm::vec3{ 1,0.5,1 };
-	else if (changeDirecton < 30)
-		vec3_Direction = glm::vec3{ 1,-0.5,1 };
-	else if (changeDirecton < 45)
-		vec3_Direction = glm::vec3{ -1,0.5,1 };
-	else if (changeDirecton < 60)
-		vec3_Direction = glm::vec3{ -1,-0.5,1 };
-	else
-		changeDirecton = 0;
 
 	changeDirecton++;
 
@@ -151,5 +162,9 @@ void CObject_enemy::Collide(int type) {
 	case COLLISION_BARRIGATE:
 		bool_Delete = true;
 		break;
+	case COLLISION_OBSTACLE:
+		isColObstacle = true;
+		break;
 	}
+
 }

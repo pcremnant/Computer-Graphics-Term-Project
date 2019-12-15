@@ -130,5 +130,8 @@ void CObject_bullet::Collide(int type) {
 		std::cout << "장애물 충돌" << std::endl;
 		this->bool_Delete = true;
 		break;
+	case COLLISION_OBSTACLE:
+		this -> bool_Delete = true;
+		break;
 	}
 }

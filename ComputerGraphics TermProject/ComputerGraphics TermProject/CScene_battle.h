@@ -21,7 +21,6 @@ public:
 	DrawNumObject(CCamera&, const char *imgStr);
 
 	void initTexture(const char *imgStr, GLuint& textureID);
-
 	void drawStart();
 	void drawInt(int num, float posx, float posy, float scale, float colorx = 1, float colory = 1, float colorz = 1);
 	void drawEnd();
@@ -42,6 +41,7 @@ protected:
 	std::vector<CObject*> object_Floor;
 	std::vector<CObject*> object_Barrigate;
 	std::vector<CObject*> object_Light;
+	std::vector<CObject*> object_Obstacle;
 
 	CObjectManager* oObjectManager;
 	CObjectManager* pParticleObjectManager;

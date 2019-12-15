@@ -3,6 +3,7 @@
 #include "CScene_main.h"
 #include "CScene_puase.h"
 #include "CScene_battle.h"
+#include "CScene_end.h"
 
 CFramework::CFramework() {
 	stack_Scene.push(new CScene_main());
@@ -37,7 +38,11 @@ void CFramework::Update() {
 		case SCENE_TYPE_PAUSE:
 			stack_Scene.push(new CScene_pause());
 			break;
+		case SCENE_TYPE_END:
+			stack_Scene.push(new CScene_end());
+			break;
 		}
+
 		stack_Scene.top()->Enter();
 
 	case FRAMEWORK_ACTION_POP:
@@ -72,6 +77,9 @@ void CFramework::Update() {
 			break;
 		case SCENE_TYPE_PAUSE:
 			stack_Scene.push(new CScene_pause());
+			break;
+		case SCENE_TYPE_END:
+			stack_Scene.push(new CScene_end());
 			break;
 		}
 		stack_Scene.top()->Enter();

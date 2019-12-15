@@ -13,7 +13,7 @@ CObject_MainBackground::CObject_MainBackground(CCamera& cam, glm::vec3 size, glm
 	std::vector<std::pair<int, int>> sz;
 
 	t.emplace_back("./resource/texture/main_menu.bmp");
-	sz.emplace_back(512, 512);
+	sz.emplace_back(1024, 1024);
 
 	AddTexture(0, t, sz);
 
