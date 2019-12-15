@@ -7,13 +7,9 @@ CObject_light::CObject_light(CCamera& cam, glm::vec3 size, glm::vec3 pos, glm::v
 
 	bLightOn = true;
 
-<<<<<<< HEAD
-	fAngleZ = 0;
-=======
-	fAngleZ = 0;
->>>>>>> 681ac27e61739d0a5b13014430cbde996a8e823c
-	fRadius = 10;
-	vec3_WorldPosition = glm::vec3{ fRadius * glm::cos(glm::radians(fAngleZ)),fRadius * glm::sin(glm::radians(fAngleZ)),-5 };
+	//fAngleZ = 0;
+	//fRadius = 10;
+	//vec3_WorldPosition = glm::vec3{ fRadius * glm::cos(glm::radians(fAngleZ)),fRadius * glm::sin(glm::radians(fAngleZ)),-5 };
 
 	SetBuffer();
 
@@ -22,12 +18,8 @@ CObject_light::CObject_light(CCamera& cam, glm::vec3 size, glm::vec3 pos, glm::v
 
 void CObject_light::Update(glm::vec3 lightPos, glm::vec3 lightColor, float lightPower)
 {
-<<<<<<< HEAD
-	fanglez += 0.1;
-=======
-	fAngleZ += 0.1;
->>>>>>> 681ac27e61739d0a5b13014430cbde996a8e823c
-	vec3_WorldPosition = glm::vec3{ fRadius * glm::cos(glm::radians(fAngleZ)),fRadius * glm::sin(glm::radians(fAngleZ)),-5 };
+	//fAngleZ += 0.1;
+	//vec3_WorldPosition = glm::vec3{ fRadius * glm::cos(glm::radians(fAngleZ)),fRadius * glm::sin(glm::radians(fAngleZ)),-5 };
 
 	for (int i = 0; i < vector_Model.size(); ++i) {
 		glm::mat4 translate = glm::mat4{ 1, };

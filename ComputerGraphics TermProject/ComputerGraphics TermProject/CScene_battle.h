@@ -2,14 +2,7 @@
 #include<fstream>
 #include<iterator>
 #include "CScene.h"
-#include "CObject_enemy.h"
-#include "CObject_floor.h"
-#include "CObject_bullet.h"
-#include "CObject_aim.h"
-#include "CObject_cube.h"
-#include "CObject_HP_UI.h"
-#include "CObject_Bullet_UI.h"
-#include "CObject_Score_UI.h"
+
 //#include <memory>
 #define BULLET_NUM_MAX 4
 
@@ -55,6 +48,7 @@ protected:
 	CObjectManager* pLightObjectManager;
 
 	int int_Timer;
+	int int_StopTimer;
 	bool bool_Night;
 
 	std::unique_ptr< DrawNumObject > ptrDrawNum;

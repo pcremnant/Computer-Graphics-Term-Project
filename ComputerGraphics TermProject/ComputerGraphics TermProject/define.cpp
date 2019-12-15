@@ -3,7 +3,8 @@
 GLclampf cBackground_red = 1.0f;
 GLclampf cBackground_green = 1.0f;
 GLclampf cBackground_blue = 1.0f;
-
+int int_Score = 0;
+int int_HighScore = 0;
 
 void SetRandomColor(GLclampf& r, GLclampf& g, GLclampf& b)
 {

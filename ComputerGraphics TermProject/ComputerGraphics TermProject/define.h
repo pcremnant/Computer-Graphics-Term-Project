@@ -45,6 +45,8 @@ typedef std::vector<glm::vec2> vec2Buffer;
 extern GLclampf cBackground_red;
 extern GLclampf cBackground_green;
 extern GLclampf cBackground_blue;
+extern int int_Score;
+extern int int_HighScore;
 
 // 투영 방식
 #define PROJ(fovy) glm::perspective(glm::radians(fovy), (float)800 / (float)600, 0.1f, 100.0f)

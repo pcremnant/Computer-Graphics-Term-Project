@@ -3,11 +3,25 @@
 #include "stb_image.h"//https://github.com/nothings/stb/blob/master/stb_image.h
 #include "UI_Particle.h"
 #include "CObject_light.h"
+#include "CObject_enemy.h"
+#include "CObject_floor.h"
+#include "CObject_bullet.h"
+#include "CObject_aim.h"
+#include "CObject_cube.h"
+#include "CObject_HP_UI.h"
+#include "CObject_Bullet_UI.h"
+#include "CObject_Score_UI.h"
+
+#define LIGHT_POWER_DAY 100
+#define LIGHT_POWER_NIGHT 10
+#define LIGHT_TIMER 100
+#define LIGHT_STOP_TIMER 1000
 
 CScene_battle::CScene_battle() : CScene() {
 	std::cout << "battle scene create!" << std::endl;
 	bool_Night = false;
 	int_Timer = 0;
+	int_StopTimer = 0;
 	bullet_num = BULLET_NUM_MAX;
 	int_Count = 0;
 	isZoom = false;
@@ -18,14 +32,12 @@ CScene_battle::CScene_battle() : CScene() {
 	pLightObjectManager = new CObjectManager(camera);
 	MakeFloor();
 	MakeBarrigate();
-	pLightObjectManager->AddObject(new CObject_light(camera, glm::vec3{ 1,1,1 }, glm::vec3{ 0,10,-5 }, glm::vec3{ 1,1,1 }, 1000, sceneProjection));
+	pLightObjectManager->AddObject(new CObject_light(camera, glm::vec3{ 0.001,0.001,0.001 }, glm::vec3{ 0,6,-5 }, glm::vec3{ 1,1,1 }, LIGHT_POWER_DAY, sceneProjection));
 	oObjectManager->AddObject(new CObject_aim(camera, glm::vec3{ 1,1,1 }, glm::vec3{ 0,6,0 }, ORTHO));
-<<<<<<< HEAD
 	oObjectManager->AddObject(new CObject_HP_UI(camera, glm::vec3{ 1,1,1 }, glm::vec3{ 0,0,0 }, ORTHO));
 	oObjectManager->AddObject(new CObject_Bullet_UI(camera, glm::vec3{ 1,1,1 }, glm::vec3{ 0,0,0 }, ORTHO));	
 	oObjectManager->AddObject(new CObject_Score_UI(camera, glm::vec3{ 1,1,1 }, glm::vec3{ 0,0,0 }, ORTHO));
-=======
->>>>>>> 681ac27e61739d0a5b13014430cbde996a8e823c
+
 
 	ptrDrawNum = std::make_unique<DrawNumObject>(camera, "resource/texture/numsest.png");
 }
@@ -43,7 +55,30 @@ void CScene_battle::Update() {
 	}
 	pLightObjectManager->Update();
 
+	dynamic_cast<CObject_light*>(pLightObjectManager->GetObjects()[0])->SetLightPower(LIGHT_POWER_NIGHT + (float)int_Timer / (float)LIGHT_TIMER * LIGHT_POWER_DAY);
 
+	if (bool_Night) {
+		if (int_Timer <= 0) {
+			int_StopTimer += 1;
+			if (int_StopTimer >= LIGHT_STOP_TIMER) {
+				bool_Night = false;
+				int_StopTimer = 0;
+			}
+		}
+		else
+			int_Timer -= 1;
+	}
+	else {
+		if (int_Timer >= LIGHT_TIMER) {
+			int_StopTimer += 1;
+			if (int_StopTimer >= LIGHT_STOP_TIMER) {
+				bool_Night = true;
+				int_StopTimer = 0;
+			}
+		}
+		else
+			int_Timer += 1;
+	}
 
 	std::vector<CObject*> light = pLightObjectManager->GetObjects();
 	std::vector<CObject*> bomb = pParticleObjectManager->GetObjects();
