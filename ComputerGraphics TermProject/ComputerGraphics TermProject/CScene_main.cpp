@@ -10,11 +10,26 @@ CScene_main::CScene_main() : CScene() {
 	sceneProjection =ORTHO;
 	pObjectManager = new CObjectManager(camera);
 	pObjectManager->AddObject(new CObject_MainBackground(camera, glm::vec3{ WINDOW_WIDTH/2,WINDOW_HEIGHT/2,0 }, glm::vec3{ 0,0,0 }, sceneProjection));
-	pObjectManager->AddObject(new CObject_MainStartgame(camera, glm::vec3{ 100,40,0 }, glm::vec3{ -300,-100,1 }, sceneProjection));
-	pObjectManager->AddObject(new CObject_MainQuitgame(camera, glm::vec3{ 100,40,0 }, glm::vec3{ -300,-200,1 }, sceneProjection));
+	pObjectManager->AddObject(new CObject_MainStartgame(camera, glm::vec3{ 100,40,0 }, glm::vec3{ 270,-100,1 }, sceneProjection));
+	pObjectManager->AddObject(new CObject_MainQuitgame(camera, glm::vec3{ 100,40,0 }, glm::vec3{ 270,-200,1 }, sceneProjection));
+	int_Timer = 0;
 }
 
 void CScene_main::Update() {
+	//if (dynamic_cast<CObject_MainStartgame*>(pObjectManager->GetObjects()[1])->GetInBox()) {
+	//	int_Timer++;
+	//	if (int_Timer >= 15) {
+	//		std::random_device rnd;
+	//		std::mt19937 rn(rnd());
+	//		std::uniform_int_distribution<int> rangeX(-100, 100);
+	//		std::uniform_int_distribution<int> rangeY(-40, 40);
+	//		glm::vec3 pos = pObjectManager->GetObjects()[1]->GetWorldPosition() + glm::vec3{ rangeX(rn),rangeY(rn),1 };
+	//		pObjectManager->AddObject(UI_Particle::CreateParticle(PARTICLE_EXPLOSION_1, camera, glm::vec3{ 40,40,0 }, pos, sceneProjection));
+	//		int_Timer = 0;
+	//	}
+	//}
+
+
 	pObjectManager->Update();
 	int type = pObjectManager->GetState();
 	switch (type) {
@@ -32,9 +47,7 @@ void CScene_main::Draw() {
 }
 
 void CScene_main::GetKeyboardInput(unsigned char key) {
-	// 테스트용 코드!
-	// 나중에 제대로 된 값으로 넣을 것
-	camera.Move(key);
+	//camera.Move(key);
 	switch (key) {
 	case '1':
 		next = SetNextScene(FRAMEWORK_ACTION_PUSH, SCENE_TYPE_PAUSE);
@@ -48,7 +61,7 @@ void CScene_main::GetMouseInput(int button, int state, int x, int y) {
 		if (state == GLUT_DOWN) {
 			int worldX = x - WINDOW_WIDTH / 2;
 			int worldY = WINDOW_HEIGHT / 2 - y;
-			//pObjectManager->AddObject(UI_Particle::CreateParticle(PARTICLE_EXPLOSION_1, camera, glm::vec3{ 40,40,0 }, glm::vec3{ worldX,worldY,1 }, sceneProjection));
+			pObjectManager->AddObject(UI_Particle::CreateParticle(PARTICLE_EXPLOSION_1, camera, glm::vec3{ 40,40,0 }, glm::vec3{ worldX,worldY,1 }, sceneProjection));
 		}
 	}
 	pObjectManager->GetMouse(button, state, x, y);

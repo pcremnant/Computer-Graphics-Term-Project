@@ -18,4 +18,7 @@ public:
 		else
 			return -1;
 	}
+	bool GetInBox() const {
+		return inBox;
+	}
 };

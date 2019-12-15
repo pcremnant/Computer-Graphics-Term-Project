@@ -5,6 +5,7 @@
 class CScene_main : public CScene {
 protected:
 	glm::mat4 sceneProjection;
+	int int_Timer;
 public:
 	CScene_main();
 	virtual void Enter();
