@@ -52,7 +52,9 @@ CObject::CObject(CCamera& cam, glm::vec3 vPos, glm::mat4 proj) : camera(cam) {
 	vec3_WorldPosition = vPos;
 	mat_Projection = proj;
 }
-CObject::~CObject() { }
+CObject::~CObject() {
+
+}
 
 void CObject::SetWorldPosition(glm::vec3 pos)
 {

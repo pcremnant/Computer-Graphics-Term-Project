@@ -49,12 +49,12 @@ void CScene_main::GetMouseInput(int button, int state, int x, int y) {
 		if (state == GLUT_DOWN) {
 			int worldX = x - WINDOW_WIDTH / 2;
 			int worldY = WINDOW_HEIGHT / 2 - y;
-			pObjectManager->AddObject(UI_Particle::CreateParticle(PARTICLE_EXPLOSION_1, camera, glm::vec3{ 40,40,0 }, glm::vec3{ worldX,worldY,1 }, sceneProjection));
+			//pObjectManager->AddObject(UI_Particle::CreateParticle(PARTICLE_EXPLOSION_1, camera, glm::vec3{ 40,40,0 }, glm::vec3{ worldX,worldY,1 }, sceneProjection));
 		}
 	}
-	
 	pObjectManager->GetMouse(button, state, x, y);
 }
+
 void CScene_main::GetMouseMotionInput(int x, int y) {
 	pObjectManager->GetMouseMotion(x, y);
 }

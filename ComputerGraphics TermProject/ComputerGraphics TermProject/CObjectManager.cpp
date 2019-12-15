@@ -17,6 +17,12 @@ void CObjectManager::Update(glm::vec3 lightPos, glm::vec3 lightColor, float ligh
 void CObjectManager::Update(std::vector<glm::vec3> lightPos, std::vector<glm::vec3> lightColor, std::vector<float> lightPower) {
 	for (auto iter : vector_Objects)
 		iter->Update(lightPos, lightColor, lightPower);
+
+	for (int i = 0; i < vector_Objects.size(); ++i) {
+		if (vector_Objects[i]->IsDelete()) {
+			DeleteObject(vector_Objects[i]);
+		}
+	}
 }
 
 void CObjectManager::Draw() {
@@ -43,6 +49,7 @@ void CObjectManager::AddObject(CObject* object) {
 void CObjectManager::DeleteObject(CObject* object) {
 	for (int i = 0; i < vector_Objects.size(); ++i) {
 		if (vector_Objects[i] == object) {
+			delete vector_Objects[i];
 			vector_Objects.erase(vector_Objects.begin() + i);
 		}
 	}
