@@ -14,5 +14,5 @@ public:
 	void GetKeyboardInput(unsigned char key);
 	void GetMouseInput(int button, int state, int x, int y);
 	void GetMouseMotionInput(int x, int y);
-
+	void GetSpecialKeyboardInput(int key);
 };
