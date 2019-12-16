@@ -115,7 +115,7 @@ void CObject_bullet::Collide(int type) {
 	// type -> object에 내장되어있고 객체의 타입을 나타냄
 	// 아래처럼 사용 가능
 	// CObjectManager 의 CheckCollision을 사용하면 자동으로 값이 들어온다.
-
+	sound.Play_effect(HIT_SOUND, HIT);
 	switch (type) {
 	case COLLISION_ENEMY:
 		std::cout << "적 충돌" << std::endl;

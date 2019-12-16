@@ -2,7 +2,6 @@
 #include<fstream>
 #include<iterator>
 #include "CScene.h"
-#include "Sound.h"
 //#include <memory>
 #define BULLET_NUM_MAX 4
 
@@ -15,7 +14,6 @@ protected:
 	int int_Count;
 	bool isZoom;
 	float float_ZoomSize;
-	Fmod_snd sound;
 	std::vector<CObject*> object_Bullet;
 	std::vector<CObject*> object_Enemy;
 	std::vector<CObject*> object_Floor;

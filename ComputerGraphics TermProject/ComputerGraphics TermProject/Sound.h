@@ -6,11 +6,15 @@
 using namespace FMOD;
 enum WHAT_SOUND{
 	BULLET_SOUND,
+	HIT_SOUND,
+	DEATH_SOUND,
 	TITLE_BGM
 };
 
 enum WHOSE_SOUND {
 	BULLET,
+	HIT,
+	DEATH,
 	BACK
 };
 

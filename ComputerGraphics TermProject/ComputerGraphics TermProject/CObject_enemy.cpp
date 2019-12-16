@@ -155,6 +155,7 @@ void CObject_enemy::Collide(int type) {
 		vec3_WorldPosition -= glm::vec3{ 0,0,2 };
 		short_Hp -= 50;
 		if (short_Hp == 0) {
+			sound.Play_effect(DEATH_SOUND, DEATH);
 			bool_Delete = true;
 			int_Score += 100;
 		}

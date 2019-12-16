@@ -39,6 +39,18 @@ void Fmod_snd::Add_sound()
 		, &pSound[(int)WHAT_SOUND::BULLET_SOUND]
 	);
 	pSystem->createSound(
+		"resource/sound/hit.wav"
+		, FMOD_DEFAULT | FMOD_LOOP_OFF
+		, nullptr
+		, &pSound[(int)WHAT_SOUND::HIT_SOUND]
+	);
+	pSystem->createSound(
+		"resource/sound/death.ogg"
+		, FMOD_DEFAULT | FMOD_LOOP_OFF
+		, nullptr
+		, &pSound[(int)WHAT_SOUND::DEATH_SOUND]
+	);
+	pSystem->createSound(
 		"resource/sound/Spacious.mp3"
 		, FMOD_LOOP_NORMAL | FMOD_2D
 		, nullptr
