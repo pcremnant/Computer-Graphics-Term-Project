@@ -2,31 +2,10 @@
 #include<fstream>
 #include<iterator>
 #include "CScene.h"
-
+#include "Sound.h"
 //#include <memory>
 #define BULLET_NUM_MAX 4
 
-class DrawNumObject
-{
-	std::unique_ptr<CShader> uiNumShader;
-
-	GLuint texID;
-
-	GLint charID;
-	GLint infoID;
-	GLint posID;
-	GLint colorID;
-
-public:
-	DrawNumObject(CCamera&, const char *imgStr);
-
-	void initTexture(const char *imgStr, GLuint& textureID);
-	void drawStart();
-	void drawInt(int num, float posx, float posy, float scale, float colorx = 1, float colory = 1, float colorz = 1);
-	void drawEnd();
-private:
-	int drawIntpice(int num, int offset, float scale);
-};
 
 
 class CScene_battle : public CScene {
@@ -36,6 +15,7 @@ protected:
 	int int_Count;
 	bool isZoom;
 	float float_ZoomSize;
+	Fmod_snd sound;
 	std::vector<CObject*> object_Bullet;
 	std::vector<CObject*> object_Enemy;
 	std::vector<CObject*> object_Floor;
@@ -51,7 +31,7 @@ protected:
 	int int_StopTimer;
 	bool bool_Night;
 
-	std::unique_ptr< DrawNumObject > ptrDrawNum;
+	std::unique_ptr< Draw_Number > ptrDrawNum;
 	std::vector<glm::vec3> vector_ParticlePosition;
 public:
 	CScene_battle();

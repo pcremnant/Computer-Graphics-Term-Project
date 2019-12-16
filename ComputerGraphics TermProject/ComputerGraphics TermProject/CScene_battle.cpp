@@ -38,7 +38,7 @@ CScene_battle::CScene_battle() : CScene() {
 	oObjectManager->AddObject(new CObject_Bullet_UI(camera, glm::vec3{ 1,1,1 }, glm::vec3{ 0,0,0 }, ORTHO));	
 	oObjectManager->AddObject(new CObject_Score_UI(camera, glm::vec3{ 1,1,1 }, glm::vec3{ 0,0,0 }, ORTHO));
 
-	ptrDrawNum = std::make_unique<DrawNumObject>(camera, "resource/texture/numsest.png");
+	ptrDrawNum = std::make_unique<Draw_Number>(camera, "resource/texture/numsest.png");
 }
 
 void CScene_battle::Update() {
@@ -182,6 +182,7 @@ void CScene_battle::GetMouseInput(int button, int state, int x, int y) {
 	if (button == GLUT_LEFT_BUTTON) {
 		if (state == GLUT_DOWN) {
 			if (bullet_num > 0) {
+				sound.Play_effect(BULLET_SOUND, BULLET);
 				CObject_bullet* new_Bullet = new CObject_bullet(camera, glm::vec3{ 0.1,0.1,0.1 }, camera.GetEye(), sceneProjection);
 				object_Bullet.push_back(new_Bullet);
 				pObjectManager->AddObject(new_Bullet);
@@ -287,10 +288,10 @@ void CScene_battle::MakeBarrigate() {
 	pObjectManager->AddObject(obstacle);
 }
 
-DrawNumObject::DrawNumObject(CCamera &camera, const char *imgStr)
+Draw_Number::Draw_Number(CCamera &camera, const char *imgStr)
 {
-	uiNumShader = std::make_unique<CShader>(LAYOUT_NUM, camera, 0);
-	auto pid = uiNumShader->get_glShaderProgramID();
+	Shader_Num_UI = std::make_unique<CShader>(LAYOUT_NUM, camera, 0);
+	auto pid = Shader_Num_UI->get_glShaderProgramID();
 
 	initTexture(imgStr, texID);
 
@@ -300,7 +301,7 @@ DrawNumObject::DrawNumObject(CCamera &camera, const char *imgStr)
 	colorID = glGetUniformLocation(pid, "color"); //--- lightPos АЊРќДо
 }
 
-void DrawNumObject::initTexture(const char * imgStr, GLuint & textureID)
+void Draw_Number::initTexture(const char * imgStr, GLuint & textureID)
 {
 
 	glGenTextures(1, &textureID);
@@ -327,7 +328,7 @@ void DrawNumObject::initTexture(const char * imgStr, GLuint & textureID)
 	}
 }
 
-int DrawNumObject::drawIntpice(int num, int offset, float scale)
+int Draw_Number::drawIntpice(int num, int offset, float scale)
 {
 	int nextval = num / 10;
 	int id = num % 10;
@@ -345,25 +346,25 @@ int DrawNumObject::drawIntpice(int num, int offset, float scale)
 	return offset;
 }
 
-void DrawNumObject::drawInt(int num, float posx, float posy, float scale, float colorx, float colory, float colorz)
+void Draw_Number::drawInt(int num, float posx, float posy, float scale, float colorx, float colory, float colorz)
 {
 	glUniform2f(posID, posx, posy);
 	glUniform3f(colorID, colorx, colory, colorz);
 	drawIntpice(num, 0, scale);
 }
 
-void DrawNumObject::drawStart()
+void Draw_Number::drawStart()
 {
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-	uiNumShader->UseProgram();
+	Shader_Num_UI->UseProgram();
 
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, texID);
 }
 
-void DrawNumObject::drawEnd()
+void Draw_Number::drawEnd()
 {
 	glDisable(GL_BLEND);
 }

@@ -4,6 +4,7 @@
 class CScene_end : public CScene {
 protected:
 	glm::mat4 sceneProjection;
+	std::unique_ptr< Draw_Number > ptrDrawNum;
 public:
 	CScene_end();
 	virtual void Enter();

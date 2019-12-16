@@ -13,6 +13,7 @@ CScene_main::CScene_main() : CScene() {
 	pObjectManager->AddObject(new CObject_MainStartgame(camera, glm::vec3{ 100,40,0 }, glm::vec3{ 270,-100,1 }, sceneProjection));
 	pObjectManager->AddObject(new CObject_MainQuitgame(camera, glm::vec3{ 100,40,0 }, glm::vec3{ 270,-200,1 }, sceneProjection));
 	int_Timer = 0;
+	int_Score = 0;
 }
 
 void CScene_main::Update() {

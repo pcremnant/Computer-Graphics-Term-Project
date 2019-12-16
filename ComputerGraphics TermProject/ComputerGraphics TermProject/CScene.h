@@ -35,3 +35,22 @@ public:
 	std::pair<int, int> SetNextScene(int FrameworkAction, int SceneType);
 	std::pair<int, int> NextScene();
 };
+
+class Draw_Number
+{
+	std::unique_ptr<CShader> Shader_Num_UI;
+	GLuint texID;
+	GLint charID;
+	GLint infoID;
+	GLint posID;
+	GLint colorID;
+
+public:
+	Draw_Number(CCamera&, const char *imgName);
+	void initTexture(const char *imgStr, GLuint& textureID);
+	void drawStart();
+	void drawInt(int num, float posx, float posy, float scale, float colorx = 1, float colory = 1, float colorz = 1);
+	void drawEnd();
+private:
+	int drawIntpice(int num, int offset, float scale);
+};
