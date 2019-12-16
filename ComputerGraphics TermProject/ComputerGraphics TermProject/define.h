@@ -10,6 +10,8 @@
 #include <random>
 #include <fstream>
 
+#include "Sound.h"
+
 #define BUFFER_VERTEX 0							// pBuffer의 버텍스 인덱스
 #define BUFFER_COLOR 1
 #define BUFFER_NORMAL 2
@@ -47,6 +49,7 @@ extern GLclampf cBackground_green;
 extern GLclampf cBackground_blue;
 extern int int_Score;
 extern int int_HighScore;
+extern Fmod_snd sound;
 
 // 투영 방식
 #define PROJ(fovy) glm::perspective(glm::radians(fovy), (float)800 / (float)600, 0.1f, 100.0f)
