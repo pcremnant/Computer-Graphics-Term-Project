@@ -40,8 +40,8 @@ void CScene_end::Draw() {
 	glClearColor(0, 0, 0, 1.0f);
 	glClear(GL_DEPTH_BUFFER_BIT);
 	ptrDrawNum->drawStart();
-	ptrDrawNum->drawInt(int_HighScore, 0, 0.22, 0.2, 0, 1, 1);
-	ptrDrawNum->drawInt(int_Score, 0, -0.03, 0.2, 1, 1, 1);
+	ptrDrawNum->drawInt(int_HighScore, 0.05, 0.22, 0.2, 0, 1, 1);
+	ptrDrawNum->drawInt(int_Score, 0.05, -0.03, 0.2, 1, 1, 1);
 	ptrDrawNum->drawEnd();
 }
 
